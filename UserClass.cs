@@ -20,6 +20,7 @@ namespace WichtelGeneratorVisual
         private string userName;
         private ArrayList blackList = new ArrayList();
         private ArrayList whiteList = new ArrayList();
+        private string gezogenerWichtel;
 
         //============Getter Setter=========================================
         public string UserName
@@ -27,6 +28,8 @@ namespace WichtelGeneratorVisual
             get { return userName; }
             set { userName = value; }
         }
+
+        public string GezogenerWichtel { get => gezogenerWichtel; set => gezogenerWichtel = value; }
 
         public void FillBlackList(string aUserToLock)
         {
@@ -43,6 +46,11 @@ namespace WichtelGeneratorVisual
             blackList.Add(aBlackListUser);
         }
 
+        public void RemoveItemInBlackList(string aItem)
+        {
+            this.blackList.Remove(aItem);
+        }
+
         public ArrayList GetWhiteList()
         {
             return this.whiteList;
@@ -51,6 +59,11 @@ namespace WichtelGeneratorVisual
         public void SetWhiteList(ArrayList aWhiteListUser)
         {
             whiteList = aWhiteListUser;
+        }
+
+        public void SetWhiteListItem(string aItem)
+        {
+            this.whiteList.Add(aItem);
         }
 
         public void RemoveItemFromWhiteList(string aItem)

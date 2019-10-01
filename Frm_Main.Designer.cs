@@ -34,7 +34,7 @@
             this.lbl_newUser = new System.Windows.Forms.Label();
             this.gb_NewUser = new System.Windows.Forms.GroupBox();
             this.gb_BlackList = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.bt_addusertoWhiteList = new System.Windows.Forms.Button();
             this.bt_addUserToBlackList = new System.Windows.Forms.Button();
             this.lbl_BlackList = new System.Windows.Forms.Label();
             this.lb_BlackList = new System.Windows.Forms.ListBox();
@@ -43,8 +43,6 @@
             this.lbl_ShowUser = new System.Windows.Forms.Label();
             this.gb_verlosung = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Mitspieler = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Zieht = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bt_verlosung = new System.Windows.Forms.Button();
             this.lbl_Verlosung = new System.Windows.Forms.Label();
             this.gb_NewUser.SuspendLayout();
@@ -103,7 +101,7 @@
             // 
             // gb_BlackList
             // 
-            this.gb_BlackList.Controls.Add(this.button1);
+            this.gb_BlackList.Controls.Add(this.bt_addusertoWhiteList);
             this.gb_BlackList.Controls.Add(this.bt_addUserToBlackList);
             this.gb_BlackList.Controls.Add(this.lbl_BlackList);
             this.gb_BlackList.Controls.Add(this.lb_BlackList);
@@ -118,14 +116,15 @@
             this.gb_BlackList.TabStop = false;
             this.gb_BlackList.Text = "BlackList";
             // 
-            // button1
+            // bt_addusertoWhiteList
             // 
-            this.button1.Location = new System.Drawing.Point(443, 239);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(43, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "<<<";
-            this.button1.UseVisualStyleBackColor = true;
+            this.bt_addusertoWhiteList.Location = new System.Drawing.Point(443, 239);
+            this.bt_addusertoWhiteList.Name = "bt_addusertoWhiteList";
+            this.bt_addusertoWhiteList.Size = new System.Drawing.Size(43, 23);
+            this.bt_addusertoWhiteList.TabIndex = 9;
+            this.bt_addusertoWhiteList.Text = "<<<";
+            this.bt_addusertoWhiteList.UseVisualStyleBackColor = true;
+            this.bt_addusertoWhiteList.Click += new System.EventHandler(this.Bt_addusertoWhiteList_Click);
             // 
             // bt_addUserToBlackList
             // 
@@ -135,6 +134,7 @@
             this.bt_addUserToBlackList.TabIndex = 8;
             this.bt_addUserToBlackList.Text = ">>>";
             this.bt_addUserToBlackList.UseVisualStyleBackColor = true;
+            this.bt_addUserToBlackList.Click += new System.EventHandler(this.Bt_addUserToBlackList_Click);
             // 
             // lbl_BlackList
             // 
@@ -196,31 +196,12 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Mitspieler,
-            this.Zieht});
             this.dataGridView1.Location = new System.Drawing.Point(11, 60);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.Size = new System.Drawing.Size(664, 246);
             this.dataGridView1.TabIndex = 3;
-            // 
-            // Mitspieler
-            // 
-            this.Mitspieler.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Mitspieler.HeaderText = "Mitspieler";
-            this.Mitspieler.MinimumWidth = 6;
-            this.Mitspieler.Name = "Mitspieler";
-            this.Mitspieler.Width = 97;
-            // 
-            // Zieht
-            // 
-            this.Zieht.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Zieht.HeaderText = "Zieht";
-            this.Zieht.MinimumWidth = 6;
-            this.Zieht.Name = "Zieht";
-            this.Zieht.Width = 69;
             // 
             // bt_verlosung
             // 
@@ -230,6 +211,7 @@
             this.bt_verlosung.TabIndex = 1;
             this.bt_verlosung.Text = "Ziehen";
             this.bt_verlosung.UseVisualStyleBackColor = true;
+            this.bt_verlosung.Click += new System.EventHandler(this.Bt_verlosung_Click);
             // 
             // lbl_Verlosung
             // 
@@ -274,12 +256,10 @@
         private System.Windows.Forms.Label lbl_ShowUser;
         private System.Windows.Forms.Label lbl_BlackList;
         private System.Windows.Forms.ListBox lb_BlackList;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button bt_addusertoWhiteList;
         private System.Windows.Forms.Button bt_addUserToBlackList;
         private System.Windows.Forms.GroupBox gb_verlosung;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Mitspieler;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Zieht;
         private System.Windows.Forms.Button bt_verlosung;
         private System.Windows.Forms.Label lbl_Verlosung;
     }
