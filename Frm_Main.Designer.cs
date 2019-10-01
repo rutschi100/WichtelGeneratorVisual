@@ -78,6 +78,7 @@
             this.lb_User.Name = "lb_User";
             this.lb_User.Size = new System.Drawing.Size(179, 372);
             this.lb_User.TabIndex = 2;
+            this.lb_User.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Lb_User_MouseClick);
             // 
             // lbl_newUser
             // 
@@ -187,7 +188,7 @@
             this.gb_verlosung.Controls.Add(this.lbl_Verlosung);
             this.gb_verlosung.Location = new System.Drawing.Point(12, 519);
             this.gb_verlosung.Name = "gb_verlosung";
-            this.gb_verlosung.Size = new System.Drawing.Size(691, 344);
+            this.gb_verlosung.Size = new System.Drawing.Size(691, 322);
             this.gb_verlosung.TabIndex = 7;
             this.gb_verlosung.TabStop = false;
             this.gb_verlosung.Text = "Verlosung";
@@ -198,7 +199,7 @@
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Mitspieler,
             this.Zieht});
-            this.dataGridView1.Location = new System.Drawing.Point(11, 92);
+            this.dataGridView1.Location = new System.Drawing.Point(11, 60);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
@@ -243,7 +244,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 916);
+            this.ClientSize = new System.Drawing.Size(711, 849);
             this.Controls.Add(this.gb_verlosung);
             this.Controls.Add(this.gb_BlackList);
             this.Controls.Add(this.gb_NewUser);

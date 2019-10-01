@@ -7,18 +7,19 @@ using System.Threading.Tasks;
 
 namespace WichtelGeneratorVisual
 {
-    class UserClass
+    public class UserClass
     {
         //=============Konstruktoren=============
         public UserClass(string aUserName)
         {
             UserName = aUserName;
-            fillBlackList(UserName);
+            FillBlackList(UserName);
         }
 
         //============Private Variablen==========
         private string userName;
         private ArrayList blackList = new ArrayList();
+        private ArrayList whiteList = new ArrayList();
 
         //============Getter Setter=========================================
         public string UserName
@@ -27,14 +28,34 @@ namespace WichtelGeneratorVisual
             set { userName = value; }
         }
 
-        public void fillBlackList(string aUserToLock)
+        public void FillBlackList(string aUserToLock)
         {
             this.blackList.Add(aUserToLock);
         }
 
-        public ArrayList getBlackList()
+        public ArrayList GetBlackList()
         {
             return this.blackList;
+        }
+
+        public void SetBlackList(string aBlackListUser)
+        {
+            blackList.Add(aBlackListUser);
+        }
+
+        public ArrayList GetWhiteList()
+        {
+            return this.whiteList;
+        }
+
+        public void SetWhiteList(ArrayList aWhiteListUser)
+        {
+            whiteList = aWhiteListUser;
+        }
+
+        public void RemoveItemFromWhiteList(string aItem)
+        {
+            this.whiteList.Remove(aItem);
         }
     }
 }

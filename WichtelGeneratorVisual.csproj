@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{06D4C76F-C146-4477-850D-10448C8E5EF9}</ProjectGuid>
+    <ProjectGuid>{2C27CD2A-264F-489F-804E-4F57691AFD53}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>WichtelGeneratorVisual</RootNamespace>
     <AssemblyName>WichtelGeneratorVisual</AssemblyName>
@@ -46,20 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Frm_WichtelGenerator.cs">
+    <Compile Include="Frm_Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Frm_WichtelGenerator.cs</DependentUpon>
+    <Compile Include="Frm_Main.Designer.cs">
+      <DependentUpon>Frm_Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserClass.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Frm_WichtelGenerator.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Frm_WichtelGenerator.resx">
-      <DependentUpon>Frm_WichtelGenerator.cs</DependentUpon>
+    <Compile Include="UserNameList.cs" />
+    <EmbeddedResource Include="Frm_Main.resx">
+      <DependentUpon>Frm_Main.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

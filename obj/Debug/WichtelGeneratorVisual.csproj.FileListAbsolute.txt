@@ -1,0 +1,10 @@
+C:\Users\TIMRUT\source\repos\WichtelGeneratorVisual\bin\Debug\WichtelGeneratorVisual.exe.config
+C:\Users\TIMRUT\source\repos\WichtelGeneratorVisual\bin\Debug\WichtelGeneratorVisual.exe
+C:\Users\TIMRUT\source\repos\WichtelGeneratorVisual\bin\Debug\WichtelGeneratorVisual.pdb
+C:\Users\TIMRUT\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.csprojAssemblyReference.cache
+C:\Users\TIMRUT\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.Properties.Resources.resources
+C:\Users\TIMRUT\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.csproj.GenerateResource.cache
+C:\Users\TIMRUT\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.csproj.CoreCompileInputs.cache
+C:\Users\TIMRUT\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.exe
+C:\Users\TIMRUT\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.pdb
+C:\Users\TIMRUT\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.Frm_Main.resources
