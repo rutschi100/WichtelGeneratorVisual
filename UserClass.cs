@@ -29,46 +29,58 @@ namespace WichtelGeneratorVisual
             set { userName = value; }
         }
 
+        //-------------------------
         public string GezogenerWichtel { get => gezogenerWichtel; set => gezogenerWichtel = value; }
 
+        //-------------------------
         public void FillBlackList(string aUserToLock)
         {
             this.blackList.Add(aUserToLock);
         }
 
+        //-------------------------
         public ArrayList GetBlackList()
         {
             return this.blackList;
         }
 
+        //-------------------------
         public void SetBlackList(string aBlackListUser)
         {
             blackList.Add(aBlackListUser);
         }
 
+        //-------------------------
         public void RemoveItemInBlackList(string aItem)
         {
             this.blackList.Remove(aItem);
         }
 
+        //-------------------------
         public ArrayList GetWhiteList()
         {
             return this.whiteList;
         }
 
+        //-------------------------
         public void SetWhiteList(ArrayList aWhiteListUser)
         {
             whiteList = aWhiteListUser;
         }
 
+        //-------------------------
         public void SetWhiteListItem(string aItem)
         {
             this.whiteList.Add(aItem);
         }
 
+        //-------------------------
         public void RemoveItemFromWhiteList(string aItem)
         {
             this.whiteList.Remove(aItem);
         }
     }
 }
+//======================================================
+//===============END OF FILE============================
+//======================================================

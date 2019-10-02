@@ -15,12 +15,9 @@ namespace WichtelGeneratorVisual
     {
         //======Lokale Variablen======================
         List<UserClass> userList = new List<UserClass>();
-        //ArrayList userList = new ArrayList();
-        //UserNameList nameList = new UserNameList();
-        ArrayList nameList = new ArrayList();
-        int abbruchIntVerlosung;
+        ArrayList nameList       = new ArrayList();
+        int versucheBisAbbruchBeiVerlosung;
         
-
         //======Initialisierung======================
         public Frm_Main()
         {
@@ -32,7 +29,6 @@ namespace WichtelGeneratorVisual
         {
             lb_User.Items.Clear();
             lb_User.BeginUpdate();
-            //ArrayList temp = nameList.getTheList();
             foreach (string tUser in nameList)
             {
                 lb_User.Items.Add(tUser);
@@ -40,6 +36,7 @@ namespace WichtelGeneratorVisual
             lb_User.EndUpdate();
         }
 
+        //-------------------------
         public UserClass GetCurrentUserObject(string aNameOfUser)
         {
             UserClass tCurrentUser = new UserClass("FEHLER!!!");
@@ -53,108 +50,157 @@ namespace WichtelGeneratorVisual
             return tCurrentUser;
         }
 
-        public void FillListBoxBlackList(UserClass aCurrentUser)
+        //-------------------------
+        public void FillListBoxBlackListFromUser(UserClass aCurrentUser)
         {
             ArrayList tBlackList = aCurrentUser.GetBlackList();
             lb_BlackList.Items.Clear();
             lb_BlackList.BeginUpdate();
-            foreach(string temp in tBlackList)
+            foreach(string aName in tBlackList)
             {
-                lb_BlackList.Items.Add(temp);
+                lb_BlackList.Items.Add(aName);
             }
             lb_BlackList.EndUpdate();
         }
 
+        //-------------------------
         public void RevisionWhiteList(UserClass aCurrentUser)
         {
             ArrayList tBlackList = aCurrentUser.GetBlackList();
-            ArrayList tRemainingUser = aCurrentUser.GetWhiteList();
-            foreach (string temp1 in tBlackList)
+            ArrayList tWhiteList = aCurrentUser.GetWhiteList();
+            foreach (string tBlackListUser in tBlackList)
             {
-                foreach (string temp2 in tRemainingUser)
+                foreach (string tWhiteListUser in tWhiteList)
                 {
-                    if (temp2.Equals(temp1))
+                    if (tWhiteListUser.Equals(tBlackListUser))
                     {
-                        aCurrentUser.RemoveItemFromWhiteList(temp2);
-                        RevisionWhiteList(aCurrentUser);
-                        break;
+                        aCurrentUser.RemoveItemFromWhiteList(tWhiteListUser);
+                        RevisionWhiteList(aCurrentUser); //Da sich die Liste geändert hat, funktioniert die Schleife nicht mehr und fängt komplett von vorne an.
+                        break; //Verhindert bei Rückkehr von Rekursion die weiterführung, welche zum absturz geführt hätte.
                     }
                 }
             }
         }
 
+        //-------------------------
         public void FillRemainingUserToLBwhiteList(UserClass aCurrentUser)
         {
             ArrayList tWhiteList = aCurrentUser.GetWhiteList();
             lb_WhiteList.Items.Clear();
-            lb_WhiteList.BeginUpdate();
-            foreach (string temp in tWhiteList)
+            lb_WhiteList      .BeginUpdate();
+            foreach (string tWhiteListUser in tWhiteList)
             {
-                lb_WhiteList.Items.Add(temp);
+                lb_WhiteList.Items.Add(tWhiteListUser);
             }
             lb_WhiteList.EndUpdate();
         }
-        
+
+        //-------------------------
         public void ReloadAllWhiteLists()
         {
-            foreach (UserClass temp in userList )
+            foreach (UserClass tUser in userList )
             {
-                //aList = (ArrayList)userList.clone();
-                //ArrayList copyTheList = nameList.getTheList();
-                temp.SetWhiteList((ArrayList)nameList.Clone());
+                tUser.SetWhiteList((ArrayList)nameList.Clone()); // Veranlasst das jeder seine eigene Liste hat mit allen Usern.
             }
         }
 
+        //-------------------------
         public void MoveItemFromWhiteToBlackList(UserClass aUser, string aItem)
         {
             aUser.RemoveItemFromWhiteList(aItem);
-            aUser.SetBlackList(aItem);
+            aUser.SetBlackList           (aItem);
         }
 
+        //-------------------------
         public void MoveItemFromBlackToWhiteList(UserClass aUser, string aItem)
         {
             aUser.RemoveItemInBlackList(aItem);
-            aUser.SetWhiteListItem(aItem);
+            aUser.SetWhiteListItem     (aItem);
         }
 
+        //-------------------------
+        public int SetMaxVersucheBisAbbruch()
+        {
+            return userList.Count();
+        }
+
+        //-------------------------
+        /// <summary>
+        /// Kontrolle ob in BlackList der Eintrag vorkommt.
+        /// </summary>
+        /// <param name="aUser">BlackList ist zu suchen in angegebenen User</param>
+        /// <param name="aSearchingItem">Nach was gesucht werden muss</param>
+        /// <returns>True: Kein Vorkommen, False: Treffer, es kommt vor.</returns>
+        public Boolean KontrolliereObVorhandenInBlackList(UserClass aUser, string aSearchingItem)
+        {
+            ArrayList tBlackList = aUser.GetBlackList();
+            foreach (string tBlackListUser in tBlackList)
+            {
+                if (tBlackListUser.Equals(aSearchingItem))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        //-------------------------
+        /// <summary>
+        /// Kontrolliert ob der User bereits gezogen wurde
+        /// </summary>
+        /// <param name="aUnUsedList"></param>
+        /// <param name="aSearchingUser"></param>
+        /// <returns>True: Wurde bereits gezogen, False: Wurde noch nicht gezogen, kann verwendet werden.</returns>
+        public Boolean KontrollierObBereitsGezogen(ArrayList aUnUsedList, string aSearchingUser)
+        {
+            foreach (string tUnusedUser in aUnUsedList)
+            {
+                if (tUnusedUser.Equals(aSearchingUser))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        //-------------------------
         public void RandomVerlosung()
         {
             try
             {
-                abbruchIntVerlosung++;
-                if (abbruchIntVerlosung > 5)
+                versucheBisAbbruchBeiVerlosung++;
+                if (versucheBisAbbruchBeiVerlosung > SetMaxVersucheBisAbbruch())
                 {
                     MessageBox.Show("Ein Fehler ist aufgetreten. Bitte versuche es nochmals");
                     return;
                 }
-                Boolean kontrolle = false;
+                Boolean kontrolle        = false;
                 ArrayList unUsedUserList = (ArrayList)nameList.Clone();
-                long readArrayLengthOfUser = userList.LongCount();
-                int arrayLengthOfUser = Convert.ToInt32(readArrayLengthOfUser);
-                Boolean everything = true;
+                int arrayLengthOfUser    = userList.Count();// Convert.ToInt32(readArrayLengthOfUser);
+                Boolean everythingToUse  = true;
+                Random random            = new Random();
                 string tempValueString;
-                Random random = new Random();
-                foreach (UserClass aUser in userList)
+                foreach (UserClass tUser in userList)
                 {
                     int counter = 0;
-                    kontrolle = false;
+                    kontrolle   = false;
                     while (!kontrolle)
                     {
                         if (counter > 5)
                         {
                             //Suche ob etwas frei ist
-                            everything = false;
-                            foreach (string temp in unUsedUserList)
+                            everythingToUse = false;
+                            foreach (string tUnusedUser in unUsedUserList)
                             {
-                                everything = ZugKontrolleBlackList(aUser, temp);
-                                if (everything)
+                                everythingToUse = KontrolliereObVorhandenInBlackList(tUser, tUnusedUser);
+                                if (everythingToUse)
                                 {
-                                    aUser.GezogenerWichtel = temp;
-                                    unUsedUserList.Remove(temp);
+                                    tUser.GezogenerWichtel = tUnusedUser;
+                                    unUsedUserList.Remove(tUnusedUser);
                                     break;
                                 }
                             }
-                            if (!everything)
+                            if (!everythingToUse)
                             {
                                 RandomVerlosung();
                                 return;
@@ -163,17 +209,17 @@ namespace WichtelGeneratorVisual
                         else
                         {
                             tempValueString = nameList[random.Next(arrayLengthOfUser)].ToString(); //ToDo: möglicherweise fehler. Unbekannt wesshalb toString benötigt.
-                            if (!ZugKontrolleBlackList(aUser, tempValueString))
+                            if (!KontrolliereObVorhandenInBlackList(tUser, tempValueString))
                             {
                                 kontrolle = false;
                                 counter++;
                             }
                             else
                             {
-                                if (ZugKontrolleBereitsGezogen(unUsedUserList, tempValueString))
+                                if (KontrollierObBereitsGezogen(unUsedUserList, tempValueString))
                                 {
-                                    kontrolle = true;
-                                    aUser.GezogenerWichtel = tempValueString;
+                                    kontrolle              = true;
+                                    tUser.GezogenerWichtel = tempValueString;
                                     unUsedUserList.Remove(tempValueString);
                                     break;
                                 }
@@ -196,36 +242,12 @@ namespace WichtelGeneratorVisual
 
         }
 
-        public Boolean ZugKontrolleBereitsGezogen(ArrayList aUnUsed, string aValue )
-        {
-            foreach(string temp in aUnUsed)
-            {
-                if (temp.Equals(aValue))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public Boolean ZugKontrolleBlackList(UserClass aUser, string aSearchingItem)
-        {
-            ArrayList tList = aUser.GetBlackList();
-            foreach(string temp in tList)
-            {
-                if (temp.Equals(aSearchingItem))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
+        //-------------------------
         public void FillGridView()
         {
-            BindingSource source = new BindingSource();
-            source.DataSource = userList;
-            dataGridView1.DataSource = source;
+            BindingSource verknüpfteDaten = new BindingSource();
+            verknüpfteDaten.DataSource    = userList;
+            dataGridView1.DataSource      = verknüpfteDaten;
             dataGridView1.AutoResizeColumns();
             dataGridView1.Refresh();
             
@@ -240,58 +262,57 @@ namespace WichtelGeneratorVisual
             {
                 return;
             }
-            UserClass einUser = new UserClass(ed_UserName.Text);
-            userList.Add(einUser);
-            nameList.Add(einUser.UserName);
-            //nameList.setItemToTheList(einUser.UserName);
+            UserClass neuerUser = new UserClass(ed_UserName.Text);
+            userList.   Add(neuerUser);
+            nameList.   Add(neuerUser.UserName);
             ReloadAllWhiteLists();
             FillListBoxUser();
-            ed_UserName.Text = "";
+            ed_UserName.Text    = "";
             ed_UserName.Focus();
         }
 
+        //-------------------------
         private void Lb_User_MouseClick(object sender, MouseEventArgs e)
         {
-            // read aktuell ausgewählter
             UserClass tSelectedUserObject = GetCurrentUserObject(lb_User.Items[lb_User.SelectedIndex].ToString());
-            //read blacklist und zeige an
-            FillListBoxBlackList(tSelectedUserObject);
-            // read blacklist und gleiche ab welche er noch nicht hatt.
-
-            //ArrayList tempList = nameList.getTheList();
-            //tSelectedUserObject.SetWhiteList(tempList);
-            RevisionWhiteList(tSelectedUserObject);
+            FillListBoxBlackListFromUser  (tSelectedUserObject);
+            RevisionWhiteList             (tSelectedUserObject);
             FillRemainingUserToLBwhiteList(tSelectedUserObject);
         }
 
+        //-------------------------
         private void Bt_addUserToBlackList_Click(object sender, EventArgs e)
         {
             //Selektierter auf WhiteList zu BlackList verschieben
             UserClass tSelectedUserObject = GetCurrentUserObject(lb_User.Items[lb_User.SelectedIndex].ToString());
-            MoveItemFromWhiteToBlackList(tSelectedUserObject, lb_WhiteList.Items[lb_WhiteList.SelectedIndex].ToString());
+            MoveItemFromWhiteToBlackList  (tSelectedUserObject, lb_WhiteList.Items[lb_WhiteList.SelectedIndex].ToString());
             //Neu Laden
-            FillListBoxBlackList(tSelectedUserObject);
-            RevisionWhiteList(tSelectedUserObject);
+            FillListBoxBlackListFromUser  (tSelectedUserObject);
+            RevisionWhiteList             (tSelectedUserObject);
             FillRemainingUserToLBwhiteList(tSelectedUserObject);
         }
 
+        //-------------------------
         private void Bt_addusertoWhiteList_Click(object sender, EventArgs e)
         {
             //Selektierter auf WhiteList zu BlackList verschieben
             UserClass tSelectedUserObject = GetCurrentUserObject(lb_User.Items[lb_User.SelectedIndex].ToString());
-            MoveItemFromBlackToWhiteList(tSelectedUserObject, lb_BlackList.Items[lb_BlackList.SelectedIndex].ToString());
+            MoveItemFromBlackToWhiteList  (tSelectedUserObject, lb_BlackList.Items[lb_BlackList.SelectedIndex].ToString());
             //Neu Laden
-            FillListBoxBlackList(tSelectedUserObject);
-            RevisionWhiteList(tSelectedUserObject);
+            FillListBoxBlackListFromUser  (tSelectedUserObject);
+            RevisionWhiteList             (tSelectedUserObject);
             FillRemainingUserToLBwhiteList(tSelectedUserObject);
         }
 
+        //-------------------------
         private void Bt_verlosung_Click(object sender, EventArgs e)
         {
-            abbruchIntVerlosung = 0;
+            versucheBisAbbruchBeiVerlosung = 0;
             RandomVerlosung();
-            // Ergebnisse anzeigen in der Liste
-            FillGridView();
+            FillGridView   ();
         }
     }
 }
+//======================================================
+//===============END OF FILE============================
+//======================================================
