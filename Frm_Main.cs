@@ -105,17 +105,19 @@ namespace WichtelGeneratorVisual
         }
 
         //-------------------------
-        public void MoveItemFromWhiteToBlackList(UserClass aUser, string aItem)
+        public void MoveItemFromWhiteToBlackList(UserClass aUser, UserClass aWhiteListUser)
         {
-            aUser.RemoveItemFromWhiteList(aItem);
-            aUser.SetBlackList           (aItem);
+            aUser.RemoveItemFromWhiteList(aWhiteListUser.UserName);
+            aUser.SetBlackList           (aWhiteListUser.UserName);
+            aWhiteListUser.SetbinInBlackListEingetragenVon(aUser.UserName);
         }
 
         //-------------------------
-        public void MoveItemFromBlackToWhiteList(UserClass aUser, string aItem)
+        public void MoveItemFromBlackToWhiteList(UserClass aUser, UserClass aBlackListUser)
         {
-            aUser.RemoveItemInBlackList(aItem);
-            aUser.SetWhiteListItem     (aItem);
+            aUser.RemoveItemInBlackList(aBlackListUser.UserName);
+            aUser.SetWhiteListItem     (aBlackListUser.UserName);
+            aBlackListUser.RemoveItemBinInBlackListEingetragenVon(aUser.UserName);
         }
 
         //-------------------------
@@ -169,7 +171,7 @@ namespace WichtelGeneratorVisual
             try
             {
                 versucheBisAbbruchBeiVerlosung++;
-                if (versucheBisAbbruchBeiVerlosung > SetMaxVersucheBisAbbruch())
+                if (versucheBisAbbruchBeiVerlosung > 100)//SetMaxVersucheBisAbbruch())
                 {
                     MessageBox.Show("Ein Fehler ist aufgetreten. Bitte versuche es nochmals");
                     return;
@@ -186,7 +188,7 @@ namespace WichtelGeneratorVisual
                     kontrolle   = false;
                     while (!kontrolle)
                     {
-                        if (counter > 5)
+                        if (counter > userList.Count-2)
                         {
                             //Suche ob etwas frei ist
                             everythingToUse = false;
@@ -253,6 +255,54 @@ namespace WichtelGeneratorVisual
             
         }
 
+        //-------------------------
+        public Boolean KontrolleObKostelationBereitsVerwendet(UserClass aCurrentUser, string lastChoiseOfBLuser)
+        {
+            foreach (UserClass tUser in userList)                                       //jeder User
+            {                                                                          
+                int identischCounter = 0;                                              
+                if (!aCurrentUser.UserName.Equals(tUser.UserName))                      //Nicht er selber
+                {                                                                      
+                    foreach (string tBLuserAcurrent in aCurrentUser.GetBlackList())     //jeder in der BL von CurrentUser
+                    {                                                                  
+                        foreach (string tBLuserTuser in tUser.GetBlackList())           //jeder in der BL von anderen User
+                        {                                                              
+                            if (tBLuserAcurrent.Equals(tBLuserTuser))                   //Kontrolle vorkommen
+                            {                                                          
+                                identischCounter++;                                     //Zähle identische
+                            }                                                          
+                            if (lastChoiseOfBLuser.Equals(tBLuserTuser))                //Auch zu kontrollieren die mögliche letzte wahl von Currentuser
+                            {
+                                identischCounter++;
+                            }
+                            if (identischCounter == aCurrentUser.GetBlackList().Count)  //ist gleiche Konstelation
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+        //-------------------------
+        public void SortUserListAnzahlBLAbsteigend()
+        {
+            for (int n = userList.Count; n > 1; n--)
+            {
+                for (int i = 0; i < n-1; i++)
+                {
+                    if (userList[i].GetBlackList().Count < userList[i+1].GetBlackList().Count)
+                    {
+                        UserClass tSwapUser = userList[i];
+                        userList[i] = userList[i+1];
+                        userList[i + 1] = tSwapUser;
+                    }
+                }
+            }
+        }
+
         //===========Events===========================================
         private void Bt_CreateNewUser_Click(object sender, EventArgs e)
         {
@@ -285,7 +335,29 @@ namespace WichtelGeneratorVisual
         {
             //Selektierter auf WhiteList zu BlackList verschieben
             UserClass tSelectedUserObject = GetCurrentUserObject(lb_User.Items[lb_User.SelectedIndex].ToString());
-            MoveItemFromWhiteToBlackList  (tSelectedUserObject, lb_WhiteList.Items[lb_WhiteList.SelectedIndex].ToString());
+            UserClass tWhiteListUser = GetCurrentUserObject(lb_WhiteList.Items[lb_WhiteList.SelectedIndex].ToString());
+            
+            //Regelung Kontrolle
+            if ( (tSelectedUserObject.GetBlackList().Count) >= (userList.Count-1) ) //Maximale wahl an BL Menge
+            {
+                MessageBox.Show("Leider sind können nicht mehr auf die BlackList von diesem Mitspieler gelegt werden.");
+                return;
+            }
+            if ( (tWhiteListUser.GetbinInBlackListEingetragenVon().Count) >= (userList.Count-2) ) //Maximales Vorkommen auf BLs
+            {
+                MessageBox.Show("Leider ist der Mitspieler der auf die Blacklist geschoben werden soll, bereits zu viel auf einer BlackList vorhanden.");
+                return;
+            }
+            if ((tSelectedUserObject.GetBlackList().Count) >= (userList.Count - 2)) //Letztes mal vor Max BL Wahl
+            {
+                if (!KontrolleObKostelationBereitsVerwendet(tSelectedUserObject, tWhiteListUser.UserName))
+                {
+                    MessageBox.Show("Dieser User kann nicht zur BlackList hinzugefügt werden, da diese maximale Konstelation bereits existiert!");
+                    return;
+                }
+            }
+
+            MoveItemFromWhiteToBlackList  (tSelectedUserObject, tWhiteListUser);
             //Neu Laden
             FillListBoxBlackListFromUser  (tSelectedUserObject);
             RevisionWhiteList             (tSelectedUserObject);
@@ -297,7 +369,8 @@ namespace WichtelGeneratorVisual
         {
             //Selektierter auf WhiteList zu BlackList verschieben
             UserClass tSelectedUserObject = GetCurrentUserObject(lb_User.Items[lb_User.SelectedIndex].ToString());
-            MoveItemFromBlackToWhiteList  (tSelectedUserObject, lb_BlackList.Items[lb_BlackList.SelectedIndex].ToString());
+            UserClass tBlackListUser = GetCurrentUserObject(lb_BlackList.Items[lb_BlackList.SelectedIndex].ToString());
+            MoveItemFromBlackToWhiteList  (tSelectedUserObject, tBlackListUser);
             //Neu Laden
             FillListBoxBlackListFromUser  (tSelectedUserObject);
             RevisionWhiteList             (tSelectedUserObject);
@@ -307,6 +380,8 @@ namespace WichtelGeneratorVisual
         //-------------------------
         private void Bt_verlosung_Click(object sender, EventArgs e)
         {
+            SortUserListAnzahlBLAbsteigend();
+
             versucheBisAbbruchBeiVerlosung = 0;
             RandomVerlosung();
             FillGridView   ();

@@ -18,8 +18,9 @@ namespace WichtelGeneratorVisual
 
         //============Private Variablen==========
         private string userName;
-        private ArrayList blackList = new ArrayList();
-        private ArrayList whiteList = new ArrayList();
+        private ArrayList blackList                    = new ArrayList();
+        private ArrayList whiteList                    = new ArrayList();
+        private ArrayList binInBlackListEingetragenVon = new ArrayList();
         private string gezogenerWichtel;
 
         //============Getter Setter=========================================
@@ -78,6 +79,21 @@ namespace WichtelGeneratorVisual
         public void RemoveItemFromWhiteList(string aItem)
         {
             this.whiteList.Remove(aItem);
+        }
+
+        public ArrayList GetbinInBlackListEingetragenVon()
+        {
+            return binInBlackListEingetragenVon;
+        }
+
+        public void SetbinInBlackListEingetragenVon(string aUser)
+        {
+            binInBlackListEingetragenVon.Add(aUser);
+        }
+
+        public void RemoveItemBinInBlackListEingetragenVon(string aItem)
+        {
+            binInBlackListEingetragenVon.Remove(aItem);
         }
     }
 }

@@ -8,3 +8,13 @@ C:\Users\TIMRUT\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVi
 C:\Users\TIMRUT\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.exe
 C:\Users\TIMRUT\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.pdb
 C:\Users\TIMRUT\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.Frm_Main.resources
+C:\Users\timru\source\repos\WichtelGeneratorVisual\bin\Debug\WichtelGeneratorVisual.exe.config
+C:\Users\timru\source\repos\WichtelGeneratorVisual\bin\Debug\WichtelGeneratorVisual.exe
+C:\Users\timru\source\repos\WichtelGeneratorVisual\bin\Debug\WichtelGeneratorVisual.pdb
+C:\Users\timru\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.csprojAssemblyReference.cache
+C:\Users\timru\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.Frm_Main.resources
+C:\Users\timru\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.Properties.Resources.resources
+C:\Users\timru\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.csproj.GenerateResource.cache
+C:\Users\timru\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.csproj.CoreCompileInputs.cache
+C:\Users\timru\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.exe
+C:\Users\timru\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.pdb
