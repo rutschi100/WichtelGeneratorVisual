@@ -199,6 +199,7 @@ namespace WichtelGeneratorVisual
                                 {
                                     tUser.GezogenerWichtel = tUnusedUser;
                                     unUsedUserList.Remove(tUnusedUser);
+                                    everythingToUse = true;
                                     break;
                                 }
                             }
@@ -210,7 +211,7 @@ namespace WichtelGeneratorVisual
                         }
                         else
                         {
-                            tempValueString = nameList[random.Next(arrayLengthOfUser)].ToString(); //ToDo: möglicherweise fehler. Unbekannt wesshalb toString benötigt.
+                            tempValueString = nameList[random.Next(arrayLengthOfUser)].ToString();
                             if (!KontrolliereObVorhandenInBlackList(tUser, tempValueString))
                             {
                                 kontrolle = false;
@@ -259,21 +260,25 @@ namespace WichtelGeneratorVisual
         public Boolean KontrolleObKostelationBereitsVerwendet(UserClass aCurrentUser, string lastChoiseOfBLuser)
         {
             foreach (UserClass tUser in userList)                                       //jeder User
-            {                                                                          
+            {
+                Boolean isLastChoiseControlled = false;
                 int identischCounter = 0;                                              
                 if (!aCurrentUser.UserName.Equals(tUser.UserName))                      //Nicht er selber
-                {                                                                      
-                    foreach (string tBLuserAcurrent in aCurrentUser.GetBlackList())     //jeder in der BL von CurrentUser
-                    {                                                                  
-                        foreach (string tBLuserTuser in tUser.GetBlackList())           //jeder in der BL von anderen User
+                {
+                    ArrayList tOtherUsersBlackList = tUser.GetBlackList();
+                    foreach (string tBLuserTuser in tOtherUsersBlackList)
+                    {
+                        ArrayList tCurrentUserBlackList = aCurrentUser.GetBlackList();
+                        foreach (string tBLuserAcurrent in tCurrentUserBlackList)         //jeder in der BL von anderen User
                         {                                                              
                             if (tBLuserAcurrent.Equals(tBLuserTuser))                   //Kontrolle vorkommen
                             {                                                          
                                 identischCounter++;                                     //Zähle identische
                             }                                                          
-                            if (lastChoiseOfBLuser.Equals(tBLuserTuser))                //Auch zu kontrollieren die mögliche letzte wahl von Currentuser
+                            if (lastChoiseOfBLuser.Equals(tBLuserTuser) && !isLastChoiseControlled)                //Auch zu kontrollieren die mögliche letzte wahl von Currentuser
                             {
                                 identischCounter++;
+                                isLastChoiseControlled = true;
                             }
                             if (identischCounter == aCurrentUser.GetBlackList().Count)  //ist gleiche Konstelation
                             {
