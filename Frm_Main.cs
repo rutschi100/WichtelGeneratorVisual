@@ -121,12 +121,6 @@ namespace WichtelGeneratorVisual
         }
 
         //-------------------------
-        public int SetMaxVersucheBisAbbruch()
-        {
-            return userList.Count();
-        }
-
-        //-------------------------
         /// <summary>
         /// Kontrolle ob in BlackList der Eintrag vorkommt.
         /// </summary>
@@ -147,50 +141,36 @@ namespace WichtelGeneratorVisual
         }
 
         //-------------------------
-        /// <summary>
-        /// Kontrolliert ob der User bereits gezogen wurde
-        /// </summary>
-        /// <param name="aUnUsedList"></param>
-        /// <param name="aSearchingUser"></param>
-        /// <returns>True: Wurde bereits gezogen, False: Wurde noch nicht gezogen, kann verwendet werden.</returns>
-        public Boolean KontrollierObBereitsGezogen(ArrayList aUnUsedList, string aSearchingUser)
-        {
-            foreach (string tUnusedUser in aUnUsedList)
-            {
-                if (tUnusedUser.Equals(aSearchingUser))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        //-------------------------
         public void RandomVerlosung()
         {
             try
             {
+                //Abbruch Kontrolle
                 versucheBisAbbruchBeiVerlosung++;
-                if (versucheBisAbbruchBeiVerlosung > 100)//SetMaxVersucheBisAbbruch())
+                if (versucheBisAbbruchBeiVerlosung > Int32.MaxValue)
                 {
                     MessageBox.Show("Ein Fehler ist aufgetreten. Bitte versuche es nochmals");
                     return;
                 }
-                Boolean kontrolle        = false;
+
+                //Temporäre Variablen
+                Boolean kontrolle;
                 ArrayList unUsedUserList = (ArrayList)nameList.Clone();
-                int arrayLengthOfUser    = userList.Count();// Convert.ToInt32(readArrayLengthOfUser);
-                Boolean everythingToUse  = true;
                 Random random            = new Random();
+                Boolean everythingToUse;
                 string tempValueString;
+
+                //Verlosung
                 foreach (UserClass tUser in userList)
                 {
                     int counter = 0;
                     kontrolle   = false;
                     while (!kontrolle)
                     {
+                        //bei Zu vielen Fehlversuchen
                         if (counter > userList.Count-2)
                         {
-                            //Suche ob etwas frei ist
+                            //Suche ob überhaupt etwas frei ist
                             everythingToUse = false;
                             foreach (string tUnusedUser in unUsedUserList)
                             {
@@ -209,28 +189,21 @@ namespace WichtelGeneratorVisual
                                 return;
                             }
                         }
+
+                        //Zufällige verlosung
                         else
                         {
-                            tempValueString = nameList[random.Next(arrayLengthOfUser)].ToString();
+                            tempValueString = unUsedUserList[random.Next(unUsedUserList.Count)].ToString();
                             if (!KontrolliereObVorhandenInBlackList(tUser, tempValueString))
                             {
-                                kontrolle = false;
                                 counter++;
                             }
                             else
                             {
-                                if (KontrollierObBereitsGezogen(unUsedUserList, tempValueString))
-                                {
                                     kontrolle              = true;
                                     tUser.GezogenerWichtel = tempValueString;
                                     unUsedUserList.Remove(tempValueString);
                                     break;
-                                }
-                                else
-                                {
-                                    kontrolle = false;
-                                    counter++;
-                                }
                             }
                         }
                     }
@@ -391,6 +364,26 @@ namespace WichtelGeneratorVisual
             RandomVerlosung();
             FillGridView   ();
         }
+
+        //private void Frm_Main_KeyPress(object sender, KeyPressEventArgs e)
+        //{
+        //    switch (e.KeyChar)
+        //    {
+        //        case (char)27:
+        //            MessageBox.Show("Geklappt");
+        //            break;
+        //    }
+        //}
+
+        //private void Frm_Main_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    switch (e.KeyCode)
+        //    {
+        //        case Keys.Escape:
+        //            MessageBox.Show("Geklappt");
+        //            break;
+        //    }
+        //}
     }
 }
 //======================================================

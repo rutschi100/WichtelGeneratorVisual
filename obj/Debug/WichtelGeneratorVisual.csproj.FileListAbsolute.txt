@@ -18,3 +18,7 @@ C:\Users\timru\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVis
 C:\Users\timru\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.csproj.CoreCompileInputs.cache
 C:\Users\timru\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.exe
 C:\Users\timru\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.pdb
+C:\Users\timru\source\repos\WichtelGeneratorVisual\bin\Debug\WichtelGeneratorVisual.exe.manifest
+C:\Users\timru\source\repos\WichtelGeneratorVisual\bin\Debug\WichtelGeneratorVisual.application
+C:\Users\timru\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.exe.manifest
+C:\Users\timru\source\repos\WichtelGeneratorVisual\obj\Debug\WichtelGeneratorVisual.application

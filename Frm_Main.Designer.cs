@@ -232,6 +232,8 @@
             this.Controls.Add(this.gb_NewUser);
             this.Name = "Frm_Main";
             this.Text = "Wichtel Generator";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Frm_Main_KeyDown);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Frm_Main_KeyPress);
             this.gb_NewUser.ResumeLayout(false);
             this.gb_NewUser.PerformLayout();
             this.gb_BlackList.ResumeLayout(false);
