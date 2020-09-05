@@ -14,9 +14,8 @@ namespace WichtelGeneratorVisual
     public partial class Frm_Main : Form
     {
         //======Lokale Variablen======================
-        List<WichtelPlayer> allUsers = new List<WichtelPlayer>();
-        ArrayList nameList       = new ArrayList();
-        int versucheBisAbbruchBeiVerlosung;
+        private List<WichtelPlayer> allUsers = new List<WichtelPlayer>();
+        private List<string> nameList = new List<string>();
         
         //======Initialisierung======================
         public Frm_Main()
@@ -59,8 +58,8 @@ namespace WichtelGeneratorVisual
         //-------------------------
         public void RevisionWhiteList(WichtelPlayer aCurrentUser)
         {
-            ArrayList tBlackList = aCurrentUser.GetBlackList();
-            ArrayList tWhiteList = aCurrentUser.GetWhiteList();
+            var tBlackList = aCurrentUser.GetBlackList();
+            var tWhiteList = aCurrentUser.GetWhiteList();
             foreach (string tBlackListUser in tBlackList)
             {
                 foreach (string tWhiteListUser in tWhiteList)
@@ -78,7 +77,7 @@ namespace WichtelGeneratorVisual
         //-------------------------
         public void FillRemainingUserToLBwhiteList(WichtelPlayer aCurrentUser)
         {
-            ArrayList tWhiteList = aCurrentUser.GetWhiteList();
+            var tWhiteList = aCurrentUser.GetWhiteList();
             lb_WhiteList.Items.Clear();
             lb_WhiteList      .BeginUpdate();
             foreach (string tWhiteListUser in tWhiteList)
@@ -91,9 +90,9 @@ namespace WichtelGeneratorVisual
         //-------------------------
         public void ReloadAllWhiteLists()
         {
-            foreach (WichtelPlayer tUser in allUsers )
+            foreach (WichtelPlayer tUser in allUsers)
             {
-                tUser.SetWhiteList((ArrayList)nameList.Clone()); // Veranlasst das jeder seine eigene Liste hat mit allen Usern.
+                tUser.WhiteList = new List<string>(nameList);
             }
         }
 
@@ -133,89 +132,57 @@ namespace WichtelGeneratorVisual
             return true;
         }
 
-        //-------------------------
-        public void RandomVerlosung()
+      
+        public bool RandomVerlosung() //--2ter Versuch
         {
-            try
+            List<string> allreadyUsed = new List<string>();
+
+            Random random = new Random();
+            int i = 0;
+
+            foreach (var onePlayer in allUsers)
             {
-                //Abbruch Kontrolle
-                versucheBisAbbruchBeiVerlosung++;
-                if (versucheBisAbbruchBeiVerlosung > Int32.MaxValue)
+                for (i = 0; i < onePlayer.GetWhiteList().Count(); i++)
                 {
-                    MessageBox.Show("Ein Fehler ist aufgetreten. Bitte versuche es nochmals");
-                    return;
-                }
-
-                //Temporäre Variablen
-                Boolean kontrolle;
-                ArrayList unUsedUserList = (ArrayList)nameList.Clone();
-                Random random            = new Random();
-                Boolean everythingToUse;
-                string tempValueString;
-
-                //Verlosung
-                foreach (WichtelPlayer tUser in allUsers)
-                {
-                    int counter = 0;
-                    kontrolle   = false;
-                    while (!kontrolle)
+                    var posibleChoise = onePlayer.GetWhiteList()[random.Next(onePlayer.GetWhiteList().Count)];
+                    var result = allreadyUsed.Where(p => p.Equals(posibleChoise)).FirstOrDefault();
+                    if (string.IsNullOrEmpty(result))
                     {
-                        //bei Zu vielen Fehlversuchen
-                        if (counter > allUsers.Count-2)
+                        //noch nicht verwendet
+                        onePlayer.GezogenerWichtel = posibleChoise;
+                        allreadyUsed.Add(posibleChoise);
+                        break;
+                    }
+                }
+                if (i >= onePlayer.GetWhiteList().Count()) //---Wenns nicht geklappt hat...
+                {
+                    foreach (var item in onePlayer.GetWhiteList())
+                    {
+                        var result = allreadyUsed.Where(p => p.Equals(item)).FirstOrDefault();
+                        if (string.IsNullOrEmpty(result))
                         {
-                            //Suche ob überhaupt etwas frei ist
-                            everythingToUse = false;
-                            foreach (string tUnusedUser in unUsedUserList)
-                            {
-                                everythingToUse = KontrolliereObVorhandenInBlackList(tUser, tUnusedUser);
-                                if (everythingToUse)
-                                {
-                                    tUser.GezogenerWichtel = tUnusedUser;
-                                    unUsedUserList.Remove(tUnusedUser);
-                                    everythingToUse = true;
-                                    break;
-                                }
-                            }
-                            if (!everythingToUse)
-                            {
-                                RandomVerlosung();
-                                return;
-                            }
+                            //noch nicht verwendet
+                            onePlayer.GezogenerWichtel = item;
+                            allreadyUsed.Add(item);
+                            break;
                         }
-
-                        //Zufällige verlosung
-                        else
-                        {
-                            tempValueString = unUsedUserList[random.Next(unUsedUserList.Count)].ToString();
-                            if (!KontrolliereObVorhandenInBlackList(tUser, tempValueString))
-                            {
-                                counter++;
-                            }
-                            else
-                            {
-                                    kontrolle              = true;
-                                    tUser.GezogenerWichtel = tempValueString;
-                                    unUsedUserList.Remove(tempValueString);
-                                    break;
-                            }
-                        }
+                    }
+                    if (string.IsNullOrEmpty(onePlayer.GezogenerWichtel))
+                    {
+                        return false;
                     }
                 }
             }
-            catch
-            {
-                MessageBox.Show("Bei der Ziehung wurde einen Fehler endeckt. Bitte versuche es nochmals. Möglicherweise, geht die Rechnung nicht" +
-                    "auf, weil du teilweise zu viel in der BlackList hast.");
-                return;
-            }
-
+            return true;
         }
 
         //-------------------------
         public void FillGridView()
         {
-            BindingSource verknüpfteDaten = new BindingSource();
-            verknüpfteDaten.DataSource    = allUsers;
+            BindingSource verknüpfteDaten = new BindingSource
+            {
+                DataSource = allUsers
+            };
             dataGridView1.DataSource      = verknüpfteDaten;
             dataGridView1.AutoResizeColumns();
             dataGridView1.Refresh();
@@ -225,56 +192,51 @@ namespace WichtelGeneratorVisual
         //-------------------------
         public Boolean KontrolleObKostelationBereitsVerwendet(WichtelPlayer aCurrentUser, string lastChoiseOfBLuser)
         {
-            foreach (WichtelPlayer tUser in allUsers)                                       //jeder User
+            try
             {
-                Boolean isLastChoiseControlled = false;
-                int identischCounter = 0;                                              
-                if (!aCurrentUser.UserName.Equals(tUser.UserName))                      //Nicht er selber
+                foreach (WichtelPlayer tUser in allUsers)                                       //jeder User
                 {
-                    ArrayList tOtherUsersBlackList = tUser.GetBlackList();
-                    foreach (string tBLuserTuser in tOtherUsersBlackList)
+                    Boolean isLastChoiseControlled = false;
+                    int identischCounter = 0;
+                    if (!aCurrentUser.UserName.Equals(tUser.UserName))                      //Nicht er selber
                     {
-                        ArrayList tCurrentUserBlackList = aCurrentUser.GetBlackList();
-                        foreach (string tBLuserAcurrent in tCurrentUserBlackList)         //jeder in der BL von anderen User
-                        {                                                              
-                            if (tBLuserAcurrent.Equals(tBLuserTuser))                   //Kontrolle vorkommen
-                            {                                                          
-                                identischCounter++;                                     //Zähle identische
-                            }                                                          
-                            if (lastChoiseOfBLuser.Equals(tBLuserTuser) && !isLastChoiseControlled)                //Auch zu kontrollieren die mögliche letzte wahl von Currentuser
+                        ArrayList tOtherUsersBlackList = tUser.GetBlackList();
+                        foreach (string tBLuserTuser in tOtherUsersBlackList)
+                        {
+                            ArrayList tCurrentUserBlackList = aCurrentUser.GetBlackList();
+                            foreach (string tBLuserAcurrent in tCurrentUserBlackList)         //jeder in der BL von anderen User
                             {
-                                identischCounter++;
-                                isLastChoiseControlled = true;
-                            }
-                            if (identischCounter == aCurrentUser.GetBlackList().Count)  //ist gleiche Konstelation
-                            {
-                                return false;
+                                if (tBLuserAcurrent.Equals(tBLuserTuser))                   //Kontrolle vorkommen
+                                {
+                                    identischCounter++;                                     //Zähle identische
+                                }
+                                if (lastChoiseOfBLuser.Equals(tBLuserTuser) && !isLastChoiseControlled)                //Auch zu kontrollieren die mögliche letzte wahl von Currentuser
+                                {
+                                    identischCounter++;
+                                    isLastChoiseControlled = true;
+                                }
+                                if (identischCounter == aCurrentUser.GetBlackList().Count)  //ist gleiche Konstelation
+                                {
+                                    return false;
+                                }
                             }
                         }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                throw;
+            }
+            
             return true;
         }
 
         //-------------------------
         public void SortUserListAnzahlBLAbsteigend()
         {
-            //var sortetUserList = allUsers.Sort(p, k => p.GetBlackList().Count);
-
-
-            for (int n = allUsers.Count; n > 1; n--)
-            {
-                for (int i = 0; i < n-1; i++)
-                {
-                    if (allUsers[i].GetBlackList().Count < allUsers[i+1].GetBlackList().Count)
-                    {
-                        WichtelPlayer tSwapUser = allUsers[i];
-                        allUsers[i] = allUsers[i+1];
-                        allUsers[i + 1] = tSwapUser;
-                    }
-                }
-            }
+            allUsers = allUsers.OrderBy(p => p.GetBlackList().Count).ToList();
         }
 
         private void CreateNewUser(string name)
@@ -283,6 +245,14 @@ namespace WichtelGeneratorVisual
             {
                 return;
             }
+
+            var result = nameList.Where(p => p.Equals(name)).FirstOrDefault();
+            if (! string.IsNullOrEmpty(result))
+            {
+                MessageBox.Show($"Der User {name.ToUpper()} existiert bereits.");
+                return;
+            }
+
             WichtelPlayer neuerUser = new WichtelPlayer(name);
             allUsers.Add(neuerUser);
             nameList.Add(neuerUser.UserName);
@@ -395,12 +365,22 @@ namespace WichtelGeneratorVisual
 
             SortUserListAnzahlBLAbsteigend();
 
-            versucheBisAbbruchBeiVerlosung = 0;
-            RandomVerlosung();
+            try
+            {
+                while (! RandomVerlosung())
+                {
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                throw;
+            }
             FillGridView   ();
         }
 
-        private void ed_UserName_KeyDown(object sender, KeyEventArgs e)
+        private void Ed_UserName_KeyDown(object sender, KeyEventArgs e)
         {
             if ((e.KeyCode == Keys.Enter) && (ed_UserName.Text != ""))
             {

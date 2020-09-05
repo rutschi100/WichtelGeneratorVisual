@@ -16,10 +16,12 @@ namespace WichtelGeneratorVisual
             FillBlackList(UserName);
         }
 
+        
+
         //============Private Variablen==========
         private string userName;
         private ArrayList blackList                    = new ArrayList();
-        private ArrayList whiteList                    = new ArrayList();
+        public List<string> WhiteList { get; set; } = new List<string>();
         private ArrayList binInBlackListEingetragenVon = new ArrayList();
         private string gezogenerWichtel;
 
@@ -58,27 +60,27 @@ namespace WichtelGeneratorVisual
         }
 
         //-------------------------
-        public ArrayList GetWhiteList()
+        public List<string> GetWhiteList()
         {
-            return this.whiteList;
+            return WhiteList;
         }
-
+        /*
         //-------------------------
-        public void SetWhiteList(ArrayList aWhiteListUser)
+        public void SetWhiteList(List<string> aWhiteListUser)
         {
             whiteList = aWhiteListUser;
         }
-
+        */
         //-------------------------
         public void SetWhiteListItem(string aItem)
         {
-            this.whiteList.Add(aItem);
+            this.WhiteList.Add(aItem);
         }
 
         //-------------------------
         public void RemoveItemFromWhiteList(string aItem)
         {
-            this.whiteList.Remove(aItem);
+            this.WhiteList.Remove(aItem);
         }
 
         public ArrayList GetbinInBlackListEingetragenVon()

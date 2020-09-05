@@ -69,7 +69,7 @@
             this.ed_UserName.Name = "ed_UserName";
             this.ed_UserName.Size = new System.Drawing.Size(135, 20);
             this.ed_UserName.TabIndex = 1;
-            this.ed_UserName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ed_UserName_KeyDown);
+            this.ed_UserName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Ed_UserName_KeyDown);
             // 
             // lb_User
             // 
