@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace WichtelGeneratorVisual
 {
-    public class UserClass
+    public class WichtelPlayer
     {
         //=============Konstruktoren=============
-        public UserClass(string aUserName)
+        public WichtelPlayer(string aUserName)
         {
             UserName = aUserName;
             FillBlackList(UserName);
