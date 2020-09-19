@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlTypes;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -173,17 +174,37 @@ namespace WichtelGeneratorVisual
                     }
                 }
             }
+
+            foreach (var item in allreadyUsed)
+            {
+                for (int k = 0; k < allreadyUsed.Count; k++)
+                {
+                    if (k <= allreadyUsed.Count)
+                    {
+                        break;
+                    }
+                    if (allreadyUsed[k+1] == item)
+                    {
+                        MessageBox.Show($"Grober Fehler unterlaufen. Jemand wurde doppelt gezogen...");
+                    }
+                }
+            }
+
+
             return true;
         }
 
         //-------------------------
         public void FillGridView()
         {
-            BindingSource verknüpfteDaten = new BindingSource
+            dataGridView1.Rows.Clear();
+            foreach (var item in allUsers)
             {
-                DataSource = allUsers
-            };
-            dataGridView1.DataSource      = verknüpfteDaten;
+                string[] oneRow = { item.UserName, item.GezogenerWichtel };
+
+                dataGridView1.Rows.Add(oneRow);
+            }
+
             dataGridView1.AutoResizeColumns();
             dataGridView1.Refresh();
             
@@ -236,7 +257,8 @@ namespace WichtelGeneratorVisual
         //-------------------------
         public void SortUserListAnzahlBLAbsteigend()
         {
-            allUsers = allUsers.OrderBy(p => p.GetBlackList().Count).ToList();
+            //allUsers = allUsers.OrderBy(p => p.GetBlackList().Count).ToList();
+            allUsers = allUsers.OrderByDescending(p => p.GetBlackList().Count).ToList();
         }
 
         private void CreateNewUser(string name)

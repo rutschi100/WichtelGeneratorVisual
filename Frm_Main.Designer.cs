@@ -45,6 +45,8 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.bt_verlosung = new System.Windows.Forms.Button();
             this.lbl_Verlosung = new System.Windows.Forms.Label();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gb_NewUser.SuspendLayout();
             this.gb_BlackList.SuspendLayout();
             this.gb_verlosung.SuspendLayout();
@@ -54,7 +56,7 @@
             // bt_CreateNewUser
             // 
             this.bt_CreateNewUser.Location = new System.Drawing.Point(286, 16);
-            this.bt_CreateNewUser.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.bt_CreateNewUser.Margin = new System.Windows.Forms.Padding(2);
             this.bt_CreateNewUser.Name = "bt_CreateNewUser";
             this.bt_CreateNewUser.Size = new System.Drawing.Size(70, 19);
             this.bt_CreateNewUser.TabIndex = 0;
@@ -65,7 +67,7 @@
             // ed_UserName
             // 
             this.ed_UserName.Location = new System.Drawing.Point(147, 17);
-            this.ed_UserName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ed_UserName.Margin = new System.Windows.Forms.Padding(2);
             this.ed_UserName.Name = "ed_UserName";
             this.ed_UserName.Size = new System.Drawing.Size(135, 20);
             this.ed_UserName.TabIndex = 1;
@@ -75,7 +77,7 @@
             // 
             this.lb_User.FormattingEnabled = true;
             this.lb_User.Location = new System.Drawing.Point(8, 42);
-            this.lb_User.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lb_User.Margin = new System.Windows.Forms.Padding(2);
             this.lb_User.Name = "lb_User";
             this.lb_User.Size = new System.Drawing.Size(135, 303);
             this.lb_User.TabIndex = 2;
@@ -97,9 +99,9 @@
             this.gb_NewUser.Controls.Add(this.lbl_newUser);
             this.gb_NewUser.Controls.Add(this.bt_CreateNewUser);
             this.gb_NewUser.Location = new System.Drawing.Point(9, 10);
-            this.gb_NewUser.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gb_NewUser.Margin = new System.Windows.Forms.Padding(2);
             this.gb_NewUser.Name = "gb_NewUser";
-            this.gb_NewUser.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gb_NewUser.Padding = new System.Windows.Forms.Padding(2);
             this.gb_NewUser.Size = new System.Drawing.Size(518, 51);
             this.gb_NewUser.TabIndex = 4;
             this.gb_NewUser.TabStop = false;
@@ -116,9 +118,9 @@
             this.gb_BlackList.Controls.Add(this.lbl_ShowUser);
             this.gb_BlackList.Controls.Add(this.lb_User);
             this.gb_BlackList.Location = new System.Drawing.Point(9, 61);
-            this.gb_BlackList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gb_BlackList.Margin = new System.Windows.Forms.Padding(2);
             this.gb_BlackList.Name = "gb_BlackList";
-            this.gb_BlackList.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gb_BlackList.Padding = new System.Windows.Forms.Padding(2);
             this.gb_BlackList.Size = new System.Drawing.Size(518, 356);
             this.gb_BlackList.TabIndex = 6;
             this.gb_BlackList.TabStop = false;
@@ -127,7 +129,7 @@
             // bt_addusertoWhiteList
             // 
             this.bt_addusertoWhiteList.Location = new System.Drawing.Point(332, 194);
-            this.bt_addusertoWhiteList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.bt_addusertoWhiteList.Margin = new System.Windows.Forms.Padding(2);
             this.bt_addusertoWhiteList.Name = "bt_addusertoWhiteList";
             this.bt_addusertoWhiteList.Size = new System.Drawing.Size(32, 19);
             this.bt_addusertoWhiteList.TabIndex = 9;
@@ -138,7 +140,7 @@
             // bt_addUserToBlackList
             // 
             this.bt_addUserToBlackList.Location = new System.Drawing.Point(332, 162);
-            this.bt_addUserToBlackList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.bt_addUserToBlackList.Margin = new System.Windows.Forms.Padding(2);
             this.bt_addUserToBlackList.Name = "bt_addUserToBlackList";
             this.bt_addUserToBlackList.Size = new System.Drawing.Size(32, 19);
             this.bt_addUserToBlackList.TabIndex = 8;
@@ -160,7 +162,7 @@
             // 
             this.lb_BlackList.FormattingEnabled = true;
             this.lb_BlackList.Location = new System.Drawing.Point(372, 42);
-            this.lb_BlackList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lb_BlackList.Margin = new System.Windows.Forms.Padding(2);
             this.lb_BlackList.Name = "lb_BlackList";
             this.lb_BlackList.Size = new System.Drawing.Size(135, 303);
             this.lb_BlackList.TabIndex = 6;
@@ -169,7 +171,7 @@
             // 
             this.lb_WhiteList.FormattingEnabled = true;
             this.lb_WhiteList.Location = new System.Drawing.Point(189, 42);
-            this.lb_WhiteList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lb_WhiteList.Margin = new System.Windows.Forms.Padding(2);
             this.lb_WhiteList.Name = "lb_WhiteList";
             this.lb_WhiteList.Size = new System.Drawing.Size(135, 303);
             this.lb_WhiteList.TabIndex = 5;
@@ -200,9 +202,9 @@
             this.gb_verlosung.Controls.Add(this.bt_verlosung);
             this.gb_verlosung.Controls.Add(this.lbl_Verlosung);
             this.gb_verlosung.Location = new System.Drawing.Point(9, 422);
-            this.gb_verlosung.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gb_verlosung.Margin = new System.Windows.Forms.Padding(2);
             this.gb_verlosung.Name = "gb_verlosung";
-            this.gb_verlosung.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gb_verlosung.Padding = new System.Windows.Forms.Padding(2);
             this.gb_verlosung.Size = new System.Drawing.Size(518, 262);
             this.gb_verlosung.TabIndex = 7;
             this.gb_verlosung.TabStop = false;
@@ -211,10 +213,13 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2});
             this.dataGridView1.Location = new System.Drawing.Point(8, 49);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.Size = new System.Drawing.Size(498, 200);
             this.dataGridView1.TabIndex = 3;
@@ -222,7 +227,7 @@
             // bt_verlosung
             // 
             this.bt_verlosung.Location = new System.Drawing.Point(113, 21);
-            this.bt_verlosung.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.bt_verlosung.Margin = new System.Windows.Forms.Padding(2);
             this.bt_verlosung.Name = "bt_verlosung";
             this.bt_verlosung.Size = new System.Drawing.Size(56, 19);
             this.bt_verlosung.TabIndex = 1;
@@ -240,6 +245,16 @@
             this.lbl_Verlosung.TabIndex = 0;
             this.lbl_Verlosung.Text = "Starte die Verlosung";
             // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Person";
+            this.Column1.Name = "Column1";
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Gezogene Person";
+            this.Column2.Name = "Column2";
+            // 
             // Frm_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -248,7 +263,7 @@
             this.Controls.Add(this.gb_verlosung);
             this.Controls.Add(this.gb_BlackList);
             this.Controls.Add(this.gb_NewUser);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Frm_Main";
             this.Text = "Wichtel Generator";
             this.gb_NewUser.ResumeLayout(false);
@@ -281,6 +296,8 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button bt_verlosung;
         private System.Windows.Forms.Label lbl_Verlosung;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
     }
 }
 
