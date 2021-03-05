@@ -12,14 +12,14 @@ using System.Windows.Forms;
 
 namespace WichtelGeneratorVisual
 {
-    public partial class Frm_Main : Form
+    public partial class FrmMain : Form
     {
         //======Lokale Variablen======================
-        private List<WichtelPlayer> allUsers = new List<WichtelPlayer>();
-        private List<string> nameList = new List<string>();
+        private List<WichtelPlayer> _allUsers = new List<WichtelPlayer>();
+        private List<string> _nameList = new List<string>();
         
         //======Initialisierung======================
-        public Frm_Main()
+        public FrmMain()
         {
             InitializeComponent();
         }
@@ -29,7 +29,7 @@ namespace WichtelGeneratorVisual
         {
             lb_User.Items.Clear();
             lb_User.BeginUpdate();
-            foreach (string tUser in nameList)
+            foreach (string tUser in _nameList)
             {
                 lb_User.Items.Add(tUser);
             }
@@ -39,7 +39,7 @@ namespace WichtelGeneratorVisual
         //-------------------------
         public WichtelPlayer GetWichtelPlayer(string aNameOfUser)
         {
-            var tSelectedUserObject = allUsers.Where(p => p.UserName == aNameOfUser).FirstOrDefault();
+            var tSelectedUserObject = _allUsers.Where(p => p.UserName == aNameOfUser).FirstOrDefault();
             return tSelectedUserObject;
         }
 
@@ -91,9 +91,9 @@ namespace WichtelGeneratorVisual
         //-------------------------
         public void ReloadAllWhiteLists()
         {
-            foreach (WichtelPlayer tUser in allUsers)
+            foreach (WichtelPlayer tUser in _allUsers)
             {
-                tUser.WhiteList = new List<string>(nameList);
+                tUser.WhiteList = new List<string>(_nameList);
             }
         }
 
@@ -141,7 +141,7 @@ namespace WichtelGeneratorVisual
             Random random = new Random();
             int i = 0;
 
-            foreach (var onePlayer in allUsers)
+            foreach (var onePlayer in _allUsers)
             {
                 for (i = 0; i < onePlayer.GetWhiteList().Count(); i++)
                 {
@@ -198,7 +198,7 @@ namespace WichtelGeneratorVisual
         public void FillGridView()
         {
             dataGridView1.Rows.Clear();
-            foreach (var item in allUsers)
+            foreach (var item in _allUsers)
             {
                 string[] oneRow = { item.UserName, item.GezogenerWichtel };
 
@@ -215,7 +215,7 @@ namespace WichtelGeneratorVisual
         {
             try
             {
-                foreach (WichtelPlayer tUser in allUsers)                                       //jeder User
+                foreach (WichtelPlayer tUser in _allUsers)                                       //jeder User
                 {
                     Boolean isLastChoiseControlled = false;
                     int identischCounter = 0;
@@ -255,10 +255,10 @@ namespace WichtelGeneratorVisual
         }
 
         //-------------------------
-        public void SortUserListAnzahlBLAbsteigend()
+        public void SortUserListAnzahlBlAbsteigend()
         {
             //allUsers = allUsers.OrderBy(p => p.GetBlackList().Count).ToList();
-            allUsers = allUsers.OrderByDescending(p => p.GetBlackList().Count).ToList();
+            _allUsers = _allUsers.OrderByDescending(p => p.GetBlackList().Count).ToList();
         }
 
         private void CreateNewUser(string name)
@@ -268,7 +268,7 @@ namespace WichtelGeneratorVisual
                 return;
             }
 
-            var result = nameList.Where(p => p.Equals(name)).FirstOrDefault();
+            var result = _nameList.Where(p => p.Equals(name)).FirstOrDefault();
             if (! string.IsNullOrEmpty(result))
             {
                 MessageBox.Show($"Der User {name.ToUpper()} existiert bereits.");
@@ -276,8 +276,8 @@ namespace WichtelGeneratorVisual
             }
 
             WichtelPlayer neuerUser = new WichtelPlayer(name);
-            allUsers.Add(neuerUser);
-            nameList.Add(neuerUser.UserName);
+            _allUsers.Add(neuerUser);
+            _nameList.Add(neuerUser.UserName);
             ReloadAllWhiteLists();
             FillListBoxUser();
             ed_UserName.Text = "";
@@ -326,17 +326,17 @@ namespace WichtelGeneratorVisual
             }
             
             //Regelung Kontrolle
-            if ( (tSelectedUserObject.GetBlackList().Count) >= (allUsers.Count-1) ) //Maximale wahl an BL Menge
+            if ( (tSelectedUserObject.GetBlackList().Count) >= (_allUsers.Count-1) ) //Maximale wahl an BL Menge
             {
                 MessageBox.Show("Leider sind können nicht mehr auf die BlackList von diesem Mitspieler gelegt werden.");
                 return;
             }
-            if ( (tWhiteListUser.GetbinInBlackListEingetragenVon().Count) >= (allUsers.Count-2) ) //Maximales Vorkommen auf BLs
+            if ( (tWhiteListUser.GetbinInBlackListEingetragenVon().Count) >= (_allUsers.Count-2) ) //Maximales Vorkommen auf BLs
             {
                 MessageBox.Show("Leider ist der Mitspieler der auf die Blacklist geschoben werden soll, bereits zu viel auf einer BlackList vorhanden.");
                 return;
             }
-            if ((tSelectedUserObject.GetBlackList().Count) >= (allUsers.Count - 2)) //Letztes mal vor Max BL Wahl
+            if ((tSelectedUserObject.GetBlackList().Count) >= (_allUsers.Count - 2)) //Letztes mal vor Max BL Wahl
             {
                 if (!KontrolleObKostelationBereitsVerwendet(tSelectedUserObject, tWhiteListUser.UserName))
                 {
@@ -380,12 +380,12 @@ namespace WichtelGeneratorVisual
         //-------------------------
         private void Bt_verlosung_Click(object sender, EventArgs e)
         {
-            if (allUsers.Count == 0)
+            if (_allUsers.Count == 0)
             {
                 return;
             }
 
-            SortUserListAnzahlBLAbsteigend();
+            SortUserListAnzahlBlAbsteigend();
 
             try
             {

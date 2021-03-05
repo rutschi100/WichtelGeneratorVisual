@@ -1,6 +1,6 @@
 ﻿namespace WichtelGeneratorVisual
 {
-    partial class Frm_Main
+    partial class FrmMain
     {
         /// <summary>
         /// Erforderliche Designervariable.
@@ -264,7 +264,7 @@
             this.Controls.Add(this.gb_BlackList);
             this.Controls.Add(this.gb_NewUser);
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "Frm_Main";
+            this.Name = "FrmMain";
             this.Text = "Wichtel Generator";
             this.gb_NewUser.ResumeLayout(false);
             this.gb_NewUser.PerformLayout();

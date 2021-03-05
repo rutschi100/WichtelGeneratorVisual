@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WichtelGeneratorVisual
 {
@@ -16,47 +12,40 @@ namespace WichtelGeneratorVisual
             FillBlackList(UserName);
         }
 
-        
 
         //============Private Variablen==========
-        private string userName;
-        private ArrayList blackList                    = new ArrayList();
+        private readonly ArrayList _blackList = new ArrayList();
         public List<string> WhiteList { get; set; } = new List<string>();
-        private ArrayList binInBlackListEingetragenVon = new ArrayList();
-        private string gezogenerWichtel;
+        private readonly ArrayList _binInBlackListEingetragenVon = new ArrayList();
 
         //============Getter Setter=========================================
-        public string UserName
-        {
-            get { return userName; }
-            set { userName = value; }
-        }
+        public string UserName { get; set; }
 
         //-------------------------
-        public string GezogenerWichtel { get => gezogenerWichtel; set => gezogenerWichtel = value; }
+        public string GezogenerWichtel { get; set; }
 
         //-------------------------
         public void FillBlackList(string aUserToLock)
         {
-            this.blackList.Add(aUserToLock);
+            _blackList.Add(aUserToLock);
         }
 
         //-------------------------
         public ArrayList GetBlackList()
         {
-            return this.blackList;
+            return _blackList;
         }
 
         //-------------------------
         public void SetBlackList(string aBlackListUser)
         {
-            blackList.Add(aBlackListUser);
+            _blackList.Add(aBlackListUser);
         }
 
         //-------------------------
         public void RemoveItemInBlackList(string aItem)
         {
-            this.blackList.Remove(aItem);
+            _blackList.Remove(aItem);
         }
 
         //-------------------------
@@ -64,6 +53,7 @@ namespace WichtelGeneratorVisual
         {
             return WhiteList;
         }
+
         /*
         //-------------------------
         public void SetWhiteList(List<string> aWhiteListUser)
@@ -74,28 +64,28 @@ namespace WichtelGeneratorVisual
         //-------------------------
         public void SetWhiteListItem(string aItem)
         {
-            this.WhiteList.Add(aItem);
+            WhiteList.Add(aItem);
         }
 
         //-------------------------
         public void RemoveItemFromWhiteList(string aItem)
         {
-            this.WhiteList.Remove(aItem);
+            WhiteList.Remove(aItem);
         }
 
         public ArrayList GetbinInBlackListEingetragenVon()
         {
-            return binInBlackListEingetragenVon;
+            return _binInBlackListEingetragenVon;
         }
 
         public void SetbinInBlackListEingetragenVon(string aUser)
         {
-            binInBlackListEingetragenVon.Add(aUser);
+            _binInBlackListEingetragenVon.Add(aUser);
         }
 
         public void RemoveItemBinInBlackListEingetragenVon(string aItem)
         {
-            binInBlackListEingetragenVon.Remove(aItem);
+            _binInBlackListEingetragenVon.Remove(aItem);
         }
     }
 }
