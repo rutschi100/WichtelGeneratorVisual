@@ -1,152 +1,158 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.SqlTypes;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WichtelGeneratorVisual
 {
     public partial class FrmMain : Form
     {
-        //======Lokale Variablen======================
-        private List<WichtelPlayer> _allUsers = new List<WichtelPlayer>();
-        private List<string> _nameList = new List<string>();
+        private List<WichtelModel> _allUsers = new List<WichtelModel>();
+        private readonly List<string> _nameList = new List<string>();
         
-        //======Initialisierung======================
         public FrmMain()
         {
             InitializeComponent();
         }
 
-        //===========Funktionen======================================
-        public void FillListBoxUser()
+        /// <summary>
+        /// Füllt die Listbox mit den aktuellen registrierten User ab.
+        /// </summary>
+        private void FillListBoxUser()
         {
             lb_User.Items.Clear();
             lb_User.BeginUpdate();
-            foreach (string tUser in _nameList)
+            foreach (var tUser in _nameList)
             {
                 lb_User.Items.Add(tUser);
             }
             lb_User.EndUpdate();
         }
 
-        //-------------------------
-        public WichtelPlayer GetWichtelPlayer(string aNameOfUser)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aNameOfUser"></param>
+        /// <returns></returns>
+        private WichtelModel GetWichtelByName(string aNameOfUser)
         {
-            var tSelectedUserObject = _allUsers.Where(p => p.UserName == aNameOfUser).FirstOrDefault();
+            var tSelectedUserObject = _allUsers.FirstOrDefault(p => p.UserName == aNameOfUser);
             return tSelectedUserObject;
         }
 
-        //-------------------------
-        public void FillListBoxBlackListFromUser(WichtelPlayer aCurrentUser)
+        /// <summary>
+        /// Befüllt den BlackList bereich, des angegebenen Wichtels
+        /// </summary>
+        /// <param name="aCurrentUser"></param>
+        private void FillListBoxBlackListFromUser(WichtelModel aCurrentUser)
         {
-            ArrayList tBlackList = aCurrentUser.GetBlackList();
+            var tBlackList = aCurrentUser.BlackList;
             lb_BlackList.Items.Clear();
             lb_BlackList.BeginUpdate();
-            foreach(string aName in tBlackList)
+            foreach(var aName in tBlackList)
             {
                 lb_BlackList.Items.Add(aName);
             }
             lb_BlackList.EndUpdate();
         }
-
-        //-------------------------
-        public void RevisionWhiteList(WichtelPlayer aCurrentUser)
+        
+        /// <summary>
+        /// Korrigiert die WhiteList.
+        /// Ist in BlackList und WhiteList ein Eintrag identisch, so wird es aus der WhiteList gelöscht.
+        /// </summary>
+        /// <param name="aCurrentUser"></param>
+        private static void RevisionWhiteList(WichtelModel aCurrentUser)
         {
-            var tBlackList = aCurrentUser.GetBlackList();
-            var tWhiteList = aCurrentUser.GetWhiteList();
-            foreach (string tBlackListUser in tBlackList)
+            foreach 
+                (var tWhiteListUser in 
+                from tBlackListUser 
+                    in aCurrentUser.BlackList 
+                from tWhiteListUser in aCurrentUser.WhiteList
+                where tWhiteListUser.Equals(tBlackListUser)
+                select tWhiteListUser)
             {
-                foreach (string tWhiteListUser in tWhiteList)
-                {
-                    if (tWhiteListUser.Equals(tBlackListUser))
-                    {
-                        aCurrentUser.RemoveItemFromWhiteList(tWhiteListUser);
-                        RevisionWhiteList(aCurrentUser); //Da sich die Liste geändert hat, funktioniert die Schleife nicht mehr und fängt komplett von vorne an.
-                        break; //Verhindert bei Rückkehr von Rekursion die weiterführung, welche zum absturz geführt hätte.
-                    }
-                }
+                aCurrentUser.WhiteList.Remove(tWhiteListUser);
             }
         }
 
-        //-------------------------
-        public void FillRemainingUserToLBwhiteList(WichtelPlayer aCurrentUser)
+        /// <summary>
+        /// Befüllt den WhiteList bereich vom Selektierten Wichtel.
+        /// </summary>
+        /// <param name="aCurrentUser"></param>
+        private void FillListBoxWhiteListFromUser(WichtelModel aCurrentUser)
         {
-            var tWhiteList = aCurrentUser.GetWhiteList();
             lb_WhiteList.Items.Clear();
-            lb_WhiteList      .BeginUpdate();
-            foreach (string tWhiteListUser in tWhiteList)
+            lb_WhiteList.BeginUpdate();
+            foreach (var tWhiteListUser in aCurrentUser.WhiteList)
             {
                 lb_WhiteList.Items.Add(tWhiteListUser);
             }
             lb_WhiteList.EndUpdate();
         }
 
-        //-------------------------
-        public void ReloadAllWhiteLists()
+        /// <summary>
+        /// Resettet die WhiteList aller User.
+        /// </summary>
+        private void ReloadAllWhiteLists()
         {
-            foreach (WichtelPlayer tUser in _allUsers)
+            foreach (var tUser in _allUsers)
             {
                 tUser.WhiteList = new List<string>(_nameList);
             }
         }
 
-        //-------------------------
-        public void MoveItemFromWhiteToBlackList(WichtelPlayer aUser, WichtelPlayer aWhiteListUser)
+        /// <summary>
+        /// Verschiebt den User von White zur BlackList
+        /// </summary>
+        /// <param name="aUser"></param>
+        /// <param name="aWhiteListUser"></param>
+        private static void MoveItemFromWhiteToBlackList(WichtelModel aUser, WichtelModel aWhiteListUser)
         {
-            aUser.RemoveItemFromWhiteList(aWhiteListUser.UserName);
-            aUser.SetBlackList           (aWhiteListUser.UserName);
-            aWhiteListUser.SetbinInBlackListEingetragenVon(aUser.UserName);
+            aUser.WhiteList.Remove(aWhiteListUser.UserName);
+            aUser.BlackList.Add(aWhiteListUser.UserName);
+            aWhiteListUser.IamRegisteredBy.Add(aUser.UserName);
         }
 
-        //-------------------------
-        public void MoveItemFromBlackToWhiteList(WichtelPlayer aUser, WichtelPlayer aBlackListUser)
+        /// <summary>
+        /// Verschiebt den User von Black zur WhiteList
+        /// </summary>
+        /// <param name="aUser"></param>
+        /// <param name="aBlackListUser"></param>
+        private void MoveItemFromBlackToWhiteList(WichtelModel aUser, WichtelModel aBlackListUser)
         {
-            aUser.RemoveItemInBlackList(aBlackListUser.UserName);
-            aUser.SetWhiteListItem     (aBlackListUser.UserName);
-            aBlackListUser.RemoveItemBinInBlackListEingetragenVon(aUser.UserName);
+            aUser.BlackList.Remove(aBlackListUser.UserName);
+            aUser.WhiteList.Add(aBlackListUser.UserName);
+            aBlackListUser.IamRegisteredBy.Remove(aUser.UserName);
         }
 
-        //-------------------------
         /// <summary>
         /// Kontrolle ob in BlackList der Eintrag vorkommt.
         /// </summary>
         /// <param name="aUser">BlackList ist zu suchen in angegebenen User</param>
         /// <param name="aSearchingItem">Nach was gesucht werden muss</param>
         /// <returns>True: Kein Vorkommen, False: Treffer, es kommt vor.</returns>
-        public Boolean KontrolliereObVorhandenInBlackList(WichtelPlayer aUser, string aSearchingItem)
+        public bool IsNotInBlackList(WichtelModel aUser, string aSearchingItem)
         {
-            ArrayList tBlackList = aUser.GetBlackList();
-            foreach (string tBlackListUser in tBlackList)
-            {
-                if (tBlackListUser.Equals(aSearchingItem))
-                {
-                    return false;
-                }
-            }
-            return true;
+            return aUser.BlackList.All(tBlackListUser => !tBlackListUser.Equals(aSearchingItem));
         }
 
-      
-        public bool RandomVerlosung() //--2ter Versuch
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private bool RandomVerlosung() //TODO: Am schluss Refaktorisieren.
         {
-            List<string> allreadyUsed = new List<string>();
+            var allreadyUsed = new List<string>();
 
-            Random random = new Random();
-            int i = 0;
+            var random = new Random();
+            var i = 0;
 
             foreach (var onePlayer in _allUsers)
             {
-                for (i = 0; i < onePlayer.GetWhiteList().Count(); i++)
+                for (i = 0; i < onePlayer.WhiteList.Count(); i++)
                 {
-                    var posibleChoise = onePlayer.GetWhiteList()[random.Next(onePlayer.GetWhiteList().Count)];
-                    var result = allreadyUsed.Where(p => p.Equals(posibleChoise)).FirstOrDefault();
+                    var posibleChoise = onePlayer.WhiteList[random.Next(onePlayer.WhiteList.Count)];
+                    var result = allreadyUsed.FirstOrDefault(p => p.Equals(posibleChoise));
                     if (string.IsNullOrEmpty(result))
                     {
                         //noch nicht verwendet
@@ -155,11 +161,11 @@ namespace WichtelGeneratorVisual
                         break;
                     }
                 }
-                if (i >= onePlayer.GetWhiteList().Count()) //---Wenns nicht geklappt hat...
+                if (i >= onePlayer.WhiteList.Count()) //---Wenns nicht geklappt hat...
                 {
-                    foreach (var item in onePlayer.GetWhiteList())
+                    foreach (var item in onePlayer.WhiteList)
                     {
-                        var result = allreadyUsed.Where(p => p.Equals(item)).FirstOrDefault();
+                        var result = allreadyUsed.FirstOrDefault(p => p.Equals(item));
                         if (string.IsNullOrEmpty(result))
                         {
                             //noch nicht verwendet
@@ -177,7 +183,7 @@ namespace WichtelGeneratorVisual
 
             foreach (var item in allreadyUsed)
             {
-                for (int k = 0; k < allreadyUsed.Count; k++)
+                for (var k = 0; k < allreadyUsed.Count; k++)
                 {
                     if (k <= allreadyUsed.Count)
                     {
@@ -194,38 +200,39 @@ namespace WichtelGeneratorVisual
             return true;
         }
 
-        //-------------------------
-        public void FillGridView()
+        /// <summary>
+        /// Befüllt das Grit mit den Resultaten.
+        /// </summary>
+        private void FillGridView()
         {
             dataGridView1.Rows.Clear();
             foreach (var item in _allUsers)
             {
-                string[] oneRow = { item.UserName, item.GezogenerWichtel };
+                object[] oneRow = { item.UserName, item.GezogenerWichtel };
 
                 dataGridView1.Rows.Add(oneRow);
             }
 
             dataGridView1.AutoResizeColumns();
             dataGridView1.Refresh();
-            
         }
 
-        //-------------------------
-        public Boolean KontrolleObKostelationBereitsVerwendet(WichtelPlayer aCurrentUser, string lastChoiseOfBLuser)
+        //TODO: Hier weiter Refaktorisieren
+        private bool KontrolleObKostelationBereitsVerwendet(WichtelModel aCurrentUser, string lastChoiseOfBLuser)
         {
             try
             {
-                foreach (WichtelPlayer tUser in _allUsers)                                       //jeder User
+                foreach (var tUser in _allUsers)                                       //jeder User
                 {
-                    Boolean isLastChoiseControlled = false;
-                    int identischCounter = 0;
+                    var isLastChoiseControlled = false;
+                    var identischCounter = 0;
                     if (!aCurrentUser.UserName.Equals(tUser.UserName))                      //Nicht er selber
                     {
-                        ArrayList tOtherUsersBlackList = tUser.GetBlackList();
-                        foreach (string tBLuserTuser in tOtherUsersBlackList)
+                        var tOtherUsersBlackList = tUser.BlackList;
+                        foreach (var tBLuserTuser in tOtherUsersBlackList)
                         {
-                            ArrayList tCurrentUserBlackList = aCurrentUser.GetBlackList();
-                            foreach (string tBLuserAcurrent in tCurrentUserBlackList)         //jeder in der BL von anderen User
+                            var tCurrentUserBlackList = aCurrentUser.BlackList;
+                            foreach (var tBLuserAcurrent in tCurrentUserBlackList)         //jeder in der BL von anderen User
                             {
                                 if (tBLuserAcurrent.Equals(tBLuserTuser))                   //Kontrolle vorkommen
                                 {
@@ -236,7 +243,7 @@ namespace WichtelGeneratorVisual
                                     identischCounter++;
                                     isLastChoiseControlled = true;
                                 }
-                                if (identischCounter == aCurrentUser.GetBlackList().Count)  //ist gleiche Konstelation
+                                if (identischCounter == aCurrentUser.BlackList.Count)  //ist gleiche Konstelation
                                 {
                                     return false;
                                 }
@@ -258,7 +265,7 @@ namespace WichtelGeneratorVisual
         public void SortUserListAnzahlBlAbsteigend()
         {
             //allUsers = allUsers.OrderBy(p => p.GetBlackList().Count).ToList();
-            _allUsers = _allUsers.OrderByDescending(p => p.GetBlackList().Count).ToList();
+            _allUsers = _allUsers.OrderByDescending(p => p.BlackList.Count).ToList();
         }
 
         private void CreateNewUser(string name)
@@ -268,14 +275,14 @@ namespace WichtelGeneratorVisual
                 return;
             }
 
-            var result = _nameList.Where(p => p.Equals(name)).FirstOrDefault();
+            var result = _nameList.FirstOrDefault(p => p.Equals(name));
             if (! string.IsNullOrEmpty(result))
             {
                 MessageBox.Show($"Der User {name.ToUpper()} existiert bereits.");
                 return;
             }
 
-            WichtelPlayer neuerUser = new WichtelPlayer(name);
+            var neuerUser = new WichtelModel(name);
             _allUsers.Add(neuerUser);
             _nameList.Add(neuerUser.UserName);
             ReloadAllWhiteLists();
@@ -298,14 +305,14 @@ namespace WichtelGeneratorVisual
             {
                 return;
             }
-            var tSelectedUserObject = GetWichtelPlayer(lb_User.Items[lb_User.SelectedIndex].ToString());
+            var tSelectedUserObject = GetWichtelByName(lb_User.Items[lb_User.SelectedIndex].ToString());
             if (tSelectedUserObject == null)
             {
                 return;
             }
             FillListBoxBlackListFromUser  (tSelectedUserObject);
             RevisionWhiteList             (tSelectedUserObject);
-            FillRemainingUserToLBwhiteList(tSelectedUserObject);
+            FillListBoxWhiteListFromUser(tSelectedUserObject);
         }
 
         //-------------------------
@@ -317,8 +324,8 @@ namespace WichtelGeneratorVisual
             }
 
             //Selektierter auf WhiteList zu BlackList verschieben
-            WichtelPlayer tSelectedUserObject = GetWichtelPlayer(lb_User.Items[lb_User.SelectedIndex].ToString());
-            WichtelPlayer tWhiteListUser = GetWichtelPlayer(lb_WhiteList.Items[lb_WhiteList.SelectedIndex].ToString());
+            var tSelectedUserObject = GetWichtelByName(lb_User.Items[lb_User.SelectedIndex].ToString());
+            var tWhiteListUser = GetWichtelByName(lb_WhiteList.Items[lb_WhiteList.SelectedIndex].ToString());
 
             if ((tSelectedUserObject == null) || (tWhiteListUser == null))
             {
@@ -326,17 +333,17 @@ namespace WichtelGeneratorVisual
             }
             
             //Regelung Kontrolle
-            if ( (tSelectedUserObject.GetBlackList().Count) >= (_allUsers.Count-1) ) //Maximale wahl an BL Menge
+            if ( (tSelectedUserObject.BlackList.Count) >= (_allUsers.Count-1) ) //Maximale wahl an BL Menge
             {
                 MessageBox.Show("Leider sind können nicht mehr auf die BlackList von diesem Mitspieler gelegt werden.");
                 return;
             }
-            if ( (tWhiteListUser.GetbinInBlackListEingetragenVon().Count) >= (_allUsers.Count-2) ) //Maximales Vorkommen auf BLs
+            if ( (tWhiteListUser.IamRegisteredBy.Count) >= (_allUsers.Count-2) ) //Maximales Vorkommen auf BLs
             {
                 MessageBox.Show("Leider ist der Mitspieler der auf die Blacklist geschoben werden soll, bereits zu viel auf einer BlackList vorhanden.");
                 return;
             }
-            if ((tSelectedUserObject.GetBlackList().Count) >= (_allUsers.Count - 2)) //Letztes mal vor Max BL Wahl
+            if ((tSelectedUserObject.BlackList.Count) >= (_allUsers.Count - 2)) //Letztes mal vor Max BL Wahl
             {
                 if (!KontrolleObKostelationBereitsVerwendet(tSelectedUserObject, tWhiteListUser.UserName))
                 {
@@ -349,7 +356,7 @@ namespace WichtelGeneratorVisual
             //Neu Laden
             FillListBoxBlackListFromUser  (tSelectedUserObject);
             RevisionWhiteList             (tSelectedUserObject);
-            FillRemainingUserToLBwhiteList(tSelectedUserObject);
+            FillListBoxWhiteListFromUser(tSelectedUserObject);
         }
 
         //-------------------------
@@ -361,8 +368,8 @@ namespace WichtelGeneratorVisual
             }
 
             //Selektierter auf WhiteList zu BlackList verschieben
-            WichtelPlayer tSelectedUserObject = GetWichtelPlayer(lb_User.Items[lb_User.SelectedIndex].ToString());
-            WichtelPlayer tBlackListUser = GetWichtelPlayer(lb_BlackList.Items[lb_BlackList.SelectedIndex].ToString());
+            var tSelectedUserObject = GetWichtelByName(lb_User.Items[lb_User.SelectedIndex].ToString());
+            var tBlackListUser = GetWichtelByName(lb_BlackList.Items[lb_BlackList.SelectedIndex].ToString());
 
             if ((tSelectedUserObject == null) || (tBlackListUser == null))
             {
@@ -374,7 +381,7 @@ namespace WichtelGeneratorVisual
             //Neu Laden
             FillListBoxBlackListFromUser  (tSelectedUserObject);
             RevisionWhiteList             (tSelectedUserObject);
-            FillRemainingUserToLBwhiteList(tSelectedUserObject);
+            FillListBoxWhiteListFromUser(tSelectedUserObject);
         }
 
         //-------------------------
@@ -409,9 +416,5 @@ namespace WichtelGeneratorVisual
                 CreateNewUser(ed_UserName.Text);
             }
         }
-
     }
 }
-//======================================================
-//===============END OF FILE============================
-//======================================================
