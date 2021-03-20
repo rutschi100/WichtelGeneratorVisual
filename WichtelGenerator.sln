@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.29306.81
+VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WichtelGeneratorVisual", "WichtelGeneratorVisual.csproj", "{2C27CD2A-264F-489F-804E-4F57691AFD53}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WichtelGenerator", "WichtelGenerator\WichtelGenerator.csproj", "{0C728539-D4BA-4951-B079-7740E8F2A134}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WichtelGeneratorVisual", "WichtelGenerator.GUI\WichtelGeneratorVisual.csproj", "{2C27CD2A-264F-489F-804E-4F57691AFD53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,6 +13,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0C728539-D4BA-4951-B079-7740E8F2A134}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C728539-D4BA-4951-B079-7740E8F2A134}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C728539-D4BA-4951-B079-7740E8F2A134}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C728539-D4BA-4951-B079-7740E8F2A134}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2C27CD2A-264F-489F-804E-4F57691AFD53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2C27CD2A-264F-489F-804E-4F57691AFD53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C27CD2A-264F-489F-804E-4F57691AFD53}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -20,6 +26,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {D15FB52C-571E-4D49-94EE-AB99582184BD}
+		SolutionGuid = {0D8A6A4A-7104-4AC2-B963-8567414B8D58}
 	EndGlobalSection
 EndGlobal
