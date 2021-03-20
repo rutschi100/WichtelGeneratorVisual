@@ -217,39 +217,32 @@ namespace WichtelGeneratorVisual
             dataGridView1.Refresh();
         }
 
-        //TODO: Hier weiter Refaktorisieren
-        private bool KontrolleObKostelationBereitsVerwendet(WichtelModel aCurrentUser, string lastChoiseOfBLuser)
+        /// <summary>
+        /// Prüft, ob die Konstellation noch nicht verwendet wurde.
+        /// </summary>
+        /// <param name="aCurrentUser"></param>
+        /// <param name="lastChoise"></param>
+        /// <returns>
+        /// true = noch nicht verwednet |
+        /// false = bereits verwendet
+        /// </returns>
+        private bool IsConstelationNotUsed(WichtelModel aCurrentUser, string lastChoise)
         {
             try
             {
-                foreach (var tUser in _allUsers)                                       //jeder User
+                aCurrentUser.BlackList.Add(lastChoise);
+                foreach (var oneUser in _allUsers)
                 {
-                    var isLastChoiseControlled = false;
-                    var identischCounter = 0;
-                    if (!aCurrentUser.UserName.Equals(tUser.UserName))                      //Nicht er selber
-                    {
-                        var tOtherUsersBlackList = tUser.BlackList;
-                        foreach (var tBLuserTuser in tOtherUsersBlackList)
-                        {
-                            var tCurrentUserBlackList = aCurrentUser.BlackList;
-                            foreach (var tBLuserAcurrent in tCurrentUserBlackList)         //jeder in der BL von anderen User
-                            {
-                                if (tBLuserAcurrent.Equals(tBLuserTuser))                   //Kontrolle vorkommen
-                                {
-                                    identischCounter++;                                     //Zähle identische
-                                }
-                                if (lastChoiseOfBLuser.Equals(tBLuserTuser) && !isLastChoiseControlled)                //Auch zu kontrollieren die mögliche letzte wahl von Currentuser
-                                {
-                                    identischCounter++;
-                                    isLastChoiseControlled = true;
-                                }
-                                if (identischCounter == aCurrentUser.BlackList.Count)  //ist gleiche Konstelation
-                                {
-                                    return false;
-                                }
-                            }
-                        }
-                    }
+                    var grouped = from aOther in oneUser.BlackList
+                        from aCurrent in aCurrentUser.BlackList
+                        where aOther == aCurrent
+                        select aCurrent;
+
+                    var identische = grouped.Count();
+                    var anzBlackList = aCurrentUser.BlackList.Count;
+                        aCurrentUser.BlackList.Remove(lastChoise);
+
+                    return identische != anzBlackList;
                 }
             }
             catch (Exception ex)
@@ -257,44 +250,63 @@ namespace WichtelGeneratorVisual
                 MessageBox.Show(ex.Message);
                 throw;
             }
-            
-            return true;
+            return false;
         }
-
-        //-------------------------
-        public void SortUserListAnzahlBlAbsteigend()
+        
+        /// <summary>
+        /// Sortiert die User in der Liste nach anzahl eingetragenen Blacklist Wichtel.
+        /// </summary>
+        private void SortUserByCoundDesc()
         {
-            //allUsers = allUsers.OrderBy(p => p.GetBlackList().Count).ToList();
             _allUsers = _allUsers.OrderByDescending(p => p.BlackList.Count).ToList();
         }
 
-        private void CreateNewUser(string name)
+        /// <summary>
+        /// Erstellt einen neuen User, falls es möglich ist.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>Erfolg der Erstellung</returns>
+        private bool CreateNewUser(string name)
         {
             if(string.IsNullOrEmpty(name))
             {
-                return;
+                return false;
             }
 
             var result = _nameList.FirstOrDefault(p => p.Equals(name));
             if (! string.IsNullOrEmpty(result))
             {
-                MessageBox.Show($"Der User {name.ToUpper()} existiert bereits.");
-                return;
+                return false;
             }
-
-            var neuerUser = new WichtelModel(name);
-            _allUsers.Add(neuerUser);
-            _nameList.Add(neuerUser.UserName);
-            ReloadAllWhiteLists();
-            FillListBoxUser();
-            ed_UserName.Text = "";
-            ed_UserName.Focus();
+            
+            _allUsers.Add(new WichtelModel(name));
+            _nameList.Add(name);
+            return true;
         }
+
+        /// <summary>
+        /// Managet das erstellen eines neuen Users und die Anzeigung im Frame.
+        /// </summary>
+        private void UpdateFrameByCreatingUser()
+        {
+            if (CreateNewUser(ed_UserName.Text))
+            {
+                ReloadAllWhiteLists();
+                FillListBoxUser();
+                ed_UserName.Text = "";
+                ed_UserName.Focus();
+            }
+            else
+            {
+                MessageBox.Show($"Der User {ed_UserName.Text} existiert bereits.");
+            }
+        }
+
 
         //===========Events===========================================
         private void Bt_CreateNewUser_Click(object sender, EventArgs e)
         {
-            CreateNewUser(ed_UserName.Text);
+            UpdateFrameByCreatingUser();
         }
 
         //-------------------------
@@ -345,7 +357,7 @@ namespace WichtelGeneratorVisual
             }
             if ((tSelectedUserObject.BlackList.Count) >= (_allUsers.Count - 2)) //Letztes mal vor Max BL Wahl
             {
-                if (!KontrolleObKostelationBereitsVerwendet(tSelectedUserObject, tWhiteListUser.UserName))
+                if (!IsConstelationNotUsed(tSelectedUserObject, tWhiteListUser.UserName))
                 {
                     MessageBox.Show("Dieser User kann nicht zur BlackList hinzugefügt werden, da diese maximale Konstelation bereits existiert!");
                     return;
@@ -392,7 +404,7 @@ namespace WichtelGeneratorVisual
                 return;
             }
 
-            SortUserListAnzahlBlAbsteigend();
+            SortUserByCoundDesc();
 
             try
             {
@@ -409,11 +421,16 @@ namespace WichtelGeneratorVisual
             FillGridView   ();
         }
 
+        /// <summary>
+        /// Event für User erstellung mit dem Keyboard
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Ed_UserName_KeyDown(object sender, KeyEventArgs e)
         {
             if ((e.KeyCode == Keys.Enter) && (ed_UserName.Text != ""))
             {
-                CreateNewUser(ed_UserName.Text);
+                UpdateFrameByCreatingUser();
             }
         }
     }
