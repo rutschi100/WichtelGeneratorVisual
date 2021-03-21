@@ -145,10 +145,12 @@ namespace WichtelGeneratorVisual
         /// 
         /// </summary>
         /// <returns></returns>
-        private bool RandomVerlosung() //TODO: Am schluss Refaktorisieren.
+        private bool RandomVerlosung()
         {
-            var allreadyUsed = new List<string>();
+            //--- Vorbereiten
+            SortUserByCoundDesc();
 
+            var allreadyUsed = new List<string>();
             var random = new Random();
 
             foreach (var onePlayer in _allUsers)
@@ -158,51 +160,41 @@ namespace WichtelGeneratorVisual
                 {
                     var posibleChoise = onePlayer.WhiteList[random.Next(onePlayer.WhiteList.Count)];
                     var result = allreadyUsed.FirstOrDefault(p => p.Equals(posibleChoise));
-                    if (string.IsNullOrEmpty(result))
-                    {
-                        //noch nicht verwendet
-                        onePlayer.GezogenerWichtel = posibleChoise;
-                        allreadyUsed.Add(posibleChoise);
-                        break;
-                    }
+
+                    if (!string.IsNullOrEmpty(result)) continue;
+
+                    //noch nicht verwendet
+                    onePlayer.GezogenerWichtel = posibleChoise;
+                    allreadyUsed.Add(posibleChoise);
+                    break;
                 }
-                if (i >= onePlayer.WhiteList.Count()) //---Wenns nicht geklappt hat...
+
+                if (i < onePlayer.WhiteList.Count()) continue; //--- Hat geklappt, also, zum nächsten
+                
+                //--- Random fehlgeschlagen --> nimm erster verfügbrarer
+                foreach (var oneFromWhite in from oneFromWhite in onePlayer.WhiteList
+                    let result = allreadyUsed.FirstOrDefault(p => p.Equals(oneFromWhite))
+                    where string.IsNullOrEmpty(result)
+                    select oneFromWhite)
                 {
-                    foreach (var item in onePlayer.WhiteList)
-                    {
-                        var result = allreadyUsed.FirstOrDefault(p => p.Equals(item));
-                        if (string.IsNullOrEmpty(result))
-                        {
-                            //noch nicht verwendet
-                            onePlayer.GezogenerWichtel = item;
-                            allreadyUsed.Add(item);
-                            break;
-                        }
-                    }
-                    if (string.IsNullOrEmpty(onePlayer.GezogenerWichtel))
-                    {
-                        return false;
-                    }
+                    //noch nicht verwendet
+                    onePlayer.GezogenerWichtel = oneFromWhite;
+                    allreadyUsed.Add(oneFromWhite);
+                    break;
+                }
+
+                if (string.IsNullOrEmpty(onePlayer.GezogenerWichtel))
+                {
+                    return false; //--- Half alles nichts, Verlosung komplett fehlgeschlagen.
                 }
             }
 
-            foreach (var item in allreadyUsed)
-            {
-                for (var k = 0; k < allreadyUsed.Count; k++)
-                {
-                    if (k <= allreadyUsed.Count)
-                    {
-                        break;
-                    }
-                    if (allreadyUsed[k+1] == item)
-                    {
-                        MessageBox.Show($"Grober Fehler unterlaufen. Jemand wurde doppelt gezogen...");
-                    }
-                }
-            }
+            //--- Prüfe auf doppelte
+            var groupedUsed = allreadyUsed.GroupBy(p => p);
+            if (!groupedUsed.Any(oneGrouop => oneGrouop.Count() > 1)) return true;
 
-
-            return true;
+            MessageBox.Show($"Grober Fehler unterlaufen. Jemand wurde doppelt gezogen...");
+            return false;
         }
 
         /// <summary>
@@ -446,13 +438,10 @@ namespace WichtelGeneratorVisual
         {
             try
             {
-                if (_allUsers.Count == 0)
+                if (_allUsers.Count < 2)
                 {
                     return;
                 }
-
-                SortUserByCoundDesc();
-
                 while (! RandomVerlosung())
                 {
 
@@ -463,7 +452,7 @@ namespace WichtelGeneratorVisual
                 MessageBox.Show(ex.Message);
                 throw;
             }
-            FillGridView   ();
+            FillGridView();
         }
 
         /// <summary>
