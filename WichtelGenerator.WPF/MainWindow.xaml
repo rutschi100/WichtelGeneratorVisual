@@ -3,15 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WichtelGenerator.WPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="400" Width="400">
     <Grid>
-        <StackPanel VerticalAlignment="Top" >
+        <StackPanel VerticalAlignment="Top">
             <Border Margin="10" Background="AliceBlue">
                 <StackPanel Margin="10" Orientation="Horizontal">
                     <Label>Neuer Wichtel hinzufügen</Label>
-                    <TextBox MinWidth="100" Margin="10,0,10,0"></TextBox>
+                    <TextBox MinWidth="100" Margin="10,0,10,0" />
                     <Button>Hinzufügen</Button>
                 </StackPanel>
             </Border>
@@ -19,12 +18,12 @@
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Orientation="Vertical">
                         <Label>Registrierte Wichtel</Label>
-                        <ListView MinHeight="150" MinWidth="100" Margin="5"></ListView>
+                        <ListView MinHeight="150" MinWidth="100" Margin="5" />
                     </StackPanel>
                     <Border Background="Aqua" Margin="5,0">
                         <StackPanel>
                             <Label>White List</Label>
-                            <ListView MinHeight="150" MinWidth="100" Margin="5"></ListView>
+                            <ListView MinHeight="150" MinWidth="100" Margin="5" />
                         </StackPanel>
                     </Border>
                     <StackPanel VerticalAlignment="Center">
@@ -34,7 +33,7 @@
                     <Border Background="Aqua" Margin="5,0">
                         <StackPanel>
                             <Label>Black List</Label>
-                            <ListView MinHeight="150" MinWidth="100" Margin="5"></ListView>
+                            <ListView MinHeight="150" MinWidth="100" Margin="5" />
                         </StackPanel>
                     </Border>
                 </StackPanel>
@@ -43,20 +42,16 @@
                 <StackPanel VerticalAlignment="Center">
                     <Button Background="LightGreen">Verlosung</Button>
                     <Label HorizontalAlignment="Center">Resultat</Label>
-                    <DataGrid HorizontalAlignment="Center" >
+                    <DataGrid HorizontalAlignment="Center">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Wichtel"/>
-                            <DataGridTextColumn Header="hat gezogen"/>
+                            <DataGridTextColumn Header="Wichtel" />
+                            <DataGridTextColumn Header="hat gezogen" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
             </Border>
         </StackPanel>
-        <StackPanel VerticalAlignment="Center">
-
-        </StackPanel>
-        <StackPanel VerticalAlignment="Bottom">
-
-        </StackPanel>
+        <StackPanel VerticalAlignment="Center" />
+        <StackPanel VerticalAlignment="Bottom" />
     </Grid>
 </Window>
