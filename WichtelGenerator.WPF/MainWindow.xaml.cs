@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using WichtelGenerator.Core.Lottery;
 
 namespace WichtelGenerator.WPF
 {
