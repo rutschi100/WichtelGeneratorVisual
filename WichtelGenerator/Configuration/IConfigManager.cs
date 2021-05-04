@@ -2,7 +2,7 @@
 {
     public interface IConfigManager
     {
-        public string Read(string xPath);
-        public string Write(string xPath, string value);
+        public ConfigModel Read();
+        public void Write(ConfigModel configModel);
     }
 }

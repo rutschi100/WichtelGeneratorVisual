@@ -11,10 +11,10 @@ namespace WichtelGenerator.Core
 
         public Factory()
         {
-            _container.Register<INotificationManager, NotificationManager>();
-            _container.Register<ILotteryService, LotteryService>();
-            //_container.Register<IConfigManager, ConfigManager>();
-            _container.Register<INotificationConfig, NotificationConfig>();
+            _container.Register<INotificationManager, NotificationManager>(Lifestyle.Singleton);
+            _container.Register<ILotteryService, LotteryService>(Lifestyle.Singleton);
+            _container.Register<IConfigManager, ConfigManager>(Lifestyle.Singleton);
+            _container.Register<INotificationConfig, NotificationConfig>(Lifestyle.Singleton);
 
             _container.Verify();
         }
@@ -22,6 +22,11 @@ namespace WichtelGenerator.Core
         public ILotteryService GetLotteryService()
         {
             return _container.GetInstance<ILotteryService>();
+        }
+
+        public IConfigManager GetConfigManager()
+        {
+            return _container.GetInstance<IConfigManager>();
         }
     }
 }

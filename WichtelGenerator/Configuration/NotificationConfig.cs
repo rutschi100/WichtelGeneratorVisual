@@ -1,4 +1,6 @@
-﻿namespace WichtelGenerator.Core.Configuration
+﻿using WichtelGenerator.Core.Exeptions;
+
+namespace WichtelGenerator.Core.Configuration
 {
     internal class NotificationConfig : INotificationConfig
     {
@@ -11,8 +13,19 @@
 
         public bool IamEnabled(object T)
         {
-            //TODO: Implementieren
-            return false;
+            var configs = ConfigManager.Read();
+
+            switch (T.GetType().Name)
+            {
+                case "NotificationManager":
+                {
+                    return configs.NotificationsEnabled;
+                }
+                default:
+                {
+                    throw new ConfigUnknownTypeExeption(T.GetType().Name);
+                }
+            }
         }
     }
 }
