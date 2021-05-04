@@ -6,6 +6,7 @@ namespace WichtelGenerator.Core.Notification
     {
         public bool Enabled { get; set; }
         public INotificationConfig NotificationConfig { get; set; }
+        public IConfigManager ConfigManager { get; set; }
         public void SendRuffleResult();
     }
 }
