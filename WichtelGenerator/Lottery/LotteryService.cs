@@ -3,11 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using WichtelGenerator.Core.Exeptions;
 using WichtelGenerator.Core.Models;
+using WichtelGenerator.Core.Notification;
 
 namespace WichtelGenerator.Core.Lottery
 {
-    public class LotteryService : ILotteryService
+    internal class LotteryService : ILotteryService
     {
+        public LotteryService(INotificationManager notificationManager)
+        {
+            NotificationManager = notificationManager;
+        }
+
+        private INotificationManager NotificationManager { get; }
+
         public IEnumerable<SecretSantaModel> Raffle(IEnumerable<SecretSantaModel> players)
         {
             //--- Vorbereiten
@@ -29,6 +37,7 @@ namespace WichtelGenerator.Core.Lottery
             {
                 throw new LotteryFailedExeption("Duplicate lottery drawings were identified.");
             }
+
 
             // ReSharper disable once PossibleMultipleEnumeration
             return players;
