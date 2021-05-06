@@ -1,5 +1,4 @@
 ﻿using SimpleInjector;
-using TimMailLib;
 using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.Core.Lottery;
 using WichtelGenerator.Core.Notification;

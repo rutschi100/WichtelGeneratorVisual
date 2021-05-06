@@ -1,4 +1,7 @@
-﻿using WichtelGenerator.Core.Exeptions;
+﻿using System.Runtime.CompilerServices;
+using WichtelGenerator.Core.Exeptions;
+
+[assembly: InternalsVisibleTo("WichtelGenerator.Core.Test")]
 
 namespace WichtelGenerator.Core.Configuration
 {

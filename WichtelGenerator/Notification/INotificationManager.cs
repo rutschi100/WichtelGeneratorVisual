@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using WichtelGenerator.Core.Models;
+
+[assembly: InternalsVisibleTo("WichtelGenerator.Core.Test")]
 
 namespace WichtelGenerator.Core.Notification
 {

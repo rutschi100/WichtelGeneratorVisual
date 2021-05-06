@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using WichtelGenerator.Core.Exeptions;
 using WichtelGenerator.Core.Models;
 using WichtelGenerator.Core.Notification;
+
+[assembly: InternalsVisibleTo("WichtelGenerator.Core.Test")]
 
 namespace WichtelGenerator.Core.Lottery
 {

@@ -5,6 +5,7 @@ using NUnit.Framework;
 using SimpleInjector;
 using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.Core.Models;
+using WichtelGenerator.Core.Notification;
 
 namespace WichtelGenerator.Core.Test.Configuration
 {
@@ -15,7 +16,6 @@ namespace WichtelGenerator.Core.Test.Configuration
         {
             ConfigFilePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
                              @"\WichtelGenerator.json";
-
         }
 
 

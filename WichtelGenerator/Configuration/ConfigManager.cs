@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
+
+[assembly: InternalsVisibleTo("WichtelGenerator.Core.Test")]
 
 namespace WichtelGenerator.Core.Configuration
 {
@@ -26,6 +29,7 @@ namespace WichtelGenerator.Core.Configuration
             {
                 return new ConfigModel();
             }
+
             var jsonString = File.ReadAllText(AppDataFile);
 
             if (string.IsNullOrEmpty(jsonString))
