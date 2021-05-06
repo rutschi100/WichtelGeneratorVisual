@@ -15,7 +15,7 @@ namespace WichtelGenerator.Core.Configuration
 
         #region MailSettings
 
-        public IEnumerable<string> EmpfaengerListe { get; } = new List<string>();
+        public IEnumerable<string> EmpfaengerListe { get; set; } = new List<string>();
 
         public int Port { get; set; }
 

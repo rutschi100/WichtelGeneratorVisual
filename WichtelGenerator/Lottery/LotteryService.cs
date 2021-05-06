@@ -38,7 +38,7 @@ namespace WichtelGenerator.Core.Lottery
                 throw new LotteryFailedExeption("Duplicate lottery drawings were identified.");
             }
 
-
+            NotificationManager.SendRaffle(players);
             // ReSharper disable once PossibleMultipleEnumeration
             return players;
         }

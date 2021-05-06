@@ -21,6 +21,10 @@ namespace WichtelGenerator.Core.Configuration
                 {
                     return configs.NotificationsEnabled;
                 }
+                case "NotificationMail":
+                {
+                    return configs.MailNotificationEnabled;
+                }
                 default:
                 {
                     throw new ConfigUnknownTypeExeption(T.GetType().Name);

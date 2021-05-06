@@ -16,21 +16,24 @@ namespace WichtelGenerator.Core
             _container.Register<ILotteryService, LotteryService>(Lifestyle.Singleton);
             _container.Register<IConfigManager, ConfigManager>(Lifestyle.Singleton);
             _container.Register<INotificationConfig, NotificationConfig>(Lifestyle.Singleton);
+            _container.Register<INotificationMail, NotificationMail>(Lifestyle.Singleton);
 
+            /*
             _container.Register<IMailSender>(() =>
                 new MailSender(
                     new MailSettings
                     {
-                        Absender = _container.GetInstance<IConfigManager>().Read().Absender,
+                        Absender = _container.GetInstance<IConfigManager>().Read().Absender, //--- First time read it, to fill up the Model
                         //EmpfaengerListe = _container.GetInstance<IConfigManager>().Read().EmpfaengerListe, --> is not needed, because different mails are sent to different recipients.
-                        Passwort = _container.GetInstance<IConfigManager>().Read().Passwort,
-                        Port = _container.GetInstance<IConfigManager>().Read().Port,
-                        ServerName = _container.GetInstance<IConfigManager>().Read().ServerName,
-                        SslOn = _container.GetInstance<IConfigManager>().Read().SslOn,
-                        Username = _container.GetInstance<IConfigManager>().Read().Username
+                        Passwort = _container.GetInstance<IConfigManager>().ConfigModel.Passwort,
+                        Port = _container.GetInstance<IConfigManager>().ConfigModel.Port,
+                        ServerName = _container.GetInstance<IConfigManager>().ConfigModel.ServerName,
+                        SslOn = _container.GetInstance<IConfigManager>().ConfigModel.SslOn,
+                        Username = _container.GetInstance<IConfigManager>().ConfigModel.Username
                     }
                 )
             );
+            */
 
             _container.Verify();
         }

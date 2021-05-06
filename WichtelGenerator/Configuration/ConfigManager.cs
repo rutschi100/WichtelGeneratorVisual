@@ -8,29 +8,54 @@ namespace WichtelGenerator.Core.Configuration
     {
         public ConfigManager()
         {
+            ConfigModel = new ConfigModel();
             if (!ConfigExists())
             {
-                Write(new ConfigModel());
+                Write(ConfigModel);
             }
         }
 
         private string AppDataFile { get; } = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
                                               @"\WichtelGenerator.json";
 
+        public ConfigModel ConfigModel { get; set; }
+
         public ConfigModel Read()
         {
+            if (!ConfigExists())
+            {
+                return new ConfigModel();
+            }
             var jsonString = File.ReadAllText(AppDataFile);
-            return JsonSerializer.Deserialize<ConfigModel>(jsonString);
+
+            if (string.IsNullOrEmpty(jsonString))
+            {
+                return new ConfigModel();
+            }
+
+            ConfigModel = JsonSerializer.Deserialize<ConfigModel>(jsonString);
+            return ConfigModel;
         }
 
         public void Write(ConfigModel configModel)
         {
-            if (ConfigExists()) return;
+            RemoveConfigFromFileSystem();
+
             var jsonString = JsonSerializer.Serialize(configModel);
-            File.Create(AppDataFile);
+            var result = File.Create(AppDataFile);
+            result.Close();
+
             var writer = new StreamWriter(AppDataFile);
             writer.Write(jsonString);
             writer.Close();
+        }
+
+        private void RemoveConfigFromFileSystem()
+        {
+            if (ConfigExists())
+            {
+                File.Delete(AppDataFile);
+            }
         }
 
         private bool ConfigExists()

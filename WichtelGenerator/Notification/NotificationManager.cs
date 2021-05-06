@@ -7,12 +7,12 @@ namespace WichtelGenerator.Core.Notification
 {
     internal class NotificationManager : INotificationManager
     {
-        public NotificationManager(INotificationConfig notificationConfig)
+        public NotificationManager(INotificationConfig notificationConfig, INotificationMail mail)
         {
             NotificationConfig = notificationConfig;
 
             //Add new Notificationservices here!
-            //NotificationServices.Add();
+            NotificationServices.Add(mail);
         }
 
         private List<INotification> NotificationServices { get; } = new List<INotification>();
