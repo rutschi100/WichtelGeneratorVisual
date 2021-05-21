@@ -21,6 +21,11 @@ namespace WichtelGenerator.Core.Lottery
 
         public IEnumerable<SecretSantaModel> Raffle(IEnumerable<SecretSantaModel> players)
         {
+            if (!AllSantasHasAname(players))
+            {
+                throw new LotteryFailedExeption("Incomplete list. Some santas do not have a name");
+            }
+
             //--- Vorbereiten
             players = players.OrderByDescending(p => p.BlackList.Count);
             var allreadyUsed = new List<SecretSantaModel>();
@@ -46,6 +51,11 @@ namespace WichtelGenerator.Core.Lottery
             return players;
         }
 
+        public bool AllSantasHasAname(IEnumerable<SecretSantaModel> list)
+        {
+            return list.All(oneSantaModel => !string.IsNullOrEmpty(oneSantaModel.Name));
+        }
+
         /// <summary>
         ///     Checks if there are duplicate entries in the list
         /// </summary>
@@ -65,7 +75,7 @@ namespace WichtelGenerator.Core.Lottery
         private void TakeTheFirstAvailable(SecretSantaModel player, ICollection<SecretSantaModel> allreadyUsed)
         {
             foreach (var oneFromWhite in from oneFromWhite in player.WhiteList
-                let result = allreadyUsed.FirstOrDefault(p => p.Equals(oneFromWhite))
+                let result = allreadyUsed.FirstOrDefault(p => p.Equals(oneFromWhite) && oneFromWhite.Choise != p)
                 where result == null
                 select oneFromWhite)
             {
@@ -108,6 +118,8 @@ namespace WichtelGenerator.Core.Lottery
             {
                 var posibleChoise = player.WhiteList[random.Next(player.WhiteList.Count)];
                 if (IsInSantaList(allreadyUsed, posibleChoise)) continue;
+                if (posibleChoise.Choise == player) continue; // Do not draw each other
+
 
                 //noch nicht verwendet
                 player.Choise = posibleChoise;
@@ -117,5 +129,9 @@ namespace WichtelGenerator.Core.Lottery
 
             return i < player.WhiteList.Count();
         }
+
+
+
+
     }
 }

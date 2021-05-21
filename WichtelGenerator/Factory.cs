@@ -1,4 +1,5 @@
 ﻿using SimpleInjector;
+using TimMailLib;
 using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.Core.Lottery;
 using WichtelGenerator.Core.Notification;
@@ -14,9 +15,9 @@ namespace WichtelGenerator.Core
             _container.Register<INotificationManager, NotificationManager>(Lifestyle.Singleton);
             _container.Register<ILotteryService, LotteryService>(Lifestyle.Singleton);
             _container.Register<IConfigManager, ConfigManager>(Lifestyle.Singleton);
-            _container.Register<INotificationConfig, NotificationConfig>(Lifestyle.Singleton);
             _container.Register<INotificationMail, NotificationMail>(Lifestyle.Singleton);
-
+            _container.RegisterSingleton<IMailSender>(()=>new MailSender(new MailSettings()));
+            
             /*
             _container.Register<IMailSender>(() =>
                 new MailSender(

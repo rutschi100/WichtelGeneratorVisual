@@ -2,29 +2,29 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using WichtelGenerator.Core.Configuration;
+using WichtelGenerator.Core.Exeptions;
 using WichtelGenerator.Core.Models;
 
 [assembly: InternalsVisibleTo("WichtelGenerator.Core.Test")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] 
 
 namespace WichtelGenerator.Core.Notification
 {
     internal class NotificationManager : INotificationManager
     {
-        public NotificationManager(INotificationConfig notificationConfig, INotificationMail mail)
+        public NotificationManager(INotificationMail mail, IConfigManager configManager)
         {
-            NotificationConfig = notificationConfig;
-
+            ConfigManager = configManager;
             //Add new Notificationservices here!
             NotificationServices.Add(mail);
         }
 
         private List<INotification> NotificationServices { get; } = new List<INotification>();
-
-        private INotificationConfig NotificationConfig { get; }
+        public IConfigManager ConfigManager { get; set; }
 
         public void SendRaffle(IEnumerable<SecretSantaModel> secretSantas)
         {
-            if (!NotificationConfig.IamEnabled(this))
+            if (!ConfigManager.Read().NotificationsEnabled)
             {
                 return;
             }
@@ -32,7 +32,12 @@ namespace WichtelGenerator.Core.Notification
             foreach (var oneNotificationService in NotificationServices.Where(oneNotificationService =>
                 oneNotificationService.Enabled))
             {
-                oneNotificationService.SendRuffleResult();
+                if (oneNotificationService.SendRuffleResult()) continue;
+                if (oneNotificationService.Enabled)
+                {
+                    throw new NotificationNotSendedException();
+                }
+
             }
         }
     }

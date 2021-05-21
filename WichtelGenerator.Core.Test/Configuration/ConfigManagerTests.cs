@@ -2,50 +2,47 @@
 using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
-using SimpleInjector;
 using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.Core.Models;
-using WichtelGenerator.Core.Notification;
 
 namespace WichtelGenerator.Core.Test.Configuration
 {
     public class ConfigManagerTests
     {
+        public string ConfigFilePath { get; set; }
+        public Factory Factory { get; set; } = new Factory();
+
+        public ConfigModel TestModel { get; set; } = new ConfigModel
+        {
+            Absender = "Test Absender",
+            EmpfaengerListe = new List<string>
+            {
+                "Ein Absender",
+                "Zwei Absender"
+            },
+            MailNotificationEnabled = true,
+            NotificationsEnabled = true,
+            Passwort = "abc",
+            Port = 25,
+            ServerName = "Test Server",
+            SslOn = true,
+            Username = "The User",
+            SecretSantaModels = new List<SecretSantaModel>
+            {
+                new SecretSantaModel
+                {
+                    MailAdress = "MyMail@Test",
+                    Name = "Test Santa"
+                }
+            }
+        };
+
         [SetUp]
         public void Init()
         {
             ConfigFilePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
                              @"\WichtelGenerator.json";
         }
-
-
-        public string ConfigFilePath { get; set; }
-        public Factory Factory { get; set; } = new Factory();
-
-        public ConfigModel TestModel { get; set; } = new ConfigModel()
-        {
-            Absender = $"Test Absender",
-            EmpfaengerListe = new List<string>()
-            {
-                $"Ein Absender",
-                $"Zwei Absender"
-            },
-            MailNotificationEnabled = true,
-            NotificationsEnabled = true,
-            Passwort = $"abc",
-            Port = 25,
-            ServerName = $"Test Server",
-            SslOn = true,
-            Username = $"The User",
-            SecretSantaModels = new List<SecretSantaModel>()
-            {
-                new SecretSantaModel()
-                {
-                    MailAdress = $"MyMail@Test",
-                    Name = $"Test Santa",
-                }
-            }
-        };
 
 
         private bool ConifigFileExists()
@@ -103,7 +100,5 @@ namespace WichtelGenerator.Core.Test.Configuration
 
             Assert.True(string.IsNullOrEmpty(loadedModel.ServerName));
         }
-
-
     }
 }

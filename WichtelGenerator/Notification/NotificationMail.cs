@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TimMailLib;
 using WichtelGenerator.Core.Configuration;
@@ -9,23 +10,23 @@ namespace WichtelGenerator.Core.Notification
 {
     internal class NotificationMail : INotificationMail
     {
-        public NotificationMail(IConfigManager configManager, INotificationConfig notificationConfig)
+        public NotificationMail(IConfigManager configManager,
+            IMailSender mailSender)
         {
             ConfigManager = configManager;
-            NotificationConfig = notificationConfig;
-            Enabled = notificationConfig.IamEnabled(this);
+            //Enabled = configManager.ConfigModel.MailNotificationEnabled;
+            MailSender = mailSender;
         }
 
         private IMailSender MailSender { get; set; }
         public bool Enabled { get; set; }
-        public INotificationConfig NotificationConfig { get; set; }
 
-        public void SendRuffleResult()
+        public bool SendRuffleResult()
         {
             SetSettings();
             if (!Enabled)
             {
-                return;
+                return false;
             }
 
             foreach (var oneSanta in ConfigManager.Read().SecretSantaModels)
@@ -38,29 +39,34 @@ namespace WichtelGenerator.Core.Notification
                 {
                     oneSanta.MailAdress
                 };
-
-                MailSender.SendMessage("Wichtel Generator - Verlosungsresultat", message);
+                try
+                {
+                    MailSender.SendMessage("Wichtel Generator - Verlosungsresultat", message);
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
             }
+            return true;
         }
 
         public IConfigManager ConfigManager { get; set; }
 
         private void SetSettings()
         {
-            Enabled = NotificationConfig.IamEnabled(this);
-            if (Enabled)
+            Enabled = ConfigManager.Read().MailNotificationEnabled;
+            if (!Enabled) return;
+            MailSender.MailSettings = new MailSettings
             {
-                MailSender = new MailSender(new MailSettings
-                {
-                    Absender = ConfigManager.Read().Absender, //--- First time read it, to fill up the Model
-                    //EmpfaengerListe = _container.GetInstance<IConfigManager>().Read().EmpfaengerListe, --> is not needed, because different mails are sent to different recipients.
-                    Passwort = ConfigManager.ConfigModel.Passwort,
-                    Port = ConfigManager.ConfigModel.Port,
-                    ServerName = ConfigManager.ConfigModel.ServerName,
-                    SslOn = ConfigManager.ConfigModel.SslOn,
-                    Username = ConfigManager.ConfigModel.Username
-                });
-            }
+                Absender = ConfigManager.Read().Absender, //--- First time read it, to fill up the Model
+                //EmpfaengerListe = _container.GetInstance<IConfigManager>().Read().EmpfaengerListe, --> is not needed, because different mails are sent to different recipients.
+                Passwort = ConfigManager.ConfigModel.Passwort,
+                Port = ConfigManager.ConfigModel.Port,
+                ServerName = ConfigManager.ConfigModel.ServerName,
+                SslOn = ConfigManager.ConfigModel.SslOn,
+                Username = ConfigManager.ConfigModel.Username
+            };
         }
     }
 }
