@@ -1,0 +1,23 @@
+﻿<Window x:Class="WichtelGenerator.WPF.MainSite"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Wichtel Generator" SizeToContent="WidthAndHeight">
+    <StackPanel Orientation="Horizontal" MinWidth="200">
+        <Grid Name="Menu">
+            <StackPanel Orientation="Vertical" Background="AliceBlue">
+                <Button Background="Azure" BorderBrush="Aqua" Click="StorageSetting_OnClick">Speichern / Laden</Button>
+                <Button Background="Azure" BorderBrush="Aqua">Einstellungen</Button>
+                <Button Background="Azure" BorderBrush="Aqua">Mitspieler hinzufügen</Button>
+                <Button Background="Azure" BorderBrush="Aqua">Mitspieler verwalten</Button>
+                <Button Background="Azure" BorderBrush="Aqua">Black Lists verwalten</Button>
+                <Button Background="Azure" BorderBrush="Aqua">Verlosung</Button>
+            </StackPanel>
+        </Grid>
+        <Grid Name="PageView">
+            <Frame Name="WorkPlace" NavigationUIVisibility="Hidden" HorizontalAlignment="Left" />
+        </Grid>
+    </StackPanel>
+</Window>
