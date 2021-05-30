@@ -30,5 +30,11 @@ namespace WichtelGenerator.Core.Configuration
         public bool SslOn { get; set; }
 
         #endregion
+
+        #region AppSettings
+
+        public int FontSize { get; set; } = 16;
+
+        #endregion
     }
 }
