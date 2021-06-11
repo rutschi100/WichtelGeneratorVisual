@@ -8,23 +8,32 @@
         FontSize="{Binding FontSize}" d:DataContext="{d:DesignData }"
         Name="MainWindow"
         WindowStartupLocation="CenterScreen"
-        WindowStyle="SingleBorderWindow" 
-        ResizeMode="CanMinimize"
-        >
-    <StackPanel Orientation="Horizontal" MinWidth="200" >
-        <Grid Name="Menu">
-            <StackPanel Orientation="Vertical" Background="AliceBlue">
-                <Button Background="Azure" BorderBrush="Aqua" Click="StorageSetting_OnClick">Speichern / Laden</Button>
-                <Button Background="Azure" BorderBrush="Aqua" Click="StartSetting_OnClick">Einstellungen</Button>
-                <Button Background="Azure" BorderBrush="Aqua" Click="StartAddUserPage_OnClick">Mitspieler hinzufügen</Button>
-                <Button Background="Azure" BorderBrush="Aqua" Click="StartManageUserPage_OnClick">Mitspieler verwalten</Button>
-                <Button Background="Azure" BorderBrush="Aqua" Click="StartManageBlackListPage_OnClick">Black Lists verwalten</Button>
-                <Button Background="Azure" BorderBrush="Aqua" Click="StartRufflePage_OnCklick">Verlosung</Button>
-            </StackPanel>
-        </Grid>
-        <Grid Name="PageView">
-            <Frame FontSize="{Binding FontSize}" Name="WorkPlace" NavigationUIVisibility="Hidden"
-                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-        </Grid>
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="CanMinimize">
+    <StackPanel Orientation="Horizontal" MinWidth="200">
+
+        <TabControl TabStripPlacement="Left" Name="MenuControllBar">
+            <TabItem Background="AliceBlue" Header="Speichern / Laden">
+                <Frame Name="SaveTab" />
+            </TabItem>
+            <TabItem Background="AliceBlue" Header="Einstellungen">
+                <Frame Name="SettingTab" />
+            </TabItem>
+            <TabItem Background="AliceBlue" Header="Mitspieler hinzufügen">
+                <Frame Name="AddUserTab" />
+            </TabItem>
+            <TabItem Background="AliceBlue" Header="Mitspieler verwalten">
+                <Frame Name="ManageUserTab" />
+            </TabItem>
+            <TabItem Background="AliceBlue" Header="Black Lists verwalten">
+                <Frame Name="ManageBlackListTab" />
+            </TabItem>
+            <TabItem Background="AliceBlue" Header="Verlosung">
+                <Frame Name="RuffleTab" />
+            </TabItem>
+        </TabControl>
+
+        <Frame FontSize="{Binding FontSize}" Name="WorkPlace" NavigationUIVisibility="Hidden"
+               HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
     </StackPanel>
 </Window>

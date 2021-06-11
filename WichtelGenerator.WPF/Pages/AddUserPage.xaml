@@ -7,7 +7,7 @@
       Title="AddUserPage"
       HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
-    <StackPanel Background="AliceBlue" Margin="4,0,4,0" >
+    <StackPanel Background="AliceBlue" Margin="4,0,4,0">
         <GroupBox Header="Füge Mitspieler hinzu" Margin="4">
 
             <Grid>

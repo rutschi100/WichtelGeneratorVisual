@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WichtelGenerator.WPF.ViewModels
+﻿namespace WichtelGenerator.WPF.ViewModels
 {
-    class ManageUserViewModel
+    internal class ManageUserViewModel
     {
     }
 }

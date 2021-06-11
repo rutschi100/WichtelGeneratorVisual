@@ -20,14 +20,14 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0"
-                   Content="Wähle zu konfigurierender Wichtel"/>
+                   Content="Wähle zu konfigurierender Wichtel" />
             <ListBox Grid.Row="0" Grid.Column="1" />
 
             <Label Grid.Row="1" Grid.Column="0" Background="AliceBlue">Verfügbare Wichtel</Label>
             <Label Grid.Row="1" Grid.Column="1" Background="AliceBlue">Wichtel auf der Blacklist</Label>
 
-            <ListView Grid.Row="2" Grid.Column="0"></ListView>
-            <ListView Grid.Row="2" Grid.Column="1"></ListView>
+            <ListView Grid.Row="2" Grid.Column="0" />
+            <ListView Grid.Row="2" Grid.Column="1" />
 
         </Grid>
     </StackPanel>

@@ -9,49 +9,53 @@
       VerticalAlignment="Stretch" Margin="4">
 
     <StackPanel Background="Beige" Margin="4,0,4,0">
-            <Grid Margin="4">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Label Grid.ColumnSpan="2" HorizontalContentAlignment="Center"
-                       Background="AliceBlue">Mail Einstellungen</Label>
+        <Grid Margin="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Grid.ColumnSpan="2" HorizontalContentAlignment="Center"
+                   Background="AliceBlue">
+                Mail Einstellungen
+            </Label>
 
-                <Label Grid.Column="0" Grid.Row="1">Mail Adresse</Label>
-                <TextBox Grid.Column="1" MinWidth="80" Grid.Row="1" />
+            <Label Grid.Column="0" Grid.Row="1">Mail Adresse</Label>
+            <TextBox Grid.Column="1" MinWidth="80" Grid.Row="1" />
 
-                <Label Grid.Column="0" Grid.Row="2">User Name</Label>
-                <TextBox Grid.Column="1" Grid.Row="2" />
+            <Label Grid.Column="0" Grid.Row="2">User Name</Label>
+            <TextBox Grid.Column="1" Grid.Row="2" />
 
-                <Label Grid.Column="0" Grid.Row="3">Passwort</Label>
-                <TextBox Grid.Column="1" Grid.Row="3" />
+            <Label Grid.Column="0" Grid.Row="3">Passwort</Label>
+            <TextBox Grid.Column="1" Grid.Row="3" />
 
-                <Label Grid.Column="0" Grid.Row="4">Port</Label>
-                <TextBox Grid.Column="1" Grid.Row="4" />
+            <Label Grid.Column="0" Grid.Row="4">Port</Label>
+            <TextBox Grid.Column="1" Grid.Row="4" />
 
-                <Label Grid.Column="0" Grid.Row="5">Server</Label>
-                <TextBox Grid.Column="1" Grid.Row="5" />
+            <Label Grid.Column="0" Grid.Row="5">Server</Label>
+            <TextBox Grid.Column="1" Grid.Row="5" />
 
-                <Label Grid.Column="0" Grid.Row="6">SSL</Label>
-                <CheckBox Grid.Column="1" Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="6">SSL</Label>
+            <CheckBox Grid.Column="1" Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
-                <Label Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Background="AliceBlue"
-                       HorizontalContentAlignment="Center">App Einstellungen</Label>
+            <Label Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Background="AliceBlue"
+                   HorizontalContentAlignment="Center">
+                App Einstellungen
+            </Label>
 
-                <Label Grid.Row="8" Grid.Column="0" Content="Schriftgrösse" />
-                <TextBox Grid.Row="8" Grid.Column="1" MinWidth="80"></TextBox>
-            </Grid>
+            <Label Grid.Row="8" Grid.Column="0" Content="Schriftgrösse" />
+            <TextBox Grid.Row="8" Grid.Column="1" MinWidth="80" />
+        </Grid>
 
         <Button Margin="4">Speichern</Button>
 

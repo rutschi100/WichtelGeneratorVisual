@@ -1,6 +1,6 @@
 ﻿namespace WichtelGenerator.WPF.ViewModels
 {
-    internal class RuffleViewModel
+    public class MainSiteViewModel
     {
     }
 }
