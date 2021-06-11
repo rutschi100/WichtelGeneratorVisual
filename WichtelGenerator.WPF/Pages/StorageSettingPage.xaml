@@ -7,8 +7,10 @@
       Title="StorageSettingPage">
 
     <StackPanel Background="Beige">
+
         <Label HorizontalAlignment="Left">Gespeicherte Einstellungen</Label>
         <ListView Name="SettingList" ItemsSource="{Binding Settings}" />
-        <Button Name="LoadSetting" Click="LoadSetting_OnClick" HorizontalAlignment="Stretch">Einstellungen laden</Button>
+        <Button Margin="2" Name="LoadSetting" Click="LoadSetting_OnClick" HorizontalAlignment="Stretch">Einstellungen laden</Button>
+        <Button Margin="2">Aktuelle Einstellung speichern</Button>
     </StackPanel>
 </Page>

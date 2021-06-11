@@ -6,8 +6,12 @@
         mc:Ignorable="d"
         Title="Wichtel Generator" SizeToContent="WidthAndHeight"
         FontSize="{Binding FontSize}" d:DataContext="{d:DesignData }"
-        Name="MainWindow">
-    <StackPanel Orientation="Horizontal" MinWidth="200">
+        Name="MainWindow"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="SingleBorderWindow" 
+        ResizeMode="CanMinimize"
+        >
+    <StackPanel Orientation="Horizontal" MinWidth="200" >
         <Grid Name="Menu">
             <StackPanel Orientation="Vertical" Background="AliceBlue">
                 <Button Background="Azure" BorderBrush="Aqua" Click="StorageSetting_OnClick">Speichern / Laden</Button>
@@ -20,7 +24,7 @@
         </Grid>
         <Grid Name="PageView">
             <Frame FontSize="{Binding FontSize}" Name="WorkPlace" NavigationUIVisibility="Hidden"
-                   HorizontalAlignment="Left" />
+                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </Grid>
     </StackPanel>
 </Window>

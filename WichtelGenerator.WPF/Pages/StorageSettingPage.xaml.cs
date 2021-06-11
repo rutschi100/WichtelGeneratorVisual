@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Extensions.Logging;
 
 namespace WichtelGenerator.WPF.Pages
 {
@@ -14,9 +15,9 @@ namespace WichtelGenerator.WPF.Pages
         {
             InitializeComponent();
 
-            var noSettingMessage = "Keine Einstellung vorhanden!";
+            const string noSettingMessage = "Keine Einstellung vorhanden!";
             Settings.Add(noSettingMessage);
-
+            
             //SettingList.Items.Add(noSettingMessage);
         }
 

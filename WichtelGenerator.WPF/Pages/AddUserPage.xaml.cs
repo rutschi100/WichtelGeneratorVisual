@@ -10,6 +10,7 @@ namespace WichtelGenerator.WPF.Pages
         public AddUserPage()
         {
             InitializeComponent();
+            
         }
     }
 }

@@ -4,10 +4,34 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="AddUserPage">
+      Title="AddUserPage"
+      HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
-    <Grid>
-        <Label>Empty Site</Label>
-    </Grid>
+    <StackPanel Background="AliceBlue" Margin="4,0,4,0" >
+        <GroupBox Header="Füge Mitspieler hinzu" Margin="4">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Grid.Row="0">Spieler Namen</Label>
+                <TextBox Grid.Column="1" Grid.Row="0" MinWidth="100" />
+
+                <Label Grid.Column="0" Grid.Row="1">E-Mail Adresse</Label>
+                <TextBox Grid.Column="1" Grid.Row="1" MinWidth="100" />
+
+            </Grid>
+        </GroupBox>
+        <Button Content="Hinzufügen" Margin="2" />
+
+
+        <GroupBox Header="Hinzugefügte Mitspieler" Margin="4">
+            <ListView>TestEintrag</ListView>
+        </GroupBox>
+    </StackPanel>
 </Page>
