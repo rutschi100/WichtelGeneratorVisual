@@ -25,7 +25,7 @@ namespace WichtelGenerator.WPF
 
             InitializeComponent();
 
-            WorkPlace.Content = WelcomePage;
+            //WorkPlace.Content = WelcomePage;
             //WorkPlace.DataContext = ConfigModel; // FontSize hat bisher keine Wirkung!
 
             //MainWindow.DataContext = ConfigModel; // Test Kommentar
@@ -37,7 +37,7 @@ namespace WichtelGenerator.WPF
             SettingTab.Content = SettingPage;
             AddUserTab.Content = AddUserPage;
             ManageUserTab.Content = ManageUserPage;
-            ManageBlackListTab.Content = ManageBlackListTab;
+            ManageBlackListTab.Content = ManageBlackListsPage;
             RuffleTab.Content = RufflePage;
 
             #endregion

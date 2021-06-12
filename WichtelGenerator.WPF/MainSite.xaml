@@ -1,39 +1,33 @@
 ﻿<Window x:Class="WichtelGenerator.WPF.MainSite"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         mc:Ignorable="d"
-        Title="Wichtel Generator" SizeToContent="WidthAndHeight"
-        FontSize="{Binding FontSize}" d:DataContext="{d:DesignData }"
-        Name="MainWindow"
+        Title="Wichtel Generator"
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow"
-        ResizeMode="CanMinimize">
-    <StackPanel Orientation="Horizontal" MinWidth="200">
+        ResizeMode="CanMinimize"
+        MinWidth="200">
 
-        <TabControl TabStripPlacement="Left" Name="MenuControllBar">
-            <TabItem Background="AliceBlue" Header="Speichern / Laden">
-                <Frame Name="SaveTab" />
-            </TabItem>
-            <TabItem Background="AliceBlue" Header="Einstellungen">
-                <Frame Name="SettingTab" />
-            </TabItem>
-            <TabItem Background="AliceBlue" Header="Mitspieler hinzufügen">
-                <Frame Name="AddUserTab" />
-            </TabItem>
-            <TabItem Background="AliceBlue" Header="Mitspieler verwalten">
-                <Frame Name="ManageUserTab" />
-            </TabItem>
-            <TabItem Background="AliceBlue" Header="Black Lists verwalten">
-                <Frame Name="ManageBlackListTab" />
-            </TabItem>
-            <TabItem Background="AliceBlue" Header="Verlosung">
-                <Frame Name="RuffleTab" />
-            </TabItem>
-        </TabControl>
-
-        <Frame FontSize="{Binding FontSize}" Name="WorkPlace" NavigationUIVisibility="Hidden"
-               HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-    </StackPanel>
+    <TabControl TabStripPlacement="Left">
+        <TabItem Background="AliceBlue" Header="Speichern / Laden">
+            <Frame Name="SaveTab" />
+        </TabItem>
+        <TabItem Background="AliceBlue" Header="Einstellungen">
+            <Frame Name="SettingTab" />
+        </TabItem>
+        <TabItem Background="AliceBlue" Header="Mitspieler hinzufügen">
+            <Frame Name="AddUserTab" />
+        </TabItem>
+        <TabItem Background="AliceBlue" Header="Mitspieler verwalten">
+            <Frame Name="ManageUserTab" />
+        </TabItem>
+        <TabItem Background="AliceBlue" Header="Black Lists verwalten">
+            <Frame Name="ManageBlackListTab" />
+        </TabItem>
+        <TabItem Background="AliceBlue" Header="Verlosung">
+            <Frame Name="RuffleTab" />
+        </TabItem>
+    </TabControl>
 </Window>
