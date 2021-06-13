@@ -31,22 +31,43 @@
             </Label>
 
             <Label Grid.Column="0" Grid.Row="1">Mail Adresse</Label>
-            <TextBox Grid.Column="1" MinWidth="80" Grid.Row="1" />
+            <TextBox Grid.Column="1" MinWidth="80" Grid.Row="1"
+                     Name="MailTextBox"
+                     Text="{Binding Absender, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <Label Grid.Column="0" Grid.Row="2">User Name</Label>
-            <TextBox Grid.Column="1" Grid.Row="2" />
+            <TextBox Grid.Column="1" Grid.Row="2"
+                     Name="UserNameTextBox"
+                     Text="{Binding 
+                Username, 
+                Mode=TwoWay, 
+                UpdateSourceTrigger=PropertyChanged}" />
 
             <Label Grid.Column="0" Grid.Row="3">Passwort</Label>
-            <TextBox Grid.Column="1" Grid.Row="3" />
+            <PasswordBox Grid.Column="1" Grid.Row="3"
+                         Name="PasswodTextBox" />
 
             <Label Grid.Column="0" Grid.Row="4">Port</Label>
-            <TextBox Grid.Column="1" Grid.Row="4" />
+            <TextBox Grid.Column="1" Grid.Row="4"
+                     Name="PortTextBox"
+                     Text="{Binding 
+                Port, 
+                Mode=TwoWay, 
+                UpdateSourceTrigger=PropertyChanged}" />
 
             <Label Grid.Column="0" Grid.Row="5">Server</Label>
-            <TextBox Grid.Column="1" Grid.Row="5" />
+            <TextBox Grid.Column="1" Grid.Row="5"
+                     Name="ServerTextBox"
+                     Text="{Binding 
+                ServerName, 
+                Mode=TwoWay, 
+                UpdateSourceTrigger=PropertyChanged}" />
 
             <Label Grid.Column="0" Grid.Row="6">SSL</Label>
-            <CheckBox Grid.Column="1" Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <CheckBox Grid.Column="1" Grid.Row="6" VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      Name="SSLCheckBox"
+                      IsChecked="{Binding SslOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <Label Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Background="AliceBlue"
                    HorizontalContentAlignment="Center">
@@ -54,10 +75,18 @@
             </Label>
 
             <Label Grid.Row="8" Grid.Column="0" Content="Schriftgrösse" />
-            <TextBox Grid.Row="8" Grid.Column="1" MinWidth="80" />
+            <TextBox Grid.Row="8" Grid.Column="1" MinWidth="80"
+                     Name="FontSizeTextBox"
+                     Text="{Binding 
+                FontSize, 
+                Mode=TwoWay, 
+                UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
 
-        <Button Margin="4">Speichern</Button>
+        <Button Margin="4"
+                Name="SaveSettingButton">
+            Speichern
+        </Button>
 
     </StackPanel>
 </Page>

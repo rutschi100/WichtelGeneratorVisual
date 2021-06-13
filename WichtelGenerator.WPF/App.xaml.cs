@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using SimpleInjector;
+using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.WPF.Pages;
 using WichtelGenerator.WPF.ViewModels;
 
@@ -38,6 +39,7 @@ namespace WichtelGenerator.WPF
 
         private async Task RegisterCore()
         {
+            Container.Register<ConfigModel>(Lifestyle.Singleton);
             await Task.CompletedTask;
         }
 
