@@ -12,6 +12,9 @@ namespace WichtelGenerator.WPF.ViewModels
             ConfigModel = configModel;
         }
 
+        //TODO: Aktueller Stand kopieren, um den nicht gespeicherter Stand wieder zu löschen
+        //TODO: Wenn die Seite Verlassen wird, und es Änderungen hat, dann nachfragen, ob die Änderungen gespeichert werden sollen.
+
         public ConfigModel ConfigModel { get; set; }
 
         public void SaveSettings_OnClick(object sender, EventArgs e)
