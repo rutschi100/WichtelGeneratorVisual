@@ -9,8 +9,8 @@
     <StackPanel Background="Beige">
 
         <Label HorizontalAlignment="Left">Gespeicherte Einstellungen</Label>
-        <ListView Name="SettingList" ItemsSource="{Binding Settings}" />
-        <Button Margin="2" Name="LoadSetting" Click="LoadSetting_OnClick" HorizontalAlignment="Stretch">Einstellungen laden</Button>
+        <ListView Name="SettingList" />
+        <Button Margin="2" Name="LoadSetting" HorizontalAlignment="Stretch">Einstellungen laden</Button>
         <Button Margin="2">Aktuelle Einstellung speichern</Button>
         <Button Margin="2">Alles zurücksetzen</Button>
     </StackPanel>

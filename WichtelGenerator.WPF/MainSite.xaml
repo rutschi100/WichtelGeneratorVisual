@@ -12,22 +12,23 @@
 
     <TabControl TabStripPlacement="Left">
         <TabItem Background="AliceBlue" Header="Speichern / Laden">
-            <Frame Name="SaveTab" />
+            <!-- <Label Content="{Binding testtest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Label> -->
+            <Frame Name="SaveTab" Content="{Binding SavePage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </TabItem>
         <TabItem Background="AliceBlue" Header="Einstellungen">
-            <Frame Name="SettingTab" />
+            <Frame Name="SettingTab" Content="{Binding SettingPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </TabItem>
         <TabItem Background="AliceBlue" Header="Mitspieler hinzufügen">
-            <Frame Name="AddUserTab" />
+            <Frame Name="AddUserTab" Content="{Binding AddUserPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </TabItem>
         <TabItem Background="AliceBlue" Header="Mitspieler verwalten">
-            <Frame Name="ManageUserTab" />
+            <Frame Name="ManageUserTab" Content="{Binding ManageUserPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </TabItem>
         <TabItem Background="AliceBlue" Header="Black Lists verwalten">
-            <Frame Name="ManageBlackListTab" />
+            <Frame Name="ManageBlackListTab" Content="{Binding ManageBlackListPage,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </TabItem>
         <TabItem Background="AliceBlue" Header="Verlosung">
-            <Frame Name="RuffleTab" />
+            <Frame Name="RuffleTab" Content="{Binding RufflePage,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </TabItem>
     </TabControl>
 </Window>

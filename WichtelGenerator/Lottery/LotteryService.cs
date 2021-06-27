@@ -21,13 +21,14 @@ namespace WichtelGenerator.Core.Lottery
 
         public IEnumerable<SecretSantaModel> Raffle(IEnumerable<SecretSantaModel> players)
         {
-            if (!AllSantasHasAname(players))
+            var secretSantaModels = players as SecretSantaModel[] ?? players.ToArray();
+            if (!AllSantasHasAname(secretSantaModels))
             {
                 throw new LotteryFailedExeption("Incomplete list. Some santas do not have a name");
             }
 
             //--- Vorbereiten
-            players = players.OrderByDescending(p => p.BlackList.Count);
+            players = secretSantaModels.OrderByDescending(p => p.BlackList.Count);
             var allreadyUsed = new List<SecretSantaModel>();
 
             // ReSharper disable once PossibleMultipleEnumeration
@@ -51,7 +52,7 @@ namespace WichtelGenerator.Core.Lottery
             return players;
         }
 
-        public bool AllSantasHasAname(IEnumerable<SecretSantaModel> list)
+        private bool AllSantasHasAname(IEnumerable<SecretSantaModel> list)
         {
             return list.All(oneSantaModel => !string.IsNullOrEmpty(oneSantaModel.Name));
         }
@@ -113,8 +114,8 @@ namespace WichtelGenerator.Core.Lottery
         {
             var random = new Random();
 
-            var i = 0;
-            for (i = 0; i < player.WhiteList.Count(); i++)
+            int i;
+            for (i = 0; i < player.WhiteList.Count; i++)
             {
                 var posibleChoise = player.WhiteList[random.Next(player.WhiteList.Count)];
                 if (IsInSantaList(allreadyUsed, posibleChoise)) continue;
@@ -127,7 +128,7 @@ namespace WichtelGenerator.Core.Lottery
                 break;
             }
 
-            return i < player.WhiteList.Count();
+            return i < player.WhiteList.Count;
         }
 
 

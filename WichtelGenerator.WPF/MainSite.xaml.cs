@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using RutschiSwiss.Helpers.WPF.Services;
 using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.WPF.Pages;
 using WichtelGenerator.WPF.ViewModels;
@@ -8,8 +9,14 @@ namespace WichtelGenerator.WPF
     /// <summary>
     ///     Interaktionslogik für MainSite.xaml
     /// </summary>
-    public partial class MainSite : Window
+    public partial class MainSite : IBindableView
     {
+        public MainSite()
+        {
+            InitializeComponent();
+        }
+        
+        /*
         public MainSite(MainSiteViewModel mainSiteViewModel, WelcomePage welcomePage,
             StorageSettingPage storageSettingPage, AddUserPage addUserPage, ManageUserPage manageUserPage,
             ManageBlackListsPage manageBlackListsPage, RufflePage rufflePage, SettingPage settingPage)
@@ -59,5 +66,6 @@ namespace WichtelGenerator.WPF
         public RufflePage RufflePage { get; set; }
 
         #endregion
+        */
     }
 }
