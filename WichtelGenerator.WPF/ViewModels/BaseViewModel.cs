@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
+using System.Windows.Controls;
+using RutschiSwiss.Helpers.WPF.Services;
 
 namespace WichtelGenerator.WPF.ViewModels
 {
@@ -64,6 +66,11 @@ namespace WichtelGenerator.WPF.ViewModels
             }
 
             throw new NotSupportedException("Getting property name form expression is not supported for this type.");
+        }
+
+        public Page GetPageValue(IBindableView page)
+        {
+            return (Page) page;
         }
 
         /// <summary>

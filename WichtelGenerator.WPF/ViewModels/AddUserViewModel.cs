@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using WichtelGenerator.Core.Configuration;
@@ -24,7 +25,8 @@ namespace WichtelGenerator.WPF.ViewModels
 
         private ConfigModel ConfigModel { get; }
         public IAsyncCommand AddNewUser { get; set; }
-
+        public EventHandler<EventArgs> NewUserAddedEvent { get; set; }
+        
         public ObservableCollection<string> ActiveUsers
         {
             get => _activeUsers;
@@ -74,10 +76,13 @@ namespace WichtelGenerator.WPF.ViewModels
 
             ConfigModel.SecretSantaModels ??= new List<SecretSantaModel>();
             ConfigModel.SecretSantaModels.Add(newSanta);
+            NewUserAddedEvent.Invoke(this, EventArgs.Empty);
 
             ActiveUsers = GetAllActiveUserNames();
         }
 
+        //todo: whitelist von allen befüllen
+        
         private ObservableCollection<string> GetAllActiveUserNames()
         {
             var names = new ObservableCollection<string>();
