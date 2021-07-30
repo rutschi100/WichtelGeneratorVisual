@@ -3,7 +3,7 @@ using WichtelGenerator.Core.Configuration;
 
 namespace WichtelGenerator.WPF.ViewModels
 {
-    public class SettingViewModel
+    public class SettingViewModel : BaseViewModel
     {
         public EventHandler<EventArgs> SavedAsModelEventHandler;
 
@@ -20,6 +20,11 @@ namespace WichtelGenerator.WPF.ViewModels
         public void SaveSettings_OnClick(object sender, EventArgs e)
         {
             SavedAsModelEventHandler?.Invoke(this, EventArgs.Empty);
+        }
+
+        internal override void InitCommands()
+        {
+            throw new NotImplementedException();
         }
     }
 }

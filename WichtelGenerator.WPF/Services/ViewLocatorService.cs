@@ -15,11 +15,16 @@ namespace WichtelGenerator.WPF.Services
         ///     Registrierung:
         ///     Beispiel: ViewLocatorDictionary.Add(nameof(-ViewMode-), typeof(-Page-));
         /// </summary>
-        private static Dictionary<string, Type> ViewLocatorDictionary { get; set; } = new Dictionary<string, Type>
+        private static Dictionary<string, Type> ViewLocatorDictionary { get; } = new Dictionary<string, Type>
         {
             {nameof(MainSiteViewModel), typeof(MainSite)},
-            {nameof(StorageSettingViewModel), typeof(StorageSettingPage)}
-            
+            {nameof(StorageSettingViewModel), typeof(StorageSettingPage)},
+            {nameof(AddUserViewModel), typeof(AddUserPage)},
+            {nameof(ManageBlackListViewModel), typeof(ManageBlackListsPage)},
+            {nameof(ManageUserViewModel), typeof(ManageUserPage)},
+            {nameof(RuffleViewModel), typeof(RufflePage)},
+            {nameof(SettingViewModel), typeof(SettingPage)},
+            {nameof(WelcomeViewModel), typeof(WelcomePage)}
         };
 
         //public BaseViewModel GetViewModel<TView>()

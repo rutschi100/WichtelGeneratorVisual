@@ -1,29 +1,20 @@
-﻿using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Controls;
-using Medica.Corona.CostUnitManager.UI.Commands;
-using WichtelGenerator.WPF.Commands;
-using WichtelGenerator.WPF.Pages;
 using WichtelGenerator.WPF.Services;
+
+// ReSharper disable MemberCanBePrivate.Global --> Xaml propertys have to be public
 
 namespace WichtelGenerator.WPF.ViewModels
 {
     public class MainSiteViewModel : BaseViewModel
     {
-        private Page _savePage; // = (Page) locator.GetViewFor<StorageSettingViewModel>();// = (Page) DependencyContainer.Instance.GetInstance<IViewLocatorService>()
-
-        // .GetViewFor<StorageSettingViewModel>();
-        private Page _settingPage = DependencyContainer.Instance.GetInstance<SettingPage>();
-        private Page _addUserPage = DependencyContainer.Instance.GetInstance<AddUserPage>();
-        private Page _mangageUserPage = DependencyContainer.Instance.GetInstance<ManageUserPage>();
-        private Page _manageBlackListPage = DependencyContainer.Instance.GetInstance<ManageUserPage>();
-        private Page _rufflePage = DependencyContainer.Instance.GetInstance<RufflePage>();
+        private Page _addUserPage;
+        private Page _manageBlackListPage;
+        private Page _mangageUserPage;
+        private Page _rufflePage;
+        private Page _savePage;
+        private Page _settingPage;
         private string _testtest;
-
-        private void SetPropertys()
-        {
-            SavePage = (Page) locator.GetViewFor<StorageSettingViewModel>();
-        }
-
 
         public MainSiteViewModel()
         {
@@ -32,26 +23,6 @@ namespace WichtelGenerator.WPF.ViewModels
 
         public IViewLocatorService locator { get; set; } =
             DependencyContainer.Instance.GetInstance<IViewLocatorService>();
-
-        private async Task SetPage(Page toLoad, Page toSet)
-        {
-            await Task.CompletedTask;
-            toLoad = toSet;
-        }
-
-
-        public IAsyncCommand OnSaveTab { get; set; }
-        // public IAsyncCommand OnSettingTab { get; set; }
-        // public IAsyncCommand OnAddUserTab { get; set; }
-        // public IAsyncCommand OnManageUserTab { get; set; }
-        // public IAsyncCommand OnManageBlackListTab { get; set; }
-        // public IAsyncCommand OnRuffleTab { get; set; }
-
-        public string testtest
-        {
-            get => _testtest;
-            set => SetAndRaise(ref _testtest, value);
-        }
 
         public Page SavePage
 
@@ -91,16 +62,19 @@ namespace WichtelGenerator.WPF.ViewModels
             set => SetAndRaise(ref _rufflePage, value);
         }
 
-        internal sealed override void InitCommands()
+        private void SetPropertys()
         {
-            OnSaveTab = AsyncCommand.Create(p => SetPage(SavePage, (Page) DependencyContainer.Instance
-                .GetInstance<IViewLocatorService>()
-                .GetViewFor<StorageSettingViewModel>()));
-            /*
-             * SavePage = (Page) DependencyContainer.Instance.GetInstance<IViewLocatorService>()
-                .GetViewFor<StorageSettingViewModel>();
-             * 
-             */
+            SavePage = (Page) locator.GetViewFor<StorageSettingViewModel>();
+            SettingPage = (Page) locator.GetViewFor<SettingViewModel>();
+            AddUserPage = (Page) locator.GetViewFor<AddUserViewModel>();
+            MangageUserPage = (Page) locator.GetViewFor<ManageUserViewModel>();
+            ManageBlackListPage = (Page) locator.GetViewFor<ManageBlackListViewModel>();
+            RufflePage = (Page) locator.GetViewFor<RuffleViewModel>();
+        }
+
+        internal override void InitCommands()
+        {
+            throw new NotImplementedException();
         }
     }
 }

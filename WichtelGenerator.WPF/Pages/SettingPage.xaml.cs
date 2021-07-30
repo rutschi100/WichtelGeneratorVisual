@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Windows.Controls;
+using RutschiSwiss.Helpers.WPF.Services;
 using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.WPF.ViewModels;
 
@@ -8,7 +8,7 @@ namespace WichtelGenerator.WPF.Pages
     /// <summary>
     ///     Interaktionslogik für SettingPage.xaml
     /// </summary>
-    public partial class SettingPage : Page
+    public partial class SettingPage : IBindableView
     {
         public SettingPage(ConfigModel configModel, SettingViewModel settingViewModel)
         {

@@ -1,12 +1,12 @@
-﻿namespace WichtelGenerator.WPF.ViewModels
+﻿using System;
+
+namespace WichtelGenerator.WPF.ViewModels
 {
     internal class StorageSettingViewModel : BaseViewModel
     {
-        
-        
         internal override void InitCommands()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

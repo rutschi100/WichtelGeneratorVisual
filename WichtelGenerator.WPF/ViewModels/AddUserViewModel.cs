@@ -1,22 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Medica.Corona.CostUnitManager.UI.Commands;
 using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.Core.Models;
 using WichtelGenerator.WPF.Commands;
 
+// ReSharper disable MemberCanBePrivate.Global
+
 namespace WichtelGenerator.WPF.ViewModels
 {
-    
-    //TODO: Binding des Commands funktioniert nicht!
-    
-    
-    internal class AddUserViewModel : BaseViewModel
+    public class AddUserViewModel : BaseViewModel
     {
-        private string _santaName;
+        private ObservableCollection<string> _activeUsers;
         private string _mailAdres;
-        private ObservableCollection<SecretSantaModel> _activeUsers;
+        private string _santaName;
 
         public AddUserViewModel(ConfigModel configModel)
         {
@@ -25,19 +22,10 @@ namespace WichtelGenerator.WPF.ViewModels
             InitCommands();
         }
 
-        private void Initalize()
-        {
-            if (ConfigModel.SecretSantaModels == null)
-            {
-                return;
-            }
-            ActiveUsers = new ObservableCollection<SecretSantaModel>(ConfigModel.SecretSantaModels);
-        }
-
         private ConfigModel ConfigModel { get; }
-        private IAsyncCommand AddUser { get; set; }
+        public IAsyncCommand AddNewUser { get; set; }
 
-        public ObservableCollection<SecretSantaModel> ActiveUsers
+        public ObservableCollection<string> ActiveUsers
         {
             get => _activeUsers;
             set => SetAndRaise(ref _activeUsers, value);
@@ -55,10 +43,19 @@ namespace WichtelGenerator.WPF.ViewModels
             set => SetAndRaise(ref _mailAdres, value);
         }
 
+        private void Initalize()
+        {
+            if (ConfigModel.SecretSantaModels == null)
+            {
+                return;
+            }
+
+            ActiveUsers = GetAllActiveUserNames();
+        }
 
         internal sealed override void InitCommands()
         {
-            AddUser = AsyncCommand.Create(parameter => AddNewUserAsync());
+            AddNewUser = AsyncCommand.Create(parameter => AddNewUserAsync());
         }
 
         private async Task AddNewUserAsync()
@@ -77,8 +74,19 @@ namespace WichtelGenerator.WPF.ViewModels
 
             ConfigModel.SecretSantaModels ??= new List<SecretSantaModel>();
             ConfigModel.SecretSantaModels.Add(newSanta);
-            ActiveUsers = new ObservableCollection<SecretSantaModel>(ConfigModel.SecretSantaModels);
+
+            ActiveUsers = GetAllActiveUserNames();
         }
-        
+
+        private ObservableCollection<string> GetAllActiveUserNames()
+        {
+            var names = new ObservableCollection<string>();
+            foreach (var oneSanta in ConfigModel.SecretSantaModels)
+            {
+                names.Add(oneSanta.Name);
+            }
+
+            return names;
+        }
     }
 }

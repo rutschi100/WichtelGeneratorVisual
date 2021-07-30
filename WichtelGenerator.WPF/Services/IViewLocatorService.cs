@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using RutschiSwiss.Helpers.WPF.Services;
 using WichtelGenerator.WPF.ViewModels;
 

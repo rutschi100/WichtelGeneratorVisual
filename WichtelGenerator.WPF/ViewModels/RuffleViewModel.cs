@@ -1,6 +1,12 @@
-﻿namespace WichtelGenerator.WPF.ViewModels
+﻿using System;
+
+namespace WichtelGenerator.WPF.ViewModels
 {
-    internal class RuffleViewModel
+    internal class RuffleViewModel : BaseViewModel
     {
+        internal override void InitCommands()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

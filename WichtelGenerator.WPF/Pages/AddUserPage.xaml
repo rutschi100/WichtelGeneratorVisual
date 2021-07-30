@@ -27,11 +27,11 @@
 
             </Grid>
         </GroupBox>
-        <Button Content="Hinzufügen" Command="{Binding AddUser}" Margin="2" />
+        <Button Content="Hinzufügen" Command="{Binding AddNewUser}" Margin="2" />
 
 
         <GroupBox Header="Hinzugefügte Mitspieler" Margin="4">
-            <ListView DataContext="{Binding ActiveUsers}"></ListView>
+            <ListView ItemsSource="{Binding ActiveUsers}" />
         </GroupBox>
     </StackPanel>
 </Page>

@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
-using RutschiSwiss.Helpers.WPF.Services;
 using SimpleInjector;
 using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.WPF.Pages;
+using WichtelGenerator.WPF.Services;
 using WichtelGenerator.WPF.ViewModels;
-using DependencyContainer = WichtelGenerator.WPF.Services.DependencyContainer;
-using IViewLocatorService = WichtelGenerator.WPF.Services.IViewLocatorService;
-using ViewLocatorService = WichtelGenerator.WPF.Services.ViewLocatorService;
 
 namespace WichtelGenerator.WPF
 {
@@ -17,7 +14,6 @@ namespace WichtelGenerator.WPF
     /// </summary>
     public partial class App : Application
     {
-
         protected override async void OnStartup(StartupEventArgs e)
         {
             try
@@ -28,9 +24,10 @@ namespace WichtelGenerator.WPF
 
                 DependencyContainer.Instance.Verify();
                 var locator = DependencyContainer.Instance.GetInstance<IViewLocatorService>();
-                var startView = (Window) locator.GetViewFor<MainSiteViewModel>();
-                
-                // var mainWindow = DependencyContainer.Instance.GetInstance<MainSite>();
+                var startView =
+                    (Window) locator
+                        .GetViewFor<MainSiteViewModel>(); //--- Muss von jedem existieren, damit der Context gesetzt wird!!!
+
                 startView.Show();
 
                 base.OnStartup(e);
@@ -59,6 +56,7 @@ namespace WichtelGenerator.WPF
             DependencyContainer.Instance.Register<ManageBlackListsPage>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<RufflePage>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<SettingPage>(Lifestyle.Singleton);
+            // Nicht vergessen im ViewLocatorService zu registrieren!
             await Task.CompletedTask;
         }
 
@@ -74,6 +72,5 @@ namespace WichtelGenerator.WPF
             DependencyContainer.Instance.Register<RuffleViewModel>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<SettingViewModel>(Lifestyle.Singleton);
         }
-        
     }
 }

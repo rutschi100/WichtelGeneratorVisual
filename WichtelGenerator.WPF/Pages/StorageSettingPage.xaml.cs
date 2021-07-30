@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using RutschiSwiss.Helpers.WPF.Services;
+﻿using RutschiSwiss.Helpers.WPF.Services;
 
 namespace WichtelGenerator.WPF.Pages
 {
