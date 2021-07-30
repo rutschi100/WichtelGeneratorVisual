@@ -4,11 +4,21 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Medica.Corona.CostUnitManager.UI.Commands;
 using Sharpnado.Tasks;
-using WichtelGenerator.WPF.Services;
 
 namespace WichtelGenerator.WPF.Commands
 {
+    public interface IAsyncCommand : ICommand
+    {
+        //Braucht Nuget: Sharpnado.TaskMonitor
+        ITaskMonitor Execution { get; }
+
+        Task ExecuteAsync(object parameter);
+
+        void RaiseCanExecuteChanged();
+    }
+
     public interface IAsyncCommand<TResult> : ICommand
     {
         TaskMonitor<TResult> Execution { get; }

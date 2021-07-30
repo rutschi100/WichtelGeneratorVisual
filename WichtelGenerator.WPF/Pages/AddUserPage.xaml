@@ -20,18 +20,18 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Label Grid.Column="0" Grid.Row="0">Spieler Namen</Label>
-                <TextBox Grid.Column="1" Grid.Row="0" MinWidth="100" />
+                <TextBox Grid.Column="1" Grid.Row="0" MinWidth="100" Text="{Binding SantaName}" />
 
                 <Label Grid.Column="0" Grid.Row="1">E-Mail Adresse</Label>
-                <TextBox Grid.Column="1" Grid.Row="1" MinWidth="100" />
+                <TextBox Grid.Column="1" Grid.Row="1" MinWidth="100" Text="{Binding MailAdres}" />
 
             </Grid>
         </GroupBox>
-        <Button Content="Hinzufügen" Margin="2" />
+        <Button Content="Hinzufügen" Command="{Binding AddUser}" Margin="2" />
 
 
         <GroupBox Header="Hinzugefügte Mitspieler" Margin="4">
-            <ListView>TestEintrag</ListView>
+            <ListView DataContext="{Binding ActiveUsers}"></ListView>
         </GroupBox>
     </StackPanel>
 </Page>

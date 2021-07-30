@@ -22,10 +22,9 @@ namespace WichtelGenerator.WPF
         {
             try
             {
-                var registerPages = RegisterSites();
-                await registerPages;
-                var registerCore = RegisterCore();
-                await registerCore;
+                await RegisterPages();
+                await RegisterModels();
+                await RegisterCore();
 
                 DependencyContainer.Instance.Verify();
                 var locator = DependencyContainer.Instance.GetInstance<IViewLocatorService>();
@@ -50,25 +49,31 @@ namespace WichtelGenerator.WPF
             await Task.CompletedTask;
         }
 
-        private async Task RegisterSites()
+        private async Task RegisterPages()
         {
             DependencyContainer.Instance.Register<MainSite>(Lifestyle.Singleton);
-            DependencyContainer.Instance.Register<MainSiteViewModel>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<WelcomePage>(Lifestyle.Singleton);
-            DependencyContainer.Instance.Register<WelcomeViewModel>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<StorageSettingPage>(Lifestyle.Singleton);
-            DependencyContainer.Instance.Register<StorageSettingViewModel>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<AddUserPage>(Lifestyle.Singleton);
-            DependencyContainer.Instance.Register<AddUserViewModel>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<ManageUserPage>(Lifestyle.Singleton);
-            DependencyContainer.Instance.Register<ManageUserViewModel>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<ManageBlackListsPage>(Lifestyle.Singleton);
-            DependencyContainer.Instance.Register<ManageBlackListViewModel>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<RufflePage>(Lifestyle.Singleton);
-            DependencyContainer.Instance.Register<RuffleViewModel>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<SettingPage>(Lifestyle.Singleton);
-            DependencyContainer.Instance.Register<SettingViewModel>(Lifestyle.Singleton);
             await Task.CompletedTask;
         }
+
+        private async Task RegisterModels()
+        {
+            await Task.CompletedTask;
+            DependencyContainer.Instance.Register<MainSiteViewModel>(Lifestyle.Singleton);
+            DependencyContainer.Instance.Register<WelcomeViewModel>(Lifestyle.Singleton);
+            DependencyContainer.Instance.Register<StorageSettingViewModel>(Lifestyle.Singleton);
+            DependencyContainer.Instance.Register<AddUserViewModel>(Lifestyle.Singleton);
+            DependencyContainer.Instance.Register<ManageUserViewModel>(Lifestyle.Singleton);
+            DependencyContainer.Instance.Register<ManageBlackListViewModel>(Lifestyle.Singleton);
+            DependencyContainer.Instance.Register<RuffleViewModel>(Lifestyle.Singleton);
+            DependencyContainer.Instance.Register<SettingViewModel>(Lifestyle.Singleton);
+        }
+        
     }
 }
