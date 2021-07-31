@@ -34,13 +34,6 @@ namespace WichtelGenerator.Core.SantaManaager
             }
 
             owner.WhiteList.Add(modelToBeMoved);
-            selectedModel = modelToBeMoved.InWhiteListFromUser.FirstOrDefault(p => p == owner);
-            if (selectedModel != null)
-            {
-                return;
-            }
-
-            modelToBeMoved.InWhiteListFromUser.Add(owner);
         }
 
         public AddUserResult AddNewSanta(SecretSantaModel model)

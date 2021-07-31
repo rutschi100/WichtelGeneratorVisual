@@ -9,6 +9,5 @@ namespace WichtelGenerator.Core.Models
         public SecretSantaModel Choise { get; set; }
         public List<SecretSantaModel> BlackList { get; } = new List<SecretSantaModel>();
         public List<SecretSantaModel> WhiteList { get; } = new List<SecretSantaModel>();
-        public List<SecretSantaModel> InWhiteListFromUser { get; } = new List<SecretSantaModel>();
     }
 }
