@@ -130,9 +130,5 @@ namespace WichtelGenerator.Core.Lottery
 
             return i < player.WhiteList.Count;
         }
-
-
-
-
     }
 }

@@ -16,8 +16,8 @@ namespace WichtelGenerator.Core
             _container.Register<ILotteryService, LotteryService>(Lifestyle.Singleton);
             _container.Register<IConfigManager, ConfigManager>(Lifestyle.Singleton);
             _container.Register<INotificationMail, NotificationMail>(Lifestyle.Singleton);
-            _container.RegisterSingleton<IMailSender>(()=>new MailSender(new MailSettings()));
-            
+            _container.RegisterSingleton<IMailSender>(() => new MailSender(new MailSettings()));
+
             /*
             _container.Register<IMailSender>(() =>
                 new MailSender(

@@ -6,7 +6,7 @@ using WichtelGenerator.Core.Exeptions;
 using WichtelGenerator.Core.Models;
 
 [assembly: InternalsVisibleTo("WichtelGenerator.Core.Test")]
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] 
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 
 namespace WichtelGenerator.Core.Notification
 {
@@ -37,7 +37,6 @@ namespace WichtelGenerator.Core.Notification
                 {
                     throw new NotificationNotSendedException();
                 }
-
             }
         }
     }

@@ -5,9 +5,15 @@ namespace WichtelGenerator.Core.Configuration
 {
     public class ConfigModel
     {
+        #region AppSettings
+
+        public int FontSize { get; set; } = 16;
+
+        #endregion
+
         #region Generel
 
-        public List<SecretSantaModel> SecretSantaModels { get; set; } = new List<SecretSantaModel>();
+        public List<SecretSantaModel> SecretSantaModels { get; set; }
         public bool NotificationsEnabled { get; set; }
         public bool MailNotificationEnabled { get; set; }
 
@@ -28,12 +34,6 @@ namespace WichtelGenerator.Core.Configuration
         public string Passwort { get; set; }
 
         public bool SslOn { get; set; }
-
-        #endregion
-
-        #region AppSettings
-
-        public int FontSize { get; set; } = 16;
 
         #endregion
     }

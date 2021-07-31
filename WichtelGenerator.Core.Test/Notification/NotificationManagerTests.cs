@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Autofac.Core;
 using Autofac.Extras.Moq;
 using Moq;
 using NUnit.Framework;
@@ -38,19 +37,19 @@ namespace WichtelGenerator.Core.Test.Notification
             mock.Mock<INotificationMail>().Setup(p => p.Enabled).Returns(true);
             mock.Mock<INotificationMail>().Setup(p => p.SendRuffleResult()).Returns(true);
             mock.Mock<IConfigManager>().Setup(p => p.Read()).Returns(
-                new ConfigModel()
+                new ConfigModel
                 {
                     NotificationsEnabled = true
                 }
-                );
-   
-            
+            );
+
+
             mock.Mock<IConfigManager>().SetupGet(p => p.ConfigModel).Returns(
-                new ConfigModel(){MailNotificationEnabled = true}
-                );
+                new ConfigModel {MailNotificationEnabled = true}
+            );
 
             var test = mock.Create<IConfigManager>();
-            
+
             mock.Mock<INotification>().Setup(p => p.SendRuffleResult()).Returns(true);
 
             var santaList = PreparadeSantas();

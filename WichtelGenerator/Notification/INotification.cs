@@ -11,7 +11,6 @@ namespace WichtelGenerator.Core.Notification
         public IConfigManager ConfigManager { get; set; }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <returns>Sucsess</returns>
         public bool SendRuffleResult();

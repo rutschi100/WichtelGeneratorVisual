@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using SimpleInjector;
 using WichtelGenerator.Core.Configuration;
+using WichtelGenerator.Core.SantaManaager;
 using WichtelGenerator.WPF.Pages;
 using WichtelGenerator.WPF.Services;
 using WichtelGenerator.WPF.ViewModels;
@@ -43,6 +44,7 @@ namespace WichtelGenerator.WPF
         {
             DependencyContainer.Instance.Register<ConfigModel>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<IViewLocatorService, ViewLocatorService>(Lifestyle.Singleton);
+            DependencyContainer.Instance.Register<ISantaManager, SantaManager>(Lifestyle.Singleton);
             await Task.CompletedTask;
         }
 

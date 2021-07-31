@@ -18,7 +18,7 @@ namespace WichtelGenerator.Core.Notification
             MailSender = mailSender;
         }
 
-        private IMailSender MailSender { get; set; }
+        private IMailSender MailSender { get; }
         public bool Enabled { get; set; }
 
         public bool SendRuffleResult()
@@ -48,6 +48,7 @@ namespace WichtelGenerator.Core.Notification
                     return false;
                 }
             }
+
             return true;
         }
 

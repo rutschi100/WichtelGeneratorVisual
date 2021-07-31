@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows;
 using WichtelGenerator.Core.Configuration;
+using WichtelGenerator.Core.Enums;
 using WichtelGenerator.Core.Models;
+using WichtelGenerator.Core.SantaManaager;
 using WichtelGenerator.WPF.Commands;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -16,17 +18,19 @@ namespace WichtelGenerator.WPF.ViewModels
         private string _mailAdres;
         private string _santaName;
 
-        public AddUserViewModel(ConfigModel configModel)
+        public AddUserViewModel(ConfigModel configModel, ISantaManager santaManager)
         {
             ConfigModel = configModel;
+            SantaManager = santaManager;
             Initalize();
             InitCommands();
         }
 
         private ConfigModel ConfigModel { get; }
         public IAsyncCommand AddNewUser { get; set; }
-        public EventHandler<EventArgs> NewUserAddedEvent { get; set; }
-        
+
+        public ISantaManager SantaManager { get; }
+
         public ObservableCollection<string> ActiveUsers
         {
             get => _activeUsers;
@@ -47,7 +51,7 @@ namespace WichtelGenerator.WPF.ViewModels
 
         private void Initalize()
         {
-            if (ConfigModel.SecretSantaModels == null)
+            if (SantaManager.SecretSantaModels == null)
             {
                 return;
             }
@@ -74,19 +78,23 @@ namespace WichtelGenerator.WPF.ViewModels
                 newSanta.MailAdress = MailAdres;
             }
 
-            ConfigModel.SecretSantaModels ??= new List<SecretSantaModel>();
-            ConfigModel.SecretSantaModels.Add(newSanta);
-            NewUserAddedEvent.Invoke(this, EventArgs.Empty);
-
-            ActiveUsers = GetAllActiveUserNames();
+            switch (SantaManager.AddNewSanta(newSanta))
+            {
+                case AddUserResult.Valid:
+                    ActiveUsers = GetAllActiveUserNames();
+                    break;
+                case AddUserResult.SantaAllReadyExists:
+                    MessageBox.Show("Der User Existierts bereits. Bitte Wähle einen neuen eindeutigen Namen");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
-        //todo: whitelist von allen befüllen
-        
         private ObservableCollection<string> GetAllActiveUserNames()
         {
             var names = new ObservableCollection<string>();
-            foreach (var oneSanta in ConfigModel.SecretSantaModels)
+            foreach (var oneSanta in SantaManager.SecretSantaModels)
             {
                 names.Add(oneSanta.Name);
             }
