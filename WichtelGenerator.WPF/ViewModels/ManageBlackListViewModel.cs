@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -129,7 +128,6 @@ namespace WichtelGenerator.WPF.ViewModels
         {
             ActiveSantas ??= new ObservableCollection<string>();
             ActiveSantas.Clear();
-            var names = new List<string>();
 
             foreach (var oneSanta in SantaManager.SecretSantaModels)
             {
