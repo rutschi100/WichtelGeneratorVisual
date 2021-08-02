@@ -2,7 +2,7 @@
 {
     public enum AddUserResult
     {
-        Valid,
+        Done,
         SantaAllReadyExists
     }
 }

@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
       mc:Ignorable="d"
       Title="ManageBlackListsPage"
       Background="White">
@@ -22,14 +23,22 @@
             <Label Grid.Row="0" Grid.Column="0"
                    Content="Wähle zu konfigurierender Wichtel" />
             <ComboBox Grid.Row="0" Grid.Column="1"
-                      ItemsSource="{Binding ActiveSantas.Name}"
-                      SelectedItem="{Binding SelcectedSanta}" />
+                      ItemsSource="{Binding ActiveSantas}"
+                      SelectedItem="{Binding SelcectedSantaName}" />
 
             <Label Grid.Row="1" Grid.Column="0" Background="AliceBlue">Verfügbare Wichtel</Label>
             <Label Grid.Row="1" Grid.Column="1" Background="AliceBlue">Wichtel auf der Blacklist</Label>
 
-            <ListView Grid.Row="2" Grid.Column="0" ItemsSource="{Binding SelectedSantaModel.WhiteList}" />
-            <ListView Grid.Row="2" Grid.Column="1" ItemsSource="{Binding SelectedSantaModel.BlackList}" />
+            <ListView Grid.Row="2" Grid.Column="0"
+                      ItemsSource="{Binding WhiteList}"
+                      SelectedItem="{Binding SelectedWhite}"
+                      local:CommandBehavior.Event="MouseDoubleClick"
+                      local:CommandBehavior.Command="{Binding OnClickWhiteList}" />
+            <ListView Grid.Row="2" Grid.Column="1"
+                      ItemsSource="{Binding BlackList}"
+                      SelectedItem="{Binding SelectedBlack}"
+                      local:CommandBehavior.Event="MouseDoubleClick"
+                      local:CommandBehavior.Command="{Binding OnClickBlackList}" />
 
         </Grid>
     </StackPanel>

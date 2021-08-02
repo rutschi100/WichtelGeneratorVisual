@@ -80,7 +80,7 @@ namespace WichtelGenerator.WPF.ViewModels
 
             switch (SantaManager.AddNewSanta(newSanta))
             {
-                case AddUserResult.Valid:
+                case AddUserResult.Done:
                     ActiveUsers = GetAllActiveUserNames();
                     break;
                 case AddUserResult.SantaAllReadyExists:
