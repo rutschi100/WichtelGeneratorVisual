@@ -45,7 +45,7 @@ namespace WichtelGenerator.Core.Test.Notification
 
 
             mock.Mock<IConfigManager>().SetupGet(p => p.ConfigModel).Returns(
-                new ConfigModel {MailNotificationEnabled = true}
+                new ConfigModel { MailNotificationEnabled = true }
             );
 
             var test = mock.Create<IConfigManager>();

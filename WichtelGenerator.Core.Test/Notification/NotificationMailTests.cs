@@ -17,9 +17,9 @@ namespace WichtelGenerator.Core.Test.Notification
 
         public List<SecretSantaModel> CreateSomeModels()
         {
-            var firstModel = new SecretSantaModel {Name = "2"};
-            var secondModel = new SecretSantaModel {Name = "1"};
-            var thirtModel = new SecretSantaModel {Name = "3"};
+            var firstModel = new SecretSantaModel { Name = "2" };
+            var secondModel = new SecretSantaModel { Name = "1" };
+            var thirtModel = new SecretSantaModel { Name = "3" };
             firstModel.WhiteList.Add(secondModel);
             firstModel.WhiteList.Add(thirtModel);
             secondModel.WhiteList.Add(firstModel);
@@ -27,7 +27,7 @@ namespace WichtelGenerator.Core.Test.Notification
             thirtModel.WhiteList.Add(firstModel);
             thirtModel.WhiteList.Add(secondModel);
 
-            return new List<SecretSantaModel> {firstModel, secondModel, thirtModel};
+            return new List<SecretSantaModel> { firstModel, secondModel, thirtModel };
         }
 
 

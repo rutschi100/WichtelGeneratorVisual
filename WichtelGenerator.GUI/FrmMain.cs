@@ -205,7 +205,7 @@ namespace WichtelGeneratorVisual
             dataGridView1.Rows.Clear();
             foreach (var item in _allUsers)
             {
-                object[] oneRow = {item.UserName, item.GezogenerWichtel};
+                object[] oneRow = { item.UserName, item.GezogenerWichtel };
                 dataGridView1.Rows.Add(oneRow);
             }
 
@@ -450,9 +450,7 @@ namespace WichtelGeneratorVisual
                     return;
                 }
 
-                while (!RandomVerlosung())
-                {
-                }
+                while (!RandomVerlosung()) { }
             }
             catch (Exception ex)
             {

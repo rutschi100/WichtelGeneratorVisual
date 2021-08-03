@@ -4,7 +4,5 @@
 
 namespace WichtelGenerator.Core.Notification
 {
-    internal interface INotificationMail : INotification
-    {
-    }
+    internal interface INotificationMail : INotification { }
 }

@@ -1,6 +1,4 @@
 ﻿namespace WichtelGenerator.WPF.Services
 {
-    public class Navigation
-    {
-    }
+    public class Navigation { }
 }

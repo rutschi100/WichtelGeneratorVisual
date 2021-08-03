@@ -13,13 +13,13 @@ namespace WichtelGenerator.Core.SantaManaager
         public SantaManager()
         {
 #if DEBUG
-            var newUser = new SecretSantaModel {Name = "User 1"};
+            var newUser = new SecretSantaModel { Name = "User 1" };
             AddNewSanta(newUser);
-            newUser = new SecretSantaModel {Name = "User 2"};
+            newUser = new SecretSantaModel { Name = "User 2" };
             AddNewSanta(newUser);
-            newUser = new SecretSantaModel {Name = "User 3"};
+            newUser = new SecretSantaModel { Name = "User 3" };
             AddNewSanta(newUser);
-            newUser = new SecretSantaModel {Name = "User 4"};
+            newUser = new SecretSantaModel { Name = "User 4" };
             AddNewSanta(newUser);
 #endif
         }

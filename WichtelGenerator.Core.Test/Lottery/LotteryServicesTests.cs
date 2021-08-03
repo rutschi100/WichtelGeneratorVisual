@@ -27,7 +27,7 @@ namespace WichtelGenerator.Core.Test.Lottery
             };
             firstModel.WhiteList.Add(secondModel);
             secondModel.WhiteList.Add(firstModel);
-            var allTestModels = new List<SecretSantaModel> {firstModel, secondModel};
+            var allTestModels = new List<SecretSantaModel> { firstModel, secondModel };
 
             var settings = manager.Read();
             settings.NotificationsEnabled = false;
@@ -51,9 +51,9 @@ namespace WichtelGenerator.Core.Test.Lottery
         {
             using var mock = AutoMock.GetLoose();
 
-            var firstModel = new SecretSantaModel {Name = "2"};
-            var secondModel = new SecretSantaModel {Name = "1"};
-            var thirtModel = new SecretSantaModel {Name = "3"};
+            var firstModel = new SecretSantaModel { Name = "2" };
+            var secondModel = new SecretSantaModel { Name = "1" };
+            var thirtModel = new SecretSantaModel { Name = "3" };
             firstModel.WhiteList.Add(secondModel);
             firstModel.WhiteList.Add(thirtModel);
             secondModel.WhiteList.Add(firstModel);
@@ -61,7 +61,7 @@ namespace WichtelGenerator.Core.Test.Lottery
             thirtModel.WhiteList.Add(firstModel);
             thirtModel.WhiteList.Add(secondModel);
 
-            var allTestModels = new List<SecretSantaModel> {firstModel, secondModel, thirtModel};
+            var allTestModels = new List<SecretSantaModel> { firstModel, secondModel, thirtModel };
             var service = mock.Create<LotteryService>();
 
             var result = service.Raffle(allTestModels);
@@ -100,9 +100,9 @@ namespace WichtelGenerator.Core.Test.Lottery
         public void ShouldThrowExeptionCauseToLessSantas()
         {
             var manager = Factory.GetConfigManager();
-            var firstModel = new SecretSantaModel {Name = "2"};
+            var firstModel = new SecretSantaModel { Name = "2" };
 
-            var allTestModels = new List<SecretSantaModel> {firstModel};
+            var allTestModels = new List<SecretSantaModel> { firstModel };
 
             var settings = manager.Read();
             settings.NotificationsEnabled = false;
