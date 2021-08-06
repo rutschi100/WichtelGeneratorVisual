@@ -9,15 +9,17 @@
 
     <StackPanel>
         <Label Background="AliceBlue">Einstellung</Label>
-        <RadioButton GroupName="RuffleVisible">Per Mail</RadioButton>
-        <RadioButton GroupName="RuffleVisible">Hier anzeigen</RadioButton>
-        <Button Margin="2" Background="Green">Verlosung auslösen</Button>
+        <RadioButton GroupName="RuffleVisible" IsChecked="{Binding ResultPerMail}">Per Mail</RadioButton>
+        <RadioButton GroupName="RuffleVisible" IsChecked="{Binding ResultPerGui}">Hier anzeigen</RadioButton>
+        <Button Margin="2" Background="Green"
+                Command="{Binding OnRuffle}">Verlosung auslösen</Button>
 
-        <Label Background="AliceBlue" Visibility="Collapsed">Verlosungsresultat</Label>
-        <DataGrid Visibility="Collapsed">
+        <Label Background="AliceBlue" Visibility="{Binding ResultVisibility}">Verlosungsresultat</Label>
+        <DataGrid Visibility="{Binding ResultVisibility}"
+                  ItemsSource="{Binding ResultList}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Wichtel" />
-                <DataGridTextColumn Header="Beschenkt" />
+                <DataGridTextColumn Header="Wichtel" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Beschenkt" Binding="{Binding Choise.Name}" />
             </DataGrid.Columns>
         </DataGrid>
     </StackPanel>

@@ -2,7 +2,10 @@
 using System.Threading.Tasks;
 using System.Windows;
 using SimpleInjector;
+using TimMailLib;
 using WichtelGenerator.Core.Configuration;
+using WichtelGenerator.Core.Lottery;
+using WichtelGenerator.Core.Notification;
 using WichtelGenerator.Core.SantaManaager;
 using WichtelGenerator.WPF.Pages;
 using WichtelGenerator.WPF.Services;
@@ -45,6 +48,12 @@ namespace WichtelGenerator.WPF
             DependencyContainer.Instance.Register<ConfigModel>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<IViewLocatorService, ViewLocatorService>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<ISantaManager, SantaManager>(Lifestyle.Singleton);
+            DependencyContainer.Instance.Register<ILotteryService, LotteryService>(Lifestyle.Singleton);
+            DependencyContainer.Instance.Register<INotificationManager, NotificationManager>(Lifestyle.Singleton);
+            DependencyContainer.Instance.Register<INotificationMail, NotificationMail>(Lifestyle.Singleton);
+            DependencyContainer.Instance.Register<IConfigManager, ConfigManager>(Lifestyle.Singleton);
+            DependencyContainer.Instance.Register<IMailSender, MailSender>(Lifestyle.Singleton);
+            DependencyContainer.Instance.Register<MailSettings>(Lifestyle.Singleton);
             await Task.CompletedTask;
         }
 

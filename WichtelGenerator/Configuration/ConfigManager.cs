@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace WichtelGenerator.Core.Configuration
 {
-    internal class ConfigManager : IConfigManager
+    public class ConfigManager : IConfigManager
     {
         public ConfigManager()
         {

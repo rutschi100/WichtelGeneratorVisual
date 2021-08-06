@@ -8,7 +8,7 @@ using WichtelGenerator.Core.Models;
 
 namespace WichtelGenerator.Core.Notification
 {
-    internal interface INotificationManager
+    public interface INotificationManager
     {
         public IConfigManager ConfigManager { get; set; }
         void SendRaffle(IEnumerable<SecretSantaModel> secretSantas);

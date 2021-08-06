@@ -8,7 +8,7 @@ using WichtelGenerator.Core.Configuration;
 
 namespace WichtelGenerator.Core.Notification
 {
-    internal class NotificationMail : INotificationMail
+    public class NotificationMail : INotificationMail
     {
         public NotificationMail(IConfigManager configManager,
             IMailSender mailSender)

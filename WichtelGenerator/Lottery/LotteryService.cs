@@ -10,7 +10,7 @@ using WichtelGenerator.Core.Notification;
 
 namespace WichtelGenerator.Core.Lottery
 {
-    internal class LotteryService : ILotteryService
+    public class LotteryService : ILotteryService
     {
         public LotteryService(INotificationManager notificationManager)
         {

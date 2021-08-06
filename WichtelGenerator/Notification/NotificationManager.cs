@@ -10,7 +10,7 @@ using WichtelGenerator.Core.Models;
 
 namespace WichtelGenerator.Core.Notification
 {
-    internal class NotificationManager : INotificationManager
+    public class NotificationManager : INotificationManager
     {
         public NotificationManager(INotificationMail mail, IConfigManager configManager)
         {
