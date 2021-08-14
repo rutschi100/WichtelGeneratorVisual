@@ -3,7 +3,7 @@
     public interface IConfigManager
     {
         public ConfigModel ConfigModel { get; set; }
-        public ConfigModel Read();
-        public void Write(ConfigModel configModel);
+        public ConfigModel ReadSettings();
+        public void SaveSettings(ConfigModel configModel);
     }
 }

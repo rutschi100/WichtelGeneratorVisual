@@ -29,9 +29,9 @@ namespace WichtelGenerator.Core.Test.Lottery
             secondModel.WhiteList.Add(firstModel);
             var allTestModels = new List<SecretSantaModel> { firstModel, secondModel };
 
-            var settings = manager.Read();
+            var settings = manager.ReadSettings();
             settings.NotificationsEnabled = false;
-            manager.Write(settings);
+            manager.SaveSettings(settings);
             var service = new LotteryService(NotificationManagerMock.Object);
             try
             {
@@ -104,9 +104,9 @@ namespace WichtelGenerator.Core.Test.Lottery
 
             var allTestModels = new List<SecretSantaModel> { firstModel };
 
-            var settings = manager.Read();
+            var settings = manager.ReadSettings();
             settings.NotificationsEnabled = false;
-            manager.Write(settings);
+            manager.SaveSettings(settings);
             var service = new LotteryService(NotificationManagerMock.Object);
             try
             {

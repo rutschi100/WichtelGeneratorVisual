@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
+using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.WPF.Services;
 
 // ReSharper disable MemberCanBePrivate.Global --> Xaml propertys have to be public
@@ -15,13 +16,16 @@ namespace WichtelGenerator.WPF.ViewModels
         private Page _savePage;
         private Page _settingPage;
 
-        public MainSiteViewModel()
+        public MainSiteViewModel(IConfigManager configManager)
         {
+            ConfigManager = configManager;
             SetPropertys();
         }
 
         public IViewLocatorService locator { get; set; } =
             DependencyContainer.Instance.GetInstance<IViewLocatorService>();
+
+        private IConfigManager ConfigManager { get; }
 
         public Page SavePage
         {
@@ -60,7 +64,7 @@ namespace WichtelGenerator.WPF.ViewModels
             set => SetAndRaise(ref _rufflePage, value);
         }
 
-        private void SetPropertys()
+        private void SetPages()
         {
             SavePage = (Page) locator.GetViewFor<StorageSettingViewModel>();
             SettingPage = (Page) locator.GetViewFor<SettingViewModel>();
@@ -68,6 +72,12 @@ namespace WichtelGenerator.WPF.ViewModels
             MangageUserPage = (Page) locator.GetViewFor<ManageUserViewModel>();
             ManageBlackListPage = (Page) locator.GetViewFor<ManageBlackListViewModel>();
             RufflePage = (Page) locator.GetViewFor<RuffleViewModel>();
+        }
+        
+        private void SetPropertys()
+        {
+            SetPages();
+            ConfigManager.ReadSettings(); //Doesnt need the Model in here --> Ignore return.
         }
 
         internal override void InitCommands()

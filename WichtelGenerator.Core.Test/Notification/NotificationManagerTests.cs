@@ -36,7 +36,7 @@ namespace WichtelGenerator.Core.Test.Notification
             using var mock = AutoMock.GetLoose();
             mock.Mock<INotificationMail>().Setup(p => p.Enabled).Returns(true);
             mock.Mock<INotificationMail>().Setup(p => p.SendRuffleResult()).Returns(true);
-            mock.Mock<IConfigManager>().Setup(p => p.Read()).Returns(
+            mock.Mock<IConfigManager>().Setup(p => p.ReadSettings()).Returns(
                 new ConfigModel
                 {
                     NotificationsEnabled = true

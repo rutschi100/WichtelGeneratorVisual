@@ -33,13 +33,13 @@
             <Label Grid.Column="0" Grid.Row="1">Mail Adresse</Label>
             <TextBox Grid.Column="1" MinWidth="80" Grid.Row="1"
                      Name="MailTextBox"
-                     Text="{Binding Absender, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                     Text="{Binding ConfigModel.Absender, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <Label Grid.Column="0" Grid.Row="2">User Name</Label>
             <TextBox Grid.Column="1" Grid.Row="2"
                      Name="UserNameTextBox"
                      Text="{Binding 
-                Username, 
+                ConfigModel.Username, 
                 Mode=TwoWay, 
                 UpdateSourceTrigger=PropertyChanged}" />
 
@@ -51,7 +51,7 @@
             <TextBox Grid.Column="1" Grid.Row="4"
                      Name="PortTextBox"
                      Text="{Binding 
-                Port, 
+                ConfigModel.Port, 
                 Mode=TwoWay, 
                 UpdateSourceTrigger=PropertyChanged}" />
 
@@ -59,7 +59,7 @@
             <TextBox Grid.Column="1" Grid.Row="5"
                      Name="ServerTextBox"
                      Text="{Binding 
-                ServerName, 
+                ConfigModel.ServerName, 
                 Mode=TwoWay, 
                 UpdateSourceTrigger=PropertyChanged}" />
 
@@ -67,7 +67,7 @@
             <CheckBox Grid.Column="1" Grid.Row="6" VerticalAlignment="Center"
                       HorizontalAlignment="Center"
                       Name="SSLCheckBox"
-                      IsChecked="{Binding SslOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                      IsChecked="{Binding ConfigModel.SslOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <Label Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Background="AliceBlue"
                    HorizontalContentAlignment="Center">
@@ -84,7 +84,7 @@
         </Grid>
 
         <Button Margin="4"
-                Name="SaveSettingButton">
+                Command="{Binding OnSave}">
             Speichern
         </Button>
 

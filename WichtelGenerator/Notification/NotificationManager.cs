@@ -24,7 +24,7 @@ namespace WichtelGenerator.Core.Notification
 
         public void SendRaffle(IEnumerable<SecretSantaModel> secretSantas)
         {
-            if (!ConfigManager.Read().NotificationsEnabled)
+            if (!ConfigManager.ReadSettings().NotificationsEnabled)
             {
                 return;
             }

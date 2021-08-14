@@ -14,7 +14,7 @@ namespace WichtelGenerator.Core.Configuration
             ConfigModel = new ConfigModel();
             if (!ConfigExists())
             {
-                Write(ConfigModel);
+                SaveSettings(ConfigModel);
             }
         }
 
@@ -23,7 +23,7 @@ namespace WichtelGenerator.Core.Configuration
 
         public ConfigModel ConfigModel { get; set; }
 
-        public ConfigModel Read()
+        public ConfigModel ReadSettings()
         {
             if (!ConfigExists())
             {
@@ -41,14 +41,14 @@ namespace WichtelGenerator.Core.Configuration
             return ConfigModel;
         }
 
-        public void Write(ConfigModel configModel)
+        public void SaveSettings(ConfigModel configModel)
         {
             RemoveConfigFromFileSystem();
 
-            var jsonString = JsonSerializer.Serialize(configModel);
             var result = File.Create(AppDataFile);
             result.Close();
 
+            var jsonString = JsonSerializer.Serialize(configModel);
             var writer = new StreamWriter(AppDataFile);
             writer.Write(jsonString);
             writer.Close();

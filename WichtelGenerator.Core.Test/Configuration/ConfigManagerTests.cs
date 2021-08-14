@@ -63,7 +63,7 @@ namespace WichtelGenerator.Core.Test.Configuration
         {
             RemoveConfigs();
             var manager = Factory.GetConfigManager();
-            manager.Write(TestModel);
+            manager.SaveSettings(TestModel);
             Assert.True(ConifigFileExists());
         }
 
@@ -79,9 +79,9 @@ namespace WichtelGenerator.Core.Test.Configuration
         public void ConfigsShouldBeLoadet()
         {
             var manager = Factory.GetConfigManager();
-            manager.Write(TestModel);
+            manager.SaveSettings(TestModel);
 
-            var loadedModel = manager.Read();
+            var loadedModel = manager.ReadSettings();
 
             if (loadedModel == null)
             {
@@ -96,7 +96,7 @@ namespace WichtelGenerator.Core.Test.Configuration
         {
             RemoveConfigs();
             var manager = Factory.GetConfigManager();
-            var loadedModel = manager.Read();
+            var loadedModel = manager.ReadSettings();
 
             Assert.True(string.IsNullOrEmpty(loadedModel.ServerName));
         }

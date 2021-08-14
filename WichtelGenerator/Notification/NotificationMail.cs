@@ -29,7 +29,7 @@ namespace WichtelGenerator.Core.Notification
                 return false;
             }
 
-            foreach (var oneSanta in ConfigManager.Read().SecretSantaModels)
+            foreach (var oneSanta in ConfigManager.ReadSettings().SecretSantaModels)
             {
                 var message =
                     $"Hallo {oneSanta.Name},\nDein Wichtel in der aktuellen Verlosung ist: {oneSanta.Choise}\nDies ist eine geheime Information" +
@@ -56,11 +56,11 @@ namespace WichtelGenerator.Core.Notification
 
         private void SetSettings()
         {
-            Enabled = ConfigManager.Read().MailNotificationEnabled;
+            Enabled = ConfigManager.ReadSettings().MailNotificationEnabled;
             if (!Enabled) return;
             MailSender.MailSettings = new MailSettings
             {
-                Absender = ConfigManager.Read().Absender, //--- First time read it, to fill up the Model
+                Absender = ConfigManager.ReadSettings().Absender, //--- First time read it, to fill up the Model
                 //EmpfaengerListe = _container.GetInstance<IConfigManager>().Read().EmpfaengerListe, --> is not needed, because different mails are sent to different recipients.
                 Passwort = ConfigManager.ConfigModel.Passwort,
                 Port = ConfigManager.ConfigModel.Port,
