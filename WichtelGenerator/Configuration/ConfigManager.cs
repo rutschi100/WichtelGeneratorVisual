@@ -52,7 +52,8 @@ namespace WichtelGenerator.Core.Configuration
             {
                 throw new Exception("ConfigModel should not be null!");
             }
-            
+
+            ConfigModel = configModel;
             
             //todo: Promlematik Speichern:
             // SantaModel hat listen mit santas, die Santa Models haben. Damit kommt Serialize nicht klar...

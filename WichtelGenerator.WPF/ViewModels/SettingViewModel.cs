@@ -27,7 +27,12 @@ namespace WichtelGenerator.WPF.ViewModels
         //TODO: Aktueller Stand kopieren, um den nicht gespeicherter Stand wieder zu löschen
         //TODO: Wenn die Seite Verlassen wird, und es Änderungen hat, dann nachfragen, ob die Änderungen gespeichert werden sollen.
 
-        // public ConfigModel ConfigModel { get;set setan };
+        private void InitPorpertys()
+        {
+            ConfigModel = ConfigManager.ConfigModel;
+        }
+        
+        
         public ConfigModel ConfigModel
         {
             get => _configModel;
@@ -40,7 +45,6 @@ namespace WichtelGenerator.WPF.ViewModels
         private ISantaManager SantaManager { get; }
         private SettingPage SettingPage { get; }
 
-        public string Password { get; set; }
 
         public async Task SaveSettingsAsync()
         {
@@ -59,7 +63,6 @@ namespace WichtelGenerator.WPF.ViewModels
             catch (Exception e)
             {
                 MessageBox.Show($"Error! {e.Message}");
-                throw;
             }
         }
 
