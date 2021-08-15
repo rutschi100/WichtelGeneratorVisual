@@ -48,6 +48,14 @@ namespace WichtelGenerator.Core.Configuration
             var result = File.Create(AppDataFile);
             result.Close();
 
+            if (configModel == null)
+            {
+                throw new Exception("ConfigModel should not be null!");
+            }
+            
+            
+            //todo: Promlematik Speichern:
+            // SantaModel hat listen mit santas, die Santa Models haben. Damit kommt Serialize nicht klar...
             var jsonString = JsonSerializer.Serialize(configModel);
             var writer = new StreamWriter(AppDataFile);
             writer.Write(jsonString);

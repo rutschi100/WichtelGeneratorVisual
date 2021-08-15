@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows;
 using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.Core.SantaManaager;
 using WichtelGenerator.WPF.Commands;
+using WichtelGenerator.WPF.Pages;
 
 namespace WichtelGenerator.WPF.ViewModels
 {
@@ -10,13 +12,15 @@ namespace WichtelGenerator.WPF.ViewModels
     {
         public EventHandler<EventArgs> SavedAsModelEventHandler;
         private ConfigModel _configModel;
+        private string _password;
 
 
-        public SettingViewModel(ConfigModel configModel, IConfigManager configManager, ISantaManager santaManager)
+        public SettingViewModel(ConfigModel configModel, IConfigManager configManager, ISantaManager santaManager, SettingPage settingPage)
         {
             _configModel = configModel;
             ConfigManager = configManager;
             SantaManager = santaManager;
+            SettingPage = settingPage;
             InitCommands();
         }
 
@@ -34,15 +38,29 @@ namespace WichtelGenerator.WPF.ViewModels
         public IAsyncCommand OnSave { get; set; }
 
         private ISantaManager SantaManager { get; }
-        
+        private SettingPage SettingPage { get; }
+
+        public string Password { get; set; }
+
         public async Task SaveSettingsAsync()
         {
             await Task.CompletedTask;
 
-            ConfigModel.SecretSantaModels = SantaManager.SecretSantaModels;
-            //Todo: Bindings funktionieren! Passwort muss noch und kontrollieren ob save und load funktioneirt!
-            ConfigManager.SaveSettings(ConfigModel);
-            SavedAsModelEventHandler?.Invoke(this, EventArgs.Empty);
+            try
+            {
+                ConfigModel.SecretSantaModels = SantaManager.SecretSantaModels;
+                //Todo: Bindings funktionieren! kontrollieren ob save und load funktioneirt!
+
+                ConfigModel.Passwort = SettingPage.PasswodTextBox.Password;
+            
+                ConfigManager.SaveSettings(ConfigModel);
+                SavedAsModelEventHandler?.Invoke(this, EventArgs.Empty);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show($"Error! {e.Message}");
+                throw;
+            }
         }
 
         internal override void InitCommands()
