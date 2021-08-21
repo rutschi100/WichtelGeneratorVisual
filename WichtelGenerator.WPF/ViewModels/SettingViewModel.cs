@@ -23,6 +23,7 @@ namespace WichtelGenerator.WPF.ViewModels
             SantaManager = santaManager;
             SettingPage = settingPage;
             InitCommands();
+            InitPorpertys();
         }
 
 
@@ -67,7 +68,11 @@ namespace WichtelGenerator.WPF.ViewModels
             }
         }
 
-        internal override void InitCommands()
+       /*
+        * todo: Nächste Version ermöglichen, die Models mit zu speichern --> Vorsicht, dia Santa verweisung (Choise) etc. geben einen EndlosLoop beim speichern...
+        */
+        
+        internal sealed override void InitCommands()
         {
             OnSave = AsyncCommand.Create(para => SaveSettingsAsync());
         }

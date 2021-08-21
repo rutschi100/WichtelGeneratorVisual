@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Xps;
 using SimpleInjector;
 using TimMailLib;
 using WichtelGenerator.Core.Configuration;
@@ -20,6 +21,7 @@ namespace WichtelGenerator.WPF
     {
         protected override async void OnStartup(StartupEventArgs e)
         {
+            //todo: Logger einfügen!
             try
             {
                 await RegisterPages();

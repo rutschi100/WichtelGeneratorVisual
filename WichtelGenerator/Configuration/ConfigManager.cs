@@ -57,6 +57,7 @@ namespace WichtelGenerator.Core.Configuration
             
             //todo: Promlematik Speichern:
             // SantaModel hat listen mit santas, die Santa Models haben. Damit kommt Serialize nicht klar...
+            //todo: Umschreiben um mit EF-CodeFirst zu arbeiten, da gelingt der Verweis auf sich selber!
             var jsonString = JsonSerializer.Serialize(configModel);
             var writer = new StreamWriter(AppDataFile);
             writer.Write(jsonString);
