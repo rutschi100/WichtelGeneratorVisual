@@ -10,12 +10,13 @@ namespace WichtelGenerator.WPF.ViewModels
 {
     public class SettingViewModel : BaseViewModel
     {
-        public EventHandler<EventArgs> SavedAsModelEventHandler;
         private ConfigModel _configModel;
         private string _password;
+        public EventHandler<EventArgs> SavedAsModelEventHandler;
 
 
-        public SettingViewModel(ConfigModel configModel, IConfigManager configManager, ISantaManager santaManager, SettingPage settingPage)
+        public SettingViewModel(ConfigModel configModel, IConfigManager configManager, ISantaManager santaManager,
+            SettingPage settingPage)
         {
             _configModel = configModel;
             ConfigManager = configManager;
@@ -24,15 +25,7 @@ namespace WichtelGenerator.WPF.ViewModels
             InitCommands();
         }
 
-        //TODO: Aktueller Stand kopieren, um den nicht gespeicherter Stand wieder zu löschen
-        //TODO: Wenn die Seite Verlassen wird, und es Änderungen hat, dann nachfragen, ob die Änderungen gespeichert werden sollen.
 
-        private void InitPorpertys()
-        {
-            ConfigModel = ConfigManager.ConfigModel;
-        }
-        
-        
         public ConfigModel ConfigModel
         {
             get => _configModel;
@@ -45,6 +38,14 @@ namespace WichtelGenerator.WPF.ViewModels
         private ISantaManager SantaManager { get; }
         private SettingPage SettingPage { get; }
 
+        //TODO: Aktueller Stand kopieren, um den nicht gespeicherter Stand wieder zu löschen
+        //TODO: Wenn die Seite Verlassen wird, und es Änderungen hat, dann nachfragen, ob die Änderungen gespeichert werden sollen.
+
+        private void InitPorpertys()
+        {
+            ConfigModel = ConfigManager.ConfigModel;
+        }
+
 
         public async Task SaveSettingsAsync()
         {
@@ -56,7 +57,7 @@ namespace WichtelGenerator.WPF.ViewModels
                 //Todo: Bindings funktionieren! kontrollieren ob save und load funktioneirt!
 
                 ConfigModel.Passwort = SettingPage.PasswodTextBox.Password;
-            
+
                 ConfigManager.SaveSettings(ConfigModel);
                 SavedAsModelEventHandler?.Invoke(this, EventArgs.Empty);
             }
@@ -68,7 +69,7 @@ namespace WichtelGenerator.WPF.ViewModels
 
         internal override void InitCommands()
         {
-            OnSave = AsyncCommand.Create(para=>SaveSettingsAsync());
+            OnSave = AsyncCommand.Create(para => SaveSettingsAsync());
         }
     }
 }

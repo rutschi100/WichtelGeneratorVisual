@@ -11,12 +11,21 @@
         <Label Background="AliceBlue">Einstellung</Label>
         <RadioButton GroupName="RuffleVisible" IsChecked="{Binding ResultPerMail}">Per Mail</RadioButton>
         <RadioButton GroupName="RuffleVisible" IsChecked="{Binding ResultPerGui}">Hier anzeigen</RadioButton>
-        <Button Margin="2" Background="Green"
-                Command="{Binding OnRuffle}">Verlosung auslösen</Button>
+        <Button Margin="2" Background="Coral"
+                Command="{Binding OnRuffle}">
+            Verlosung auslösen
+        </Button>
 
         <Label Background="AliceBlue" Visibility="{Binding ResultVisibility}">Verlosungsresultat</Label>
         <DataGrid Visibility="{Binding ResultVisibility}"
-                  ItemsSource="{Binding ResultList}">
+                  ItemsSource="{Binding ResultList}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserReorderColumns="True"
+                  CanUserResizeColumns="True"
+                  CanUserResizeRows="False"
+                  CanUserSortColumns="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Wichtel" Binding="{Binding Name}" />
                 <DataGridTextColumn Header="Beschenkt" Binding="{Binding Choise.Name}" />

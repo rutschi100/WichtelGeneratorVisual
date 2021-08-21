@@ -1,7 +1,4 @@
-﻿using System;
-using RutschiSwiss.Helpers.WPF.Services;
-using WichtelGenerator.Core.Configuration;
-using WichtelGenerator.WPF.ViewModels;
+﻿using RutschiSwiss.Helpers.WPF.Services;
 
 namespace WichtelGenerator.WPF.Pages
 {

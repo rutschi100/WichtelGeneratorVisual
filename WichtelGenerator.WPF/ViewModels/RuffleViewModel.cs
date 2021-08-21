@@ -12,23 +12,18 @@ namespace WichtelGenerator.WPF.ViewModels
 {
     internal class RuffleViewModel : BaseViewModel
     {
-        private Visibility _resultVisibility = Visibility.Collapsed;
         private ObservableCollection<SecretSantaModel> _resultList;
-        private bool _resultPerMail;
         private bool _resultPerGui;
+        private bool _resultPerMail;
+        private Visibility _resultVisibility = Visibility.Collapsed;
 
         public RuffleViewModel(ILotteryService lotteryService, ISantaManager santaManager, IConfigManager configManager)
         {
             LotteryService = lotteryService;
             SantaManager = santaManager;
             ConfigManager = configManager;
-            
-            InitCommands();
-        }
 
-        internal sealed override void InitCommands()
-        {
-            OnRuffle = AsyncCommand.Create(StartRuffle);
+            InitCommands();
         }
 
         public IAsyncCommand OnRuffle { get; set; }
@@ -42,16 +37,39 @@ namespace WichtelGenerator.WPF.ViewModels
             set => SetAndRaise(ref _resultList, value);
         }
 
+        public bool ResultPerMail
+        {
+            get => _resultPerMail;
+            set => SetAndRaise(ref _resultPerMail, value);
+        }
+
+        public bool ResultPerGui
+        {
+            get => _resultPerGui;
+            set => SetAndRaise(ref _resultPerGui, value);
+        }
+
+        public Visibility ResultVisibility
+        {
+            get => _resultVisibility;
+            set => SetAndRaise(ref _resultVisibility, value);
+        }
+
+        internal sealed override void InitCommands()
+        {
+            OnRuffle = AsyncCommand.Create(StartRuffle);
+        }
+
         private async Task StartRuffle()
         {
-            await Task.CompletedTask; 
-            //todo: Funktion Prüfen!
+            await Task.CompletedTask;
             try
             {
                 if (!IsSettingValid())
                 {
                     throw new Exception("Ausgewählte Resultatanzeige ist gemäss Einstellungen, nicht verfügbar");
                 }
+
                 var result = LotteryService.Raffle(SantaManager.SecretSantaModels);
                 ResultList = new ObservableCollection<SecretSantaModel>(result);
                 if (!ConfigManager.ConfigModel.NotificationsEnabled)
@@ -77,24 +95,6 @@ namespace WichtelGenerator.WPF.ViewModels
         {
             var valid = ConfigManager.ConfigModel.NotificationsEnabled == ResultPerMail;
             return valid;
-        }
-
-        public bool ResultPerMail
-        {
-            get => _resultPerMail;
-            set => SetAndRaise(ref _resultPerMail, value);
-        }
-
-        public bool ResultPerGui
-        {
-            get => _resultPerGui;
-            set => SetAndRaise(ref _resultPerGui, value);
-        }
-
-        public Visibility ResultVisibility
-        {
-            get => _resultVisibility;
-            set => SetAndRaise(ref _resultVisibility, value);
         }
     }
 }
