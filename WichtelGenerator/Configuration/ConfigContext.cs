@@ -37,6 +37,11 @@ namespace WichtelGenerator.Core.Configuration
                         EF kommt nicht klar mit referenzierung auf sich selbst in ausnahme wie hier (ungetestet) siehe:
                             https://medium.com/@dmitry.pavlov/tree-structure-in-ef-core-how-to-configure-a-self-referencing-table-and-use-it-53effad60bf
 
+                    Recherche:
+                        -   Gem. Google, Braucht es für List<> jeweils ein Objekt was eine ID hat, um eine Tabelle darzustellen.
+                            Das Ding ist nur, dass SantaModel eine solches Objekt ist... Trotzdem klappt es nicht.
+
+
                     Lösungen:
                         1. SantaModel wird umgeschrieben und ale referenzen auf Santamodels werden mit Guid erstellt.
                             --> Vorteil: EF kann beibehalten werden und es ist zukünftiger flexibler.

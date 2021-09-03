@@ -15,16 +15,14 @@ namespace WichtelGenerator.Core.Models
         public string MailAdress { get; set; }
         
         public Guid? ChoiseID { get; set; }
-        
-        [ForeignKey("ChoiseID")]
         public SecretSantaModel Choise { get; set; }
 
-        public List<Guid> BlackListID {get;set;}
-        [ForeignKey("BlackListID")]
+        //public IList<Guid> BlackListID {get;set;}
+        //[ForeignKey("BlackListID")]
         public List<SecretSantaModel> BlackList { get; } = new List<SecretSantaModel>();
 
-        public List<Guid> WhiteListID {get;set;}
-        [ForeignKey("WhiteListID")]
+        //public IList<Guid> WhiteListID {get;set;}
+        //[ForeignKey("WhiteListID")]
         public List<SecretSantaModel> WhiteList { get; } = new List<SecretSantaModel>();
     }
 }
