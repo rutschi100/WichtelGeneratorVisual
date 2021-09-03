@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using WichtelGenerator.Core.Models;
 
 namespace WichtelGenerator.Core.Configuration
 {
     public class ConfigModel
     {
+        [Key]
+        public int ID { get; set; }
+        
         #region AppSettings
 
         public int FontSize { get; set; } = 16;
@@ -21,7 +25,7 @@ namespace WichtelGenerator.Core.Configuration
 
         #region MailSettings
 
-        public IEnumerable<string> EmpfaengerListe { get; set; } = new List<string>();
+        public IEnumerable<MailAdressModel> EmpfaengerListe { get; set; } = new List<MailAdressModel>();
 
         public int Port { get; set; }
 
@@ -36,5 +40,13 @@ namespace WichtelGenerator.Core.Configuration
         public bool SslOn { get; set; }
 
         #endregion
+    }
+
+    public class MailAdressModel
+    {
+        [Key]
+        public int ID { get; set; }
+        
+        public string Mail { get; set; }
     }
 }

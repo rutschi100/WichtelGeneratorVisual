@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Data.SQLite;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 
 [assembly: InternalsVisibleTo("WichtelGenerator.Core.Test")]
 
@@ -18,6 +20,26 @@ namespace WichtelGenerator.Core.Configuration
             }
         }
 
+        public const string DataBaseFile = "Database.db";
+        
+        private static void CreateDatabase()
+        {
+
+            SQLiteConnection.CreateFile(DataBaseFile);
+            if (!File.Exists(DataBaseFile))
+            {
+                throw new Exception("Datenbank konnte nicht erstellt werden!");
+            }
+        }
+        
+        private static void MigrateEF()
+        {
+            using var database = new ConfigContext();
+            database.Database.Migrate(); 
+        }
+        
+        
+        //Alt------------------
         private string AppDataFile { get; } = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
                                               @"\WichtelGenerator.json";
 
