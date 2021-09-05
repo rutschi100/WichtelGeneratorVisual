@@ -85,7 +85,7 @@ namespace WichtelGenerator.Core.Test.SantaManager
             manager.AddNewSanta(santa);
 
             var isOnEveryList = manager.SecretSantaModels.Where(oneModel => oneModel != santa)
-                .All(oneModel => oneModel.WhiteList.Any(p => p == santa));
+                .All(oneModel => oneModel.WhiteListModel.WhitList.Any(p => p == santa));
             Assert.True(isOnEveryList);
         }
 
@@ -98,7 +98,7 @@ namespace WichtelGenerator.Core.Test.SantaManager
 
             manager.AddNewSanta(santa);
 
-            var isOnHisOwnBlackList = santa.BlackList.Any(p => p == santa);
+            var isOnHisOwnBlackList = santa.BlackListModel.BlackList.Any(p => p == santa);
             Assert.True(isOnHisOwnBlackList);
         }
 
@@ -111,7 +111,7 @@ namespace WichtelGenerator.Core.Test.SantaManager
 
             manager.AddSantaToBlackList(firstSanta, secondSanta);
 
-            var moved = !firstSanta.WhiteList.Any(p => p == secondSanta);
+            var moved = !firstSanta.WhiteListModel.WhitList.Any(p => p == secondSanta);
             Assert.True(moved);
         }
 
@@ -160,7 +160,7 @@ namespace WichtelGenerator.Core.Test.SantaManager
 
             manager.AddSantaToWhiteList(firstSanta, secondSanta);
 
-            var moved = firstSanta?.WhiteList.Any(p => p == secondSanta);
+            var moved = firstSanta?.WhiteListModel.WhitList.Any(p => p == secondSanta);
             Assert.True(moved);
         }
 
@@ -174,8 +174,8 @@ namespace WichtelGenerator.Core.Test.SantaManager
 
             var moved = false;
             foreach (var everyOnWhite in from oneModel in manager.SecretSantaModels
-                let everyOnWhite = oneModel.WhiteList.Any(p => p.Name == TestSantaName_1)
-                let everyOnBlack = oneModel.BlackList.Any(p => p.Name == TestSantaName_1)
+                let everyOnWhite = oneModel.WhiteListModel.WhitList.Any(p => p.Name == TestSantaName_1)
+                let everyOnBlack = oneModel.BlackListModel.BlackList.Any(p => p.Name == TestSantaName_1)
                 where !everyOnBlack && !everyOnWhite
                 select everyOnWhite)
             {

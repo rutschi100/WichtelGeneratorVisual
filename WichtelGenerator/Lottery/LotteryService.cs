@@ -28,7 +28,7 @@ namespace WichtelGenerator.Core.Lottery
             }
 
             //--- Vorbereiten
-            players = secretSantaModels.OrderByDescending(p => p.BlackList.Count);
+            players = secretSantaModels.OrderByDescending(p => p.BlackListModel.BlackList.Count);
             var allreadyUsed = new List<SecretSantaModel>();
 
             // ReSharper disable once PossibleMultipleEnumeration
@@ -75,7 +75,7 @@ namespace WichtelGenerator.Core.Lottery
         /// <param name="allreadyUsed"></param>
         private void TakeTheFirstAvailable(SecretSantaModel player, ICollection<SecretSantaModel> allreadyUsed)
         {
-            foreach (var oneFromWhite in from oneFromWhite in player.WhiteList
+            foreach (var oneFromWhite in from oneFromWhite in player.WhiteListModel.WhitList
                 let result = allreadyUsed.FirstOrDefault(p => p.Equals(oneFromWhite) && oneFromWhite.Choise != p)
                 where result == null
                 select oneFromWhite)
@@ -115,9 +115,9 @@ namespace WichtelGenerator.Core.Lottery
             var random = new Random();
 
             int i;
-            for (i = 0; i < player.WhiteList.Count; i++)
+            for (i = 0; i < player.WhiteListModel.WhitList.Count; i++)
             {
-                var posibleChoise = player.WhiteList[random.Next(player.WhiteList.Count)];
+                var posibleChoise = player.WhiteListModel.WhitList[random.Next(player.WhiteListModel.WhitList.Count)];
                 if (IsInSantaList(allreadyUsed, posibleChoise)) continue;
                 if (posibleChoise.Choise == player) continue; // Do not draw each other
 
@@ -128,7 +128,7 @@ namespace WichtelGenerator.Core.Lottery
                 break;
             }
 
-            return i < player.WhiteList.Count;
+            return i < player.WhiteListModel.WhitList.Count;
         }
     }
 }

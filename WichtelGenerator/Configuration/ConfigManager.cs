@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Data.SQLite;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 
 [assembly: InternalsVisibleTo("WichtelGenerator.Core.Test")]
@@ -11,92 +11,93 @@ namespace WichtelGenerator.Core.Configuration
 {
     public class ConfigManager : IConfigManager
     {
+        public const string DataBaseFile = "Database.db";
+
         public ConfigManager()
         {
             ConfigModel = new ConfigModel();
-            if (!ConfigExists())
-            {
-                SaveSettings(ConfigModel);
-            }
+            InitEF();
         }
-
-        public const string DataBaseFile = "Database.db";
-        
-        private static void CreateDatabase()
-        {
-
-            SQLiteConnection.CreateFile(DataBaseFile);
-            if (!File.Exists(DataBaseFile))
-            {
-                throw new Exception("Datenbank konnte nicht erstellt werden!");
-            }
-        }
-        
-        private static void MigrateEF()
-        {
-            using var database = new ConfigContext();
-            database.Database.Migrate(); 
-        }
-        
-        
-        //Alt------------------
-        private string AppDataFile { get; } = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                                              @"\WichtelGenerator.json";
 
         public ConfigModel ConfigModel { get; set; }
 
         public ConfigModel ReadSettings()
         {
-            if (!ConfigExists())
-            {
-                return new ConfigModel();
-            }
-
-            var jsonString = File.ReadAllText(AppDataFile);
-
-            if (string.IsNullOrEmpty(jsonString))
-            {
-                return new ConfigModel();
-            }
-
-            ConfigModel = JsonSerializer.Deserialize<ConfigModel>(jsonString);
             return ConfigModel;
         }
 
         public void SaveSettings(ConfigModel configModel)
         {
-            RemoveConfigFromFileSystem();
-
-            var result = File.Create(AppDataFile);
-            result.Close();
-
-            if (configModel == null)
-            {
-                throw new Exception("ConfigModel should not be null!");
-            }
-
             ConfigModel = configModel;
-            
-            //todo: Promlematik Speichern:
-            // SantaModel hat listen mit santas, die Santa Models haben. Damit kommt Serialize nicht klar...
-            //todo: Umschreiben um mit EF-CodeFirst zu arbeiten, da gelingt der Verweis auf sich selber!
-            var jsonString = JsonSerializer.Serialize(configModel);
-            var writer = new StreamWriter(AppDataFile);
-            writer.Write(jsonString);
-            writer.Close();
+            WriteInDb();
         }
 
-        private void RemoveConfigFromFileSystem()
+        private void InitEF()
         {
-            if (ConfigExists())
+            var DbExists = File.Exists(DataBaseFile);
+            CreateDatabase();
+            MigrateEF();
+            if (!DbExists)
             {
-                File.Delete(AppDataFile);
+                WriteInDb();
+            }
+
+            ReadFromDb();
+        }
+
+        private void CreateDatabase()
+        {
+            if (!File.Exists(DataBaseFile))
+            {
+                SQLiteConnection.CreateFile(DataBaseFile);
+            }
+
+            if (!File.Exists(DataBaseFile))
+            {
+                throw new Exception($"Datenbank konnte nicht erstellt oder gefunden werden! {DataBaseFile}");
             }
         }
 
-        private bool ConfigExists()
+        private void MigrateEF()
         {
-            return File.Exists(AppDataFile);
+            using var database = new ConfigContext();
+            database.Database.Migrate();
+        }
+
+        private void ReadFromDb()
+        {
+            using var database = new ConfigContext();
+
+            var results = database.ConfigModels;
+            if (results.Count() > 1)
+            {
+                throw new Exception($"Es sind zu viele ConfigModels ({results.Count()}) gespeichert worden.");
+            }
+
+            if (!results.Any())
+            {
+                throw new Exception("Es ist kein ConfigModel in der DB gefunden worden.");
+            }
+
+            ConfigModel = results.FirstOrDefault();
+        }
+
+        private void WriteInDb()
+        {
+            using var database = new ConfigContext();
+
+            var results = database.ConfigModels;
+            var model = results.FirstOrDefault();
+            if (model != null)
+            {
+                model = ConfigModel;
+            }
+            else
+            {
+                results.Add(ConfigModel);
+            }
+
+            database.SaveChanges();
         }
     }
 }
