@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.DependencyModel;
+using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.Core.Enums;
 using WichtelGenerator.Core.Models;
 
@@ -10,22 +12,25 @@ namespace WichtelGenerator.Core.SantaManaager
     {
         private const int MinimumUserHasOnWhiteList = 2;
 
-        public SantaManager()
+        public SantaManager(IConfigManager configManager)
         {
-#if DEBUG
-            var newUser = new SecretSantaModel { Name = "User 1" };
-            AddNewSanta(newUser);
-            newUser = new SecretSantaModel { Name = "User 2" };
-            AddNewSanta(newUser);
-            newUser = new SecretSantaModel { Name = "User 3" };
-            AddNewSanta(newUser);
-            newUser = new SecretSantaModel { Name = "User 4" };
-            AddNewSanta(newUser);
-#endif
+            ConfigManager = configManager;
+
+            var santas = ConfigManager.ReadSettings().SecretSantaModels;
+            if (santas != null)
+            {
+                SecretSantaModels = santas;
+            }
+            else
+            {
+                SecretSantaModels = new List<SecretSantaModel>();
+            }
         }
 
+        public IConfigManager ConfigManager { get; set; }
+        
         public EventHandler<EventArgs> NewUserAddedEvent { get; set; }
-        public List<SecretSantaModel> SecretSantaModels { get; } = new List<SecretSantaModel>();
+        public List<SecretSantaModel> SecretSantaModels { get; }
 
         public SantaBlackListWishResult AddSantaToBlackList(SecretSantaModel owner, SecretSantaModel modelToBeMoved)
         {

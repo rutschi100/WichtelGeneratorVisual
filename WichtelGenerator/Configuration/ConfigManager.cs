@@ -69,6 +69,7 @@ namespace WichtelGenerator.Core.Configuration
             using var database = new ConfigContext();
 
             var results = database.ConfigModels;
+
             if (results.Count() > 1)
             {
                 throw new Exception($"Es sind zu viele ConfigModels ({results.Count()}) gespeichert worden.");
@@ -80,8 +81,14 @@ namespace WichtelGenerator.Core.Configuration
             }
 
             ConfigModel = results.FirstOrDefault();
+            LoadDependencies(database);
         }
 
+        private void LoadDependencies(DbContext context)
+        {
+            context.Entry(ConfigModel).Collection(p=>p.SecretSantaModels).Load();
+        }
+        
         private void WriteInDb()
         {
             using var database = new ConfigContext();
