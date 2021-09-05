@@ -20,12 +20,12 @@ namespace WichtelGenerator.Core.Test.Notification
             var firstModel = new SecretSantaModel { Name = "2" };
             var secondModel = new SecretSantaModel { Name = "1" };
             var thirtModel = new SecretSantaModel { Name = "3" };
-            firstModel.WhiteList.Add(secondModel);
-            firstModel.WhiteList.Add(thirtModel);
-            secondModel.WhiteList.Add(firstModel);
-            secondModel.WhiteList.Add(thirtModel);
-            thirtModel.WhiteList.Add(firstModel);
-            thirtModel.WhiteList.Add(secondModel);
+            firstModel.WhiteListModel.WhitList.Add(secondModel);
+            firstModel.WhiteListModel.WhitList.Add(thirtModel);
+            secondModel.WhiteListModel.WhitList.Add(firstModel);
+            secondModel.WhiteListModel.WhitList.Add(thirtModel);
+            thirtModel.WhiteListModel.WhitList.Add(firstModel);
+            thirtModel.WhiteListModel.WhitList.Add(secondModel);
 
             return new List<SecretSantaModel> { firstModel, secondModel, thirtModel };
         }

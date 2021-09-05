@@ -15,11 +15,7 @@ namespace WichtelGenerator.Core.Test.Configuration
         public ConfigModel TestModel { get; set; } = new ConfigModel
         {
             Absender = "Test Absender",
-            EmpfaengerListe = new List<string>
-            {
-                "Ein Absender",
-                "Zwei Absender"
-            },
+            EmpfaengerListe = new List<MailAdressModel>(),
             MailNotificationEnabled = true,
             NotificationsEnabled = true,
             Passwort = "abc",
@@ -42,6 +38,11 @@ namespace WichtelGenerator.Core.Test.Configuration
         {
             ConfigFilePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
                              @"\WichtelGenerator.json";
+
+            var mail_1 = new MailAdressModel { Mail = "TestMail@Testingen" };
+            var mail_2 = new MailAdressModel { Mail = "TestMail@Testingen_2" };
+
+            TestModel.EmpfaengerListe = new List<MailAdressModel> { mail_1, mail_2 };
         }
 
 

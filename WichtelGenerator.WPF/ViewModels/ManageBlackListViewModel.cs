@@ -101,12 +101,12 @@ namespace WichtelGenerator.WPF.ViewModels
             WhiteList.Clear();
             BlackList.Clear();
 
-            foreach (var oneWhite in santa.WhiteList)
+            foreach (var oneWhite in santa.WhiteListModel.WhitList)
             {
                 WhiteList.Add(oneWhite.Name);
             }
 
-            foreach (var oneBlack in santa.BlackList)
+            foreach (var oneBlack in santa.BlackListModel.BlackList)
             {
                 BlackList.Add(oneBlack.Name);
             }

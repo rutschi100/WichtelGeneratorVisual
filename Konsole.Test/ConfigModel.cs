@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using WichtelGenerator.Core.Models;
+using Konsole.Test;
 
 namespace WichtelGenerator.Core.Configuration
 {
     public class ConfigModel
     {
-        [Key] public int ID { get; set; }
-
+        [Key]
+        public int ID { get; set; }
+        
         #region AppSettings
 
         public int FontSize { get; set; } = 16;
@@ -43,8 +44,9 @@ namespace WichtelGenerator.Core.Configuration
 
     public class MailAdressModel
     {
-        [Key] public int ID { get; set; }
-
+        [Key]
+        public int ID { get; set; }
+        
         public string Mail { get; set; }
     }
 }
