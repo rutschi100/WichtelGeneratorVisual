@@ -78,6 +78,8 @@ namespace Konsole.Test.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     MailAdress = table.Column<string>(type: "TEXT", nullable: true),
                     ChoiseID = table.Column<Guid>(type: "TEXT", nullable: true),
+                    BlackListID = table.Column<Guid>(type: "TEXT", nullable: true),
+                    WhiteListID = table.Column<Guid>(type: "TEXT", nullable: true),
                     ConfigModelID = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
@@ -90,6 +92,18 @@ namespace Konsole.Test.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
+                        name: "FK_SecretSantaModel_SantaBlackList_BlackListID",
+                        column: x => x.BlackListID,
+                        principalTable: "SantaBlackList",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SecretSantaModel_SantaWhiteList_WhiteListID",
+                        column: x => x.WhiteListID,
+                        principalTable: "SantaWhiteList",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_SecretSantaModel_SecretSantaModel_ChoiseID",
                         column: x => x.ChoiseID,
                         principalTable: "SecretSantaModel",
@@ -97,74 +111,15 @@ namespace Konsole.Test.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "SantaBlackListSecretSantaModel",
-                columns: table => new
-                {
-                    BlackListID = table.Column<Guid>(type: "TEXT", nullable: false),
-                    BlackListID1 = table.Column<Guid>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SantaBlackListSecretSantaModel", x => new { x.BlackListID, x.BlackListID1 });
-                    table.ForeignKey(
-                        name: "FK_SantaBlackListSecretSantaModel_SantaBlackList_BlackListID1",
-                        column: x => x.BlackListID1,
-                        principalTable: "SantaBlackList",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SantaBlackListSecretSantaModel_SecretSantaModel_BlackListID",
-                        column: x => x.BlackListID,
-                        principalTable: "SecretSantaModel",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SantaWhiteListSecretSantaModel",
-                columns: table => new
-                {
-                    WhiteListID = table.Column<Guid>(type: "TEXT", nullable: false),
-                    WhiteListID1 = table.Column<Guid>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SantaWhiteListSecretSantaModel", x => new { x.WhiteListID, x.WhiteListID1 });
-                    table.ForeignKey(
-                        name: "FK_SantaWhiteListSecretSantaModel_SantaWhiteList_WhiteListID1",
-                        column: x => x.WhiteListID1,
-                        principalTable: "SantaWhiteList",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SantaWhiteListSecretSantaModel_SecretSantaModel_WhiteListID",
-                        column: x => x.WhiteListID,
-                        principalTable: "SecretSantaModel",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ConfigModels_ID",
-                table: "ConfigModels",
-                column: "ID",
-                unique: true);
-
             migrationBuilder.CreateIndex(
                 name: "IX_MailAdressModel_ConfigModelID",
                 table: "MailAdressModel",
                 column: "ConfigModelID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SantaBlackListSecretSantaModel_BlackListID1",
-                table: "SantaBlackListSecretSantaModel",
-                column: "BlackListID1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SantaWhiteListSecretSantaModel_WhiteListID1",
-                table: "SantaWhiteListSecretSantaModel",
-                column: "WhiteListID1");
+                name: "IX_SecretSantaModel_BlackListID",
+                table: "SecretSantaModel",
+                column: "BlackListID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SecretSantaModel_ChoiseID",
@@ -175,6 +130,11 @@ namespace Konsole.Test.Migrations
                 name: "IX_SecretSantaModel_ConfigModelID",
                 table: "SecretSantaModel",
                 column: "ConfigModelID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SecretSantaModel_WhiteListID",
+                table: "SecretSantaModel",
+                column: "WhiteListID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -183,22 +143,16 @@ namespace Konsole.Test.Migrations
                 name: "MailAdressModel");
 
             migrationBuilder.DropTable(
-                name: "SantaBlackListSecretSantaModel");
+                name: "SecretSantaModel");
 
             migrationBuilder.DropTable(
-                name: "SantaWhiteListSecretSantaModel");
+                name: "ConfigModels");
 
             migrationBuilder.DropTable(
                 name: "SantaBlackList");
 
             migrationBuilder.DropTable(
                 name: "SantaWhiteList");
-
-            migrationBuilder.DropTable(
-                name: "SecretSantaModel");
-
-            migrationBuilder.DropTable(
-                name: "ConfigModels");
         }
     }
 }

@@ -15,8 +15,9 @@ namespace Konsole.Test
         
         public SecretSantaModel Choise { get; set; }
 
-        public List<SantaBlackList> BlackList { get; } = new List<SantaBlackList>();
-        public List<SantaWhiteList> WhiteList { get; } = new List<SantaWhiteList>();
+        public SantaBlackList BlackList { get; set; }
+
+        public SantaWhiteList WhiteList { get; set; }
     }
 
     public class SantaBlackList

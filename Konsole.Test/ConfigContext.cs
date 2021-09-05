@@ -15,6 +15,8 @@ namespace Konsole.Test
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            /*
+
             // Jedes Modell eintragen, welches gespeicher werden soll.
             builder.Entity<ConfigModel>()
                 .HasIndex(a => a.ID)
@@ -54,10 +56,10 @@ namespace Konsole.Test
                             --> Vorteil: Aktuelle Software kann dennoch genutzt werden und verzichtet lediglich auf ein Feature
                             --> Inpact: Falls künftig Interesse besteht an dem Tool, so muss man auf eines der anderen Lösungen zurückgreifen.
                 */
-
+                /*
             }); 
-
-
+        
+            */
         }
     }
 }

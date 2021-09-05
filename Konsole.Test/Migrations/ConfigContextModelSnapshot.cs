@@ -44,6 +44,9 @@ namespace Konsole.Test.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("BlackListID")
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid?>("ChoiseID")
                         .HasColumnType("TEXT");
 
@@ -57,43 +60,20 @@ namespace Konsole.Test.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("WhiteListID")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("BlackListID");
 
                     b.HasIndex("ChoiseID");
 
                     b.HasIndex("ConfigModelID");
 
+                    b.HasIndex("WhiteListID");
+
                     b.ToTable("SecretSantaModel");
-                });
-
-            modelBuilder.Entity("SantaBlackListSecretSantaModel", b =>
-                {
-                    b.Property<Guid>("BlackListID")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("BlackListID1")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("BlackListID", "BlackListID1");
-
-                    b.HasIndex("BlackListID1");
-
-                    b.ToTable("SantaBlackListSecretSantaModel");
-                });
-
-            modelBuilder.Entity("SantaWhiteListSecretSantaModel", b =>
-                {
-                    b.Property<Guid>("WhiteListID")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("WhiteListID1")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("WhiteListID", "WhiteListID1");
-
-                    b.HasIndex("WhiteListID1");
-
-                    b.ToTable("SantaWhiteListSecretSantaModel");
                 });
 
             modelBuilder.Entity("WichtelGenerator.Core.Configuration.ConfigModel", b =>
@@ -131,9 +111,6 @@ namespace Konsole.Test.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ID")
-                        .IsUnique();
-
                     b.ToTable("ConfigModels");
                 });
 
@@ -158,6 +135,10 @@ namespace Konsole.Test.Migrations
 
             modelBuilder.Entity("Konsole.Test.SecretSantaModel", b =>
                 {
+                    b.HasOne("Konsole.Test.SantaBlackList", "BlackList")
+                        .WithMany("BlackList")
+                        .HasForeignKey("BlackListID");
+
                     b.HasOne("Konsole.Test.SecretSantaModel", "Choise")
                         .WithMany()
                         .HasForeignKey("ChoiseID");
@@ -166,37 +147,15 @@ namespace Konsole.Test.Migrations
                         .WithMany("SecretSantaModels")
                         .HasForeignKey("ConfigModelID");
 
+                    b.HasOne("Konsole.Test.SantaWhiteList", "WhiteList")
+                        .WithMany("WhiteList")
+                        .HasForeignKey("WhiteListID");
+
+                    b.Navigation("BlackList");
+
                     b.Navigation("Choise");
-                });
 
-            modelBuilder.Entity("SantaBlackListSecretSantaModel", b =>
-                {
-                    b.HasOne("Konsole.Test.SecretSantaModel", null)
-                        .WithMany()
-                        .HasForeignKey("BlackListID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Konsole.Test.SantaBlackList", null)
-                        .WithMany()
-                        .HasForeignKey("BlackListID1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SantaWhiteListSecretSantaModel", b =>
-                {
-                    b.HasOne("Konsole.Test.SecretSantaModel", null)
-                        .WithMany()
-                        .HasForeignKey("WhiteListID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Konsole.Test.SantaWhiteList", null)
-                        .WithMany()
-                        .HasForeignKey("WhiteListID1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("WhiteList");
                 });
 
             modelBuilder.Entity("WichtelGenerator.Core.Configuration.MailAdressModel", b =>
@@ -204,6 +163,16 @@ namespace Konsole.Test.Migrations
                     b.HasOne("WichtelGenerator.Core.Configuration.ConfigModel", null)
                         .WithMany("EmpfaengerListe")
                         .HasForeignKey("ConfigModelID");
+                });
+
+            modelBuilder.Entity("Konsole.Test.SantaBlackList", b =>
+                {
+                    b.Navigation("BlackList");
+                });
+
+            modelBuilder.Entity("Konsole.Test.SantaWhiteList", b =>
+                {
+                    b.Navigation("WhiteList");
                 });
 
             modelBuilder.Entity("WichtelGenerator.Core.Configuration.ConfigModel", b =>
