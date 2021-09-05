@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WichtelGenerator.Core.Models;
 
 namespace WichtelGenerator.Core.Configuration
 {
@@ -14,6 +15,15 @@ namespace WichtelGenerator.Core.Configuration
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<ConfigModel>()
+                .HasIndex(a => a.ID)
+                .IsUnique();
+
+            builder.Entity<SecretSantaModel>().HasIndex(a => a.ID).IsUnique();
+            builder.Entity<BlackListModel>().HasIndex(a => a.ID).IsUnique();
+            builder.Entity<WhiteListModel>().HasIndex(a => a.ID).IsUnique();
+            builder.Entity<MailAdressModel>().HasIndex(a => a.ID).IsUnique();
+
             /*
                 Problematik:
                     EF erkennt List<> nicht an

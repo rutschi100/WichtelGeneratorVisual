@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WichtelGenerator.Core.Configuration;
 
 namespace WichtelGenerator.Core.Migrations
 {
     [DbContext(typeof(ConfigContext))]
-    partial class ConfigContextModelSnapshot : ModelSnapshot
+    [Migration("20210905155218_correct")]
+    partial class correct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

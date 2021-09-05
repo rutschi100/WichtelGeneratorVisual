@@ -86,17 +86,7 @@ namespace WichtelGenerator.Core.Configuration
         {
             using var database = new ConfigContext();
 
-            var results = database.ConfigModels;
-            var model = results.FirstOrDefault();
-            if (model != null)
-            {
-                model = ConfigModel;
-            }
-            else
-            {
-                results.Add(ConfigModel);
-            }
-
+            database.ConfigModels.Update(ConfigModel);
             database.SaveChanges();
         }
     }
