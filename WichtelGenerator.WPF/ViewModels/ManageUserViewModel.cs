@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -23,8 +24,11 @@ namespace WichtelGenerator.WPF.ViewModels
         {
             SantaManager = santaManager;
             UpdateSantaList();
+            SantaManager.NewUserAddedEvent += UpdateSantaList;
             InitCommands();
         }
+
+        //todo: Möglichkeit die User zu löschen fehlt noch!
 
         public string SelectedSantaname
         {
@@ -64,6 +68,11 @@ namespace WichtelGenerator.WPF.ViewModels
         {
             get => _activeSantas;
             set => SetAndRaise(ref _activeSantas, value);
+        }
+
+        private void UpdateSantaList(object sender, EventArgs e)
+        {
+            UpdateSantaList();
         }
 
         internal sealed override void InitCommands()
