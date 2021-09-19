@@ -78,6 +78,8 @@ namespace WichtelGenerator.WPF.ViewModels
                 newSanta.MailAdress = MailAdres;
             }
 
+            //todo: spechern in DB nach Hinzufügen des Users
+            
             switch (SantaManager.AddNewSanta(newSanta))
             {
                 case AddUserResult.Done:

@@ -21,8 +21,12 @@ namespace WichtelGenerator.Core.Configuration
 
         public ConfigModel ConfigModel { get; set; }
 
+        public EventHandler OnSaveEventHandler { get; set; }
+        public EventHandler OnReadEventHandler { get; set; }
+        
         public ConfigModel ReadSettings()
         {
+            OnReadEventHandler.Invoke(this, EventArgs.Empty);
             return ConfigModel;
         }
 
@@ -30,6 +34,7 @@ namespace WichtelGenerator.Core.Configuration
         {
             ConfigModel = configModel;
             WriteInDb();
+            OnSaveEventHandler.Invoke(this, EventArgs.Empty);
         }
 
         private void InitEF()

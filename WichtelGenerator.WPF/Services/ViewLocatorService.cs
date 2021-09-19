@@ -18,7 +18,6 @@ namespace WichtelGenerator.WPF.Services
         private static Dictionary<string, Type> ViewLocatorDictionary { get; } = new Dictionary<string, Type>
         {
             { nameof(MainSiteViewModel), typeof(MainSite) },
-            { nameof(StorageSettingViewModel), typeof(StorageSettingPage) },
             { nameof(AddUserViewModel), typeof(AddUserPage) },
             { nameof(ManageBlackListViewModel), typeof(ManageBlackListsPage) },
             { nameof(ManageUserViewModel), typeof(ManageUserPage) },

@@ -29,6 +29,7 @@ namespace WichtelGenerator.WPF.ViewModels
         }
 
         //todo: Möglichkeit die User zu löschen fehlt noch!
+        //todo: nach verwaltung in DB speichern
 
         public string SelectedSantaname
         {

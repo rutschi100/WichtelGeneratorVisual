@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using WichtelGenerator.Core.Configuration;
+using WichtelGenerator.WPF.Commands;
 using WichtelGenerator.WPF.Services;
 
 // ReSharper disable MemberCanBePrivate.Global --> Xaml propertys have to be public
@@ -13,7 +15,6 @@ namespace WichtelGenerator.WPF.ViewModels
         private Page _manageBlackListPage;
         private Page _mangageUserPage;
         private Page _rufflePage;
-        private Page _savePage;
         private Page _settingPage;
 
         public MainSiteViewModel(IConfigManager configManager)
@@ -27,11 +28,9 @@ namespace WichtelGenerator.WPF.ViewModels
 
         private IConfigManager ConfigManager { get; }
 
-        public Page SavePage
-        {
-            get => _savePage;
-            set => SetAndRaise(ref _savePage, value);
-        }
+        public EventHandler PageChangedEventHandler { get; set; }
+        
+        public IAsyncCommand OnChangeTab { get; set; }
 
         public Page SettingPage
         {
@@ -66,7 +65,6 @@ namespace WichtelGenerator.WPF.ViewModels
 
         private void SetPages()
         {
-            SavePage = (Page) locator.GetViewFor<StorageSettingViewModel>();
             SettingPage = (Page) locator.GetViewFor<SettingViewModel>();
             AddUserPage = (Page) locator.GetViewFor<AddUserViewModel>();
             MangageUserPage = (Page) locator.GetViewFor<ManageUserViewModel>();
@@ -78,11 +76,20 @@ namespace WichtelGenerator.WPF.ViewModels
         {
             SetPages();
             ConfigManager.ReadSettings(); //Doesnt need the Model in here --> Ignore return.
+            InitCommands();
         }
+        
 
         internal override void InitCommands()
         {
-            throw new NotImplementedException();
+            OnChangeTab = AsyncCommand.Create(InformThatPageHasChanged);
+        }
+
+        private async Task InformThatPageHasChanged()
+        {
+            //todo: Tabcontroll hat mühe ein passedes Event zu finden mit den Behevoirs....
+            await Task.CompletedTask;
+            PageChangedEventHandler.Invoke(this, EventArgs.Empty);
         }
     }
 }

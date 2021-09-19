@@ -63,7 +63,6 @@ namespace WichtelGenerator.WPF
         {
             DependencyContainer.Instance.Register<MainSite>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<WelcomePage>(Lifestyle.Singleton);
-            DependencyContainer.Instance.Register<StorageSettingPage>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<AddUserPage>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<ManageUserPage>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<ManageBlackListsPage>(Lifestyle.Singleton);
@@ -78,7 +77,6 @@ namespace WichtelGenerator.WPF
             await Task.CompletedTask;
             DependencyContainer.Instance.Register<MainSiteViewModel>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<WelcomeViewModel>(Lifestyle.Singleton);
-            DependencyContainer.Instance.Register<StorageSettingViewModel>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<AddUserViewModel>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<ManageUserViewModel>(Lifestyle.Singleton);
             DependencyContainer.Instance.Register<ManageBlackListViewModel>(Lifestyle.Singleton);

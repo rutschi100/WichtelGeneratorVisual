@@ -16,12 +16,13 @@ namespace WichtelGenerator.WPF.ViewModels
 
 
         public SettingViewModel(ConfigModel configModel, IConfigManager configManager, ISantaManager santaManager,
-            SettingPage settingPage)
+            SettingPage settingPage, MainSiteViewModel mainSiteViewModel)
         {
             _configModel = configModel;
             ConfigManager = configManager;
             SantaManager = santaManager;
             SettingPage = settingPage;
+            MainSiteViewModel = mainSiteViewModel;
             InitCommands();
             InitPorpertys();
         }
@@ -38,6 +39,7 @@ namespace WichtelGenerator.WPF.ViewModels
 
         private ISantaManager SantaManager { get; }
         private SettingPage SettingPage { get; }
+        private MainSiteViewModel MainSiteViewModel { get; set; }
 
         //TODO: Aktueller Stand kopieren, um den nicht gespeicherter Stand wieder zu löschen
         //TODO: Wenn die Seite Verlassen wird, und es Änderungen hat, dann nachfragen, ob die Änderungen gespeichert werden sollen.
@@ -45,6 +47,12 @@ namespace WichtelGenerator.WPF.ViewModels
         private void InitPorpertys()
         {
             ConfigModel = ConfigManager.ConfigModel;
+            MainSiteViewModel.PageChangedEventHandler += SaveSettingsAsync;
+        }
+
+        private async void SaveSettingsAsync(object sender, EventArgs e)
+        {
+            await SaveSettingsAsync().ConfigureAwait(false);
         }
 
 

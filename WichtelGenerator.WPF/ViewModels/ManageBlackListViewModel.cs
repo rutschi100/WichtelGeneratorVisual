@@ -58,6 +58,8 @@ namespace WichtelGenerator.WPF.ViewModels
             set => SetAndRaise(ref _whiteList, value);
         }
 
+        //todo: nach änderung der Blacklist --> speichern in db
+        
         public IAsyncCommand OnClickWhiteList { get; set; }
 
         public string SelectedBlack
