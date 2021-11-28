@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Autofac.Extras.Moq;
 using NUnit.Framework;
+using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.Core.Enums;
 using WichtelGenerator.Core.Models;
 
@@ -14,7 +16,7 @@ namespace WichtelGenerator.Core.Test.SantaManager
 
         private SantaManaager.SantaManager CreateManagerWithTestData()
         {
-            var manager = new SantaManaager.SantaManager();
+            var manager = new SantaManaager.SantaManager(new ConfigManager());
             manager.AddNewSanta(new SecretSantaModel { Name = "User 1" });
             manager.AddNewSanta(new SecretSantaModel { Name = "User 2" });
             manager.AddNewSanta(new SecretSantaModel { Name = "User 3" });
@@ -111,7 +113,7 @@ namespace WichtelGenerator.Core.Test.SantaManager
 
             manager.AddSantaToBlackList(firstSanta, secondSanta);
 
-            var moved = !firstSanta.WhiteListModel.WhitList.Any(p => p == secondSanta);
+            var moved = ((firstSanta?.WhiteListModel.WhitList) ?? throw new InvalidOperationException()).All(p => p != secondSanta);
             Assert.True(moved);
         }
 
