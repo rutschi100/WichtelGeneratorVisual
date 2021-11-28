@@ -29,11 +29,14 @@ namespace WichtelGenerator.WPF
                 await RegisterCore();
 
                 DependencyContainer.Instance.Verify();
+                DependencyContainer.Instance.GetInstance<MainSiteViewModel>().SetPropertys();
+                
                 var locator = DependencyContainer.Instance.GetInstance<IViewLocatorService>();
                 var startView =
                     (Window) locator
                         .GetViewFor<MainSiteViewModel>(); //--- Muss von jedem existieren, damit der Context gesetzt wird!!!
 
+                
                 startView.Show();
 
                 base.OnStartup(e);

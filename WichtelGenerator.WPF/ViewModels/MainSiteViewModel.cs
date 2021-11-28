@@ -20,7 +20,7 @@ namespace WichtelGenerator.WPF.ViewModels
         public MainSiteViewModel(IConfigManager configManager)
         {
             ConfigManager = configManager;
-            SetPropertys();
+            // SetPropertys();
         }
 
         public IViewLocatorService locator { get; set; } =
@@ -30,7 +30,7 @@ namespace WichtelGenerator.WPF.ViewModels
 
         public EventHandler PageChangedEventHandler { get; set; }
         
-        public IAsyncCommand OnChangeTab { get; set; }
+        // public IAsyncCommand OnChangeTab { get; set; }
 
         public Page SettingPage
         {
@@ -72,7 +72,7 @@ namespace WichtelGenerator.WPF.ViewModels
             RufflePage = (Page) locator.GetViewFor<RuffleViewModel>();
         }
         
-        private void SetPropertys()
+        public void SetPropertys()
         {
             SetPages();
             ConfigManager.ReadSettings(); //Doesnt need the Model in here --> Ignore return.
@@ -82,14 +82,14 @@ namespace WichtelGenerator.WPF.ViewModels
 
         internal override void InitCommands()
         {
-            OnChangeTab = AsyncCommand.Create(InformThatPageHasChanged);
+            // OnChangeTab = AsyncCommand.Create(InformThatPageHasChanged);
         }
 
-        private async Task InformThatPageHasChanged()
-        {
-            //todo: Tabcontroll hat mühe ein passedes Event zu finden mit den Behevoirs....
-            await Task.CompletedTask;
-            PageChangedEventHandler.Invoke(this, EventArgs.Empty);
-        }
+        // private async Task InformThatPageHasChanged()
+        // {
+        //     //todo: Tabcontroll hat mühe ein passedes Event zu finden mit den Behevoirs....
+        //     await Task.CompletedTask;
+        //     PageChangedEventHandler.Invoke(this, EventArgs.Empty);
+        // }
     }
 }

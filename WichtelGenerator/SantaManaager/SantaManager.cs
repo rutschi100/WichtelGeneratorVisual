@@ -30,7 +30,7 @@ namespace WichtelGenerator.Core.SantaManaager
         public IConfigManager ConfigManager { get; set; }
         
         public EventHandler<EventArgs> NewUserAddedEvent { get; set; }
-        public List<SecretSantaModel> SecretSantaModels { get; }
+        public List<SecretSantaModel> SecretSantaModels { get; private set; }
 
         public SantaBlackListWishResult AddSantaToBlackList(SecretSantaModel owner, SecretSantaModel modelToBeMoved)
         {

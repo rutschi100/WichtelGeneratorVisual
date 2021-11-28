@@ -26,7 +26,7 @@ namespace WichtelGenerator.Core.Configuration
         
         public ConfigModel ReadSettings()
         {
-            OnReadEventHandler.Invoke(this, EventArgs.Empty);
+            OnReadEventHandler?.Invoke(this, EventArgs.Empty);
             return ConfigModel;
         }
 

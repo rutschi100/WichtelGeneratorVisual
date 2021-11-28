@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
         mc:Ignorable="d"
         Title="Wichtel Generator"
         WindowStartupLocation="CenterScreen"
@@ -11,9 +10,7 @@
         ResizeMode="CanMinimize"
         MinWidth="200">
 
-    <TabControl TabStripPlacement="Left" 
-                local:CommandBehavior.Event="Selecting"
-                local:CommandBehavior.Command="{Binding OnChangeTab}">
+    <TabControl TabStripPlacement="Left">
         <TabItem Background="AliceBlue" Header="Einstellungen">
             <Frame Name="SettingTab" Content="{Binding SettingPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </TabItem>
