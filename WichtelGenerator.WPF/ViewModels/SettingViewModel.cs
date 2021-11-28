@@ -63,7 +63,6 @@ namespace WichtelGenerator.WPF.ViewModels
             try
             {
                 ConfigModel.SecretSantaModels = SantaManager.SecretSantaModels;
-                //Todo: Bindings funktionieren! kontrollieren ob save und load funktioneirt!
 
                 ConfigModel.Passwort = SettingPage.PasswodTextBox.Password;
 

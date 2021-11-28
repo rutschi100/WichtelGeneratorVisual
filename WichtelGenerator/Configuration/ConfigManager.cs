@@ -34,7 +34,7 @@ namespace WichtelGenerator.Core.Configuration
         {
             ConfigModel = configModel;
             WriteInDb();
-            OnSaveEventHandler.Invoke(this, EventArgs.Empty);
+            OnSaveEventHandler?.Invoke(this, EventArgs.Empty);
         }
 
         private void InitEF()
