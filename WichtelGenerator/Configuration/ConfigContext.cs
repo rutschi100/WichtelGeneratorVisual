@@ -6,6 +6,7 @@ namespace WichtelGenerator.Core.Configuration
     public class ConfigContext : DbContext
     {
         public DbSet<ConfigModel> ConfigModels { get; set; }
+        public DbSet<ListMapping> ListMappings { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder dbContextOptionsBuilder)
@@ -20,9 +21,8 @@ namespace WichtelGenerator.Core.Configuration
                 .IsUnique();
 
             builder.Entity<SecretSantaModel>().HasIndex(a => a.ID).IsUnique();
-            builder.Entity<BlackListModel>().HasIndex(a => a.ID).IsUnique();
-            builder.Entity<WhiteListModel>().HasIndex(a => a.ID).IsUnique();
             builder.Entity<MailAdressModel>().HasIndex(a => a.ID).IsUnique();
+            builder.Entity<ListMapping>().HasIndex(a => a.Id).IsUnique();
 
             /*
                 Problematik:

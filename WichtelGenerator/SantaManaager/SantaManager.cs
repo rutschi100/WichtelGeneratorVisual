@@ -1,40 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.DependencyModel;
 using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.Core.Enums;
 using WichtelGenerator.Core.Models;
+using WichtelGenerator.Core.Services;
 
 namespace WichtelGenerator.Core.SantaManaager
 {
     public class SantaManager : ISantaManager
     {
         private const int MinimumUserHasOnWhiteList = 2;
+        private readonly IListMappingService _listMappingService;
 
-        public SantaManager(IConfigManager configManager)
+        public SantaManager(IConfigManager configManager, IListMappingService listMappingService)
         {
             ConfigManager = configManager;
+            _listMappingService = listMappingService;
 
             var santas = ConfigManager.ReadSettings().SecretSantaModels;
-            if (santas != null)
-            {
-                SecretSantaModels = santas;
-            }
-            else
-            {
-                SecretSantaModels = new List<SecretSantaModel>();
-            }
+            SecretSantaModels = santas ?? new List<SecretSantaModel>();
         }
 
-        public IConfigManager ConfigManager { get; set; }
-        
-        public EventHandler<EventArgs> NewUserAddedEvent { get; set; }
-        public List<SecretSantaModel> SecretSantaModels { get; private set; }
+        private IConfigManager ConfigManager { get; }
 
-        public SantaBlackListWishResult AddSantaToBlackList(SecretSantaModel owner, SecretSantaModel modelToBeMoved)
+        public EventHandler<EventArgs> NewUserAddedEvent { get; set; }
+        public List<SecretSantaModel> SecretSantaModels { get; }
+
+
+        public SantaBlackListWishResult AddSantaToBlackList(
+            SecretSantaModel owner,
+            SecretSantaModel modelToBeMoved
+        )
         {
-            var hasReachedMaximumNumber = owner.BlackListModel.BlackList.Count + 1 >= SecretSantaModels.Count;
+            var hasReachedMaximumNumber =
+                _listMappingService.GetCount(owner, SecredSantaMappingType.BlackListed) + 1
+                >= SecretSantaModels.Count;
             if (hasReachedMaximumNumber)
             {
                 return SantaBlackListWishResult.MaxValueAlreadyUsed;
@@ -46,7 +47,11 @@ namespace WichtelGenerator.Core.SantaManaager
                 return result;
             }
 
-            MoveToBlackList(owner, modelToBeMoved);
+            _listMappingService.ChangeRelationship(
+                owner,
+                modelToBeMoved,
+                SecredSantaMappingType.BlackListed
+            );
 
             return result;
         }
@@ -59,14 +64,11 @@ namespace WichtelGenerator.Core.SantaManaager
                 throw new Exception("A model cannot keep itself on the whitelist");
             }
 
-            owner.BlackListModel.BlackList.Remove(modelToBeMoved);
-            var selectedModel = owner.WhiteListModel.WhitList.FirstOrDefault(p => p == modelToBeMoved);
-            if (selectedModel != null)
-            {
-                return;
-            }
-
-            owner.WhiteListModel.WhitList.Add(modelToBeMoved);
+            _listMappingService.ChangeRelationship(
+                owner,
+                modelToBeMoved,
+                SecredSantaMappingType.WhiteListed
+            );
         }
 
         public AddUserResult AddNewSanta(SecretSantaModel model)
@@ -76,7 +78,11 @@ namespace WichtelGenerator.Core.SantaManaager
             AddNewModelToAllWhiteLists(model);
 
             SecretSantaModels.Add(model);
-            model.BlackListModel.BlackList.Add(model);
+            _listMappingService.ChangeRelationship(
+                model,
+                model,
+                SecredSantaMappingType.BlackListed
+            );
 
             NewUserAddedEvent?.Invoke(this, EventArgs.Empty);
             return AddUserResult.Done;
@@ -84,21 +90,24 @@ namespace WichtelGenerator.Core.SantaManaager
 
         public void RemoveSanta(SecretSantaModel model)
         {
-            foreach (var oneModel in SecretSantaModels)
-            {
-                oneModel.WhiteListModel.WhitList.Remove(model);
-                oneModel.BlackListModel.BlackList.Remove(model);
-            }
-
+            _listMappingService.RemoveSanta(model);
             SecretSantaModels.Remove(model);
         }
 
-        private SantaBlackListWishResult ValidateBlackListMove(SecretSantaModel owner, SecretSantaModel modelToBeMoved)
+        private SantaBlackListWishResult ValidateBlackListMove(
+            SecretSantaModel owner,
+            SecretSantaModel modelToBeMoved
+        )
         {
             var result = SantaBlackListWishResult.Valid;
 
-            var hasJustOneOnWhiteListAfterMoveing = owner.WhiteListModel.WhitList.Count - 1 == 1;
-            var moveModelIsJustOnOneWhiteList = HowManySantasHasOnWhiteList(modelToBeMoved) < MinimumUserHasOnWhiteList;
+            var hasJustOneOnWhiteListAfterMoveing =
+                _listMappingService.GetCount(owner, SecredSantaMappingType.WhiteListed) - 1 == 1;
+            var moveModelIsJustOnOneWhiteList = _listMappingService.CountOfAppearOnList(
+                                                    modelToBeMoved,
+                                                    SecredSantaMappingType.WhiteListed
+                                                )
+                                                < MinimumUserHasOnWhiteList;
 
             if (hasJustOneOnWhiteListAfterMoveing || moveModelIsJustOnOneWhiteList)
             {
@@ -114,33 +123,28 @@ namespace WichtelGenerator.Core.SantaManaager
             return result;
         }
 
-        private void MoveToBlackList(SecretSantaModel owner, SecretSantaModel modelToBeMoved)
-        {
-            owner.WhiteListModel.WhitList.Remove(modelToBeMoved);
-            var selected = owner.BlackListModel.BlackList.FirstOrDefault(oneModel => oneModel == modelToBeMoved);
-            if (selected == null)
-            {
-                owner.BlackListModel.BlackList.Add(modelToBeMoved);
-            }
-        }
-
-        private int HowManySantasHasOnWhiteList(SecretSantaModel model)
-        {
-            var result = SecretSantaModels.Where(oneSanta => oneSanta != model)
-                .Count(oneSanta => oneSanta.WhiteListModel.WhitList.Any(p => p == model));
-            return result;
-        }
-
-        private void AddNewModelToAllWhiteLists(SecretSantaModel model)
+        private void AddNewModelToAllWhiteLists(SecretSantaModel newModel)
         {
             foreach (var oneModel in SecretSantaModels)
             {
-                oneModel.WhiteListModel.WhitList.Add(model);
-                model.WhiteListModel.WhitList.Add(oneModel);
+                _listMappingService.ChangeRelationship(
+                    oneModel,
+                    newModel,
+                    SecredSantaMappingType.WhiteListed
+                );
+
+                _listMappingService.ChangeRelationship(
+                    newModel,
+                    oneModel,
+                    SecredSantaMappingType.WhiteListed
+                );
             }
         }
 
-        private bool SantaAllReadyExists(SecretSantaModel model, out AddUserResult santaAllReadyExists)
+        private bool SantaAllReadyExists(
+            SecretSantaModel model,
+            out AddUserResult santaAllReadyExists
+        )
         {
             santaAllReadyExists = AddUserResult.Done;
             var selectedModel = SecretSantaModels.FirstOrDefault(p => p.Name == model.Name);
@@ -155,21 +159,40 @@ namespace WichtelGenerator.Core.SantaManaager
             return false;
         }
 
-        private bool IsCobinationAlreadyUsed(SecretSantaModel owner, SecretSantaModel modelToBeMoved)
+        private bool IsCobinationAlreadyUsed(
+            SecretSantaModel owner,
+            SecretSantaModel modelToBeMoved
+        )
         {
-            var ownersBlackListCopy = new List<SecretSantaModel>(owner.BlackListModel.BlackList) { modelToBeMoved };
+            var ownersBlackListCopy = _listMappingService.GetHoleList(
+                owner,
+                SecredSantaMappingType.BlackListed
+            );
+            ownersBlackListCopy.Add(modelToBeMoved); // Just as Fake to Check posible Values.
+
             ownersBlackListCopy = ownersBlackListCopy.OrderBy(p => p.Name).ToList();
 
-            var result = (from otherBlackListCopy in from oneModel in SecretSantaModels
+            var result = (
+                from otherBlackListCopy in
+                    from oneModel in SecretSantaModels
                     where oneModel != owner
-                    select new List<SecretSantaModel>(oneModel.BlackListModel.BlackList)
-                select otherBlackListCopy.OrderBy(p => p.Name).ToList()).Any(otherBlackListCopy =>
-                HasTheListsTheSameValues(ownersBlackListCopy, otherBlackListCopy));
+                    select _listMappingService.GetHoleList(
+                        oneModel,
+                        SecredSantaMappingType.BlackListed,
+                        true
+                    )
+                select otherBlackListCopy.OrderBy(p => p.Name).ToList()).Any(
+                otherBlackListCopy =>
+                    HasTheListsTheSameValues(ownersBlackListCopy, otherBlackListCopy)
+            );
 
             return result;
         }
 
-        private bool HasTheListsTheSameValues(List<SecretSantaModel> list1, List<SecretSantaModel> list2)
+        private bool HasTheListsTheSameValues(
+            List<SecretSantaModel> list1,
+            List<SecretSantaModel> list2
+        )
         {
             if (!list1.Any() || !list2.Any())
             {

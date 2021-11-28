@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using WichtelGenerator.Core.Exeptions;
 using WichtelGenerator.Core.Models;
 using WichtelGenerator.Core.Notification;
+using WichtelGenerator.Core.Services;
 
 [assembly: InternalsVisibleTo("WichtelGenerator.Core.Test")]
 
@@ -12,9 +13,16 @@ namespace WichtelGenerator.Core.Lottery
 {
     public class LotteryService : ILotteryService
     {
-        public LotteryService(INotificationManager notificationManager)
+        private readonly IListMappingService _listMappingService;
+
+
+        public LotteryService(
+            INotificationManager notificationManager,
+            IListMappingService listMappingService
+        )
         {
             NotificationManager = notificationManager;
+            _listMappingService = listMappingService;
         }
 
         private INotificationManager NotificationManager { get; }
@@ -28,7 +36,9 @@ namespace WichtelGenerator.Core.Lottery
             }
 
             //--- Vorbereiten
-            players = secretSantaModels.OrderByDescending(p => p.BlackListModel.BlackList.Count);
+            players = secretSantaModels.OrderByDescending(
+                p => _listMappingService.GetCount(p, SecredSantaMappingType.BlackListed)
+            );
             var allreadyUsed = new List<SecretSantaModel>();
 
             // ReSharper disable once PossibleMultipleEnumeration
@@ -73,10 +83,19 @@ namespace WichtelGenerator.Core.Lottery
         /// </summary>
         /// <param name="player"></param>
         /// <param name="allreadyUsed"></param>
-        private void TakeTheFirstAvailable(SecretSantaModel player, ICollection<SecretSantaModel> allreadyUsed)
+        private void TakeTheFirstAvailable(
+            SecretSantaModel player,
+            ICollection<SecretSantaModel> allreadyUsed
+        )
         {
-            foreach (var oneFromWhite in from oneFromWhite in player.WhiteListModel.WhitList
-                let result = allreadyUsed.FirstOrDefault(p => p.Equals(oneFromWhite) && oneFromWhite.Choise != p)
+            foreach (var oneFromWhite in
+                from oneFromWhite in _listMappingService.GetHoleList(
+                    player,
+                    SecredSantaMappingType.WhiteListed
+                )
+                let result = allreadyUsed.FirstOrDefault(
+                    p => p.Equals(oneFromWhite) && oneFromWhite.Choise != p
+                )
                 where result == null
                 select oneFromWhite)
             {
@@ -98,7 +117,10 @@ namespace WichtelGenerator.Core.Lottery
         /// <param name="list"></param>
         /// <param name="searchedSanta"></param>
         /// <returns></returns>
-        private bool IsInSantaList(IEnumerable<SecretSantaModel> list, SecretSantaModel searchedSanta)
+        private bool IsInSantaList(
+            IEnumerable<SecretSantaModel> list,
+            SecretSantaModel searchedSanta
+        )
         {
             var result = list.FirstOrDefault(p => p == searchedSanta);
             return result != null;
@@ -110,17 +132,23 @@ namespace WichtelGenerator.Core.Lottery
         /// <param name="player"></param>
         /// <param name="allreadyUsed"></param>
         /// <returns></returns>
-        private bool RandomRuffle(SecretSantaModel player, ICollection<SecretSantaModel> allreadyUsed)
+        private bool RandomRuffle(
+            SecretSantaModel player,
+            ICollection<SecretSantaModel> allreadyUsed
+        )
         {
             var random = new Random();
+            var whiteList = _listMappingService.GetHoleList(
+                player,
+                SecredSantaMappingType.WhiteListed
+            );
 
             int i;
-            for (i = 0; i < player.WhiteListModel.WhitList.Count; i++)
+            for (i = 0; i < whiteList.Count; i++)
             {
-                var posibleChoise = player.WhiteListModel.WhitList[random.Next(player.WhiteListModel.WhitList.Count)];
+                var posibleChoise = whiteList[random.Next(whiteList.Count)];
                 if (IsInSantaList(allreadyUsed, posibleChoise)) continue;
                 if (posibleChoise.Choise == player) continue; // Do not draw each other
-
 
                 //noch nicht verwendet
                 player.Choise = posibleChoise;
@@ -128,7 +156,7 @@ namespace WichtelGenerator.Core.Lottery
                 break;
             }
 
-            return i < player.WhiteListModel.WhitList.Count;
+            return i < whiteList.Count;
         }
     }
 }

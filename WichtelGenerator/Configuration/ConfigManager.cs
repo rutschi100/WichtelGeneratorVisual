@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 [assembly: InternalsVisibleTo("WichtelGenerator.Core.Test")]
 
@@ -75,16 +74,9 @@ namespace WichtelGenerator.Core.Configuration
         private void ReadFromDb()
         {
             using var context = new ConfigContext();
-            
-
-            //todo: Die aktuelle Version, schafft es nicht, die White und Blacklists sauber zu laden...
-            // Evl. ist ein Repo und direkt das Speichern nach einer Änderung die Lösung. So kann es besser nachvolzogen werden.
 
             var results = context.ConfigModels
-                .Include(p => p.SecretSantaModels)
-                .ThenInclude(p => p.WhiteListModel)
-                .Include(p => p.SecretSantaModels)
-                .ThenInclude(p => p.BlackListModel);
+                .Include(p => p.SecretSantaModels);
 
             if (results.Count() > 1)
             {
@@ -98,8 +90,8 @@ namespace WichtelGenerator.Core.Configuration
                 throw new Exception("Es ist kein ConfigModel in der DB gefunden worden.");
             }
 
-            // ConfigModel = results.FirstOrDefault();
-            // LoadDependencies(database);
+            ConfigModel = results.FirstOrDefault();
+            LoadDependencies(context);
         }
 
         private void LoadDependencies(DbContext context)

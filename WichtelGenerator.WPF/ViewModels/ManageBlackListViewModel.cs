@@ -7,6 +7,7 @@ using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.Core.Enums;
 using WichtelGenerator.Core.Models;
 using WichtelGenerator.Core.SantaManaager;
+using WichtelGenerator.Core.Services;
 using WichtelGenerator.WPF.Commands;
 
 namespace WichtelGenerator.WPF.ViewModels
@@ -20,13 +21,19 @@ namespace WichtelGenerator.WPF.ViewModels
         private SecretSantaModel _selectedSantaModel;
         private string _selectedWhite;
         private ObservableCollection<string> _whiteList;
+        private readonly IListMappingService _listMappingService;
 
-        public ManageBlackListViewModel(ConfigModel configModel, AddUserViewModel addUserViewModel,
-            ISantaManager santaManager)
+        public ManageBlackListViewModel(
+            ConfigModel configModel,
+            AddUserViewModel addUserViewModel,
+            ISantaManager santaManager,
+            IListMappingService listMappingService
+        )
         {
             ConfigModel = configModel;
             AddUserViewModel = addUserViewModel;
             SantaManager = santaManager;
+            _listMappingService = listMappingService;
 
             Initialize();
         }
@@ -59,7 +66,7 @@ namespace WichtelGenerator.WPF.ViewModels
         }
 
         //todo: nach änderung der Blacklist --> speichern in db
-        
+
         public IAsyncCommand OnClickWhiteList { get; set; }
 
         public string SelectedBlack
@@ -107,13 +114,21 @@ namespace WichtelGenerator.WPF.ViewModels
             {
                 return;
             }
-            
-            foreach (var oneWhite in santa.WhiteListModel.WhitList)
+
+            foreach (var oneWhite in _listMappingService.GetHoleList(
+                santa,
+                SecredSantaMappingType.WhiteListed,
+                true
+            ))
             {
                 WhiteList.Add(oneWhite.Name);
             }
 
-            foreach (var oneBlack in santa.BlackListModel.BlackList)
+            foreach (var oneBlack in _listMappingService.GetHoleList(
+                santa,
+                SecredSantaMappingType.BlackListed,
+                true
+            ))
             {
                 BlackList.Add(oneBlack.Name);
             }
@@ -166,11 +181,13 @@ namespace WichtelGenerator.WPF.ViewModels
                     break;
                 case SantaBlackListWishResult.CombinationAlreadyExist:
                     MessageBox.Show(
-                        "Wichtel konnte nicht zur Blacklist hinzugefügt werden, da diese Kombination bereits besteht!");
+                        "Wichtel konnte nicht zur Blacklist hinzugefügt werden, da diese Kombination bereits besteht!"
+                    );
                     return;
                 case SantaBlackListWishResult.MaxValueAlreadyUsed:
                     MessageBox.Show(
-                        "Es können nicht mehr zur Blacklist hinzugefügt werden. Die maximale Anzahl ist erreicht.");
+                        "Es können nicht mehr zur Blacklist hinzugefügt werden. Die maximale Anzahl ist erreicht."
+                    );
                     return;
                 default:
                     throw new ArgumentOutOfRangeException();
