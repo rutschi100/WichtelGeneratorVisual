@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 [assembly: InternalsVisibleTo("WichtelGenerator.Core.Test")]
 
@@ -23,7 +24,7 @@ namespace WichtelGenerator.Core.Configuration
 
         public EventHandler OnSaveEventHandler { get; set; }
         public EventHandler OnReadEventHandler { get; set; }
-        
+
         public ConfigModel ReadSettings()
         {
             OnReadEventHandler?.Invoke(this, EventArgs.Empty);
@@ -59,7 +60,9 @@ namespace WichtelGenerator.Core.Configuration
 
             if (!File.Exists(DataBaseFile))
             {
-                throw new Exception($"Datenbank konnte nicht erstellt oder gefunden werden! {DataBaseFile}");
+                throw new Exception(
+                    $"Datenbank konnte nicht erstellt oder gefunden werden! {DataBaseFile}"
+                );
             }
         }
 
@@ -71,13 +74,23 @@ namespace WichtelGenerator.Core.Configuration
 
         private void ReadFromDb()
         {
-            using var database = new ConfigContext();
+            using var context = new ConfigContext();
+            
 
-            var results = database.ConfigModels;
+            //todo: Die aktuelle Version, schafft es nicht, die White und Blacklists sauber zu laden...
+            // Evl. ist ein Repo und direkt das Speichern nach einer Änderung die Lösung. So kann es besser nachvolzogen werden.
+
+            var results = context.ConfigModels
+                .Include(p => p.SecretSantaModels)
+                .ThenInclude(p => p.WhiteListModel)
+                .Include(p => p.SecretSantaModels)
+                .ThenInclude(p => p.BlackListModel);
 
             if (results.Count() > 1)
             {
-                throw new Exception($"Es sind zu viele ConfigModels ({results.Count()}) gespeichert worden.");
+                throw new Exception(
+                    $"Es sind zu viele ConfigModels ({results.Count()}) gespeichert worden."
+                );
             }
 
             if (!results.Any())
@@ -85,15 +98,15 @@ namespace WichtelGenerator.Core.Configuration
                 throw new Exception("Es ist kein ConfigModel in der DB gefunden worden.");
             }
 
-            ConfigModel = results.FirstOrDefault();
-            LoadDependencies(database);
+            // ConfigModel = results.FirstOrDefault();
+            // LoadDependencies(database);
         }
 
         private void LoadDependencies(DbContext context)
         {
-            context.Entry(ConfigModel).Collection(p=>p.SecretSantaModels).Load();
+            context.Entry(ConfigModel).Collection(p => p.SecretSantaModels).Load();
         }
-        
+
         private void WriteInDb()
         {
             using var database = new ConfigContext();
