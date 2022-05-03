@@ -143,6 +143,11 @@ namespace WichtelGenerator.Core.Lottery
                 SecredSantaMappingType.WhiteListed
             );
 
+            if (!whiteList.Any())
+            {
+                throw new LotteryFailedExeption($"There is no Santas in Whitelist. Ruffle failed!");
+            }
+            
             int i;
             for (i = 0; i < whiteList.Count; i++)
             {
