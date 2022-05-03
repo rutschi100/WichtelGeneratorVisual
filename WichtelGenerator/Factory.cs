@@ -1,4 +1,5 @@
-﻿using SimpleInjector;
+﻿using System;
+using SimpleInjector;
 using TimMailLib;
 using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.Core.Lottery;
@@ -6,6 +7,7 @@ using WichtelGenerator.Core.Notification;
 
 namespace WichtelGenerator.Core
 {
+    [Obsolete("This is not necessary if you use Mocking")]
     public class Factory
     {
         private readonly Container _container = new Container();

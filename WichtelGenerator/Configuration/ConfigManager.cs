@@ -69,6 +69,7 @@ namespace WichtelGenerator.Core.Configuration
         {
             using var database = new ConfigContext();
             database.Database.Migrate();
+            database.Dispose();
         }
 
         private void ReadFromDb()
@@ -92,6 +93,8 @@ namespace WichtelGenerator.Core.Configuration
 
             ConfigModel = results.FirstOrDefault();
             LoadDependencies(context);
+            
+            context.Dispose();
         }
 
         private void LoadDependencies(DbContext context)
@@ -105,6 +108,8 @@ namespace WichtelGenerator.Core.Configuration
 
             database.ConfigModels.Update(ConfigModel);
             database.SaveChanges();
+            
+            database.Dispose();
         }
     }
 }

@@ -1,105 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using Autofac.Extras.Moq;
 using NUnit.Framework;
 using WichtelGenerator.Core.Configuration;
-using WichtelGenerator.Core.Models;
 
 namespace WichtelGenerator.Core.Test.Configuration
 {
     public class ConfigManagerTests
     {
-        public string ConfigFilePath { get; set; }
-        public Factory Factory { get; set; } = new Factory();
-
-        public ConfigModel TestModel { get; set; } = new ConfigModel
-        {
-            Absender = "Test Absender",
-            EmpfaengerListe = new List<MailAdressModel>(),
-            MailNotificationEnabled = true,
-            NotificationsEnabled = true,
-            Passwort = "abc",
-            Port = 25,
-            ServerName = "Test Server",
-            SslOn = true,
-            Username = "The User",
-            SecretSantaModels = new List<SecretSantaModel>
-            {
-                new SecretSantaModel
-                {
-                    MailAdress = "MyMail@Test",
-                    Name = "Test Santa"
-                }
-            }
-        };
-
-        [SetUp]
-        public void Init()
-        {
-            ConfigFilePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                             @"\WichtelGenerator.json";
-
-            var mail_1 = new MailAdressModel { Mail = "TestMail@Testingen" };
-            var mail_2 = new MailAdressModel { Mail = "TestMail@Testingen_2" };
-
-            TestModel.EmpfaengerListe = new List<MailAdressModel> { mail_1, mail_2 };
-        }
-
-
-        private bool ConifigFileExists()
-        {
-            return File.Exists(ConfigFilePath);
-        }
-
-        private void RemoveConfigs()
-        {
-            if (ConifigFileExists())
-            {
-                File.Delete(ConfigFilePath);
-            }
-        }
-
         [Test]
-        public void ConfigsShouldBeSaved()
+        public void GIVEN_UsedConfiguration_WHEN_StartSaving_THEN_GivePositivFeedBack()
         {
-            RemoveConfigs();
-            var manager = Factory.GetConfigManager();
-            manager.SaveSettings(TestModel);
-            Assert.True(ConifigFileExists());
-        }
+            using var mock = AutoMock.GetLoose();
+            //Arrange
 
-        [Test]
-        public void ConfigsShouldNotBeSaved()
-        {
-            RemoveConfigs();
+            #region Data Mock
 
-            Assert.False(ConifigFileExists());
-        }
+            var manager = mock.Create<ConfigManager>();
+            var setting = manager.ReadSettings();
 
-        [Test]
-        public void ConfigsShouldBeLoadet()
-        {
-            var manager = Factory.GetConfigManager();
-            manager.SaveSettings(TestModel);
+            setting.Port = 22;
 
-            var loadedModel = manager.ReadSettings();
+            #endregion
 
-            if (loadedModel == null)
-            {
-                Assert.Fail();
-            }
+            //Act
+            manager.SaveSettings(setting);
 
-            Assert.True(loadedModel.Passwort.Equals(TestModel.Passwort));
-        }
+            manager = mock.Create<ConfigManager>();
+            setting = manager.ReadSettings();
 
-        [Test]
-        public void ConfigShouldNotBeLoadet()
-        {
-            RemoveConfigs();
-            var manager = Factory.GetConfigManager();
-            var loadedModel = manager.ReadSettings();
-
-            Assert.True(string.IsNullOrEmpty(loadedModel.ServerName));
+            //Assert
+            Assert.AreEqual(22, setting.Port);
         }
     }
 }
