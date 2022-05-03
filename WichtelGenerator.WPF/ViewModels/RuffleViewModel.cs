@@ -6,7 +6,7 @@ using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.Core.Exeptions;
 using WichtelGenerator.Core.Lottery;
 using WichtelGenerator.Core.Models;
-using WichtelGenerator.Core.SantaManaager;
+using WichtelGenerator.Core.SantaManager;
 using WichtelGenerator.WPF.Commands;
 
 namespace WichtelGenerator.WPF.ViewModels

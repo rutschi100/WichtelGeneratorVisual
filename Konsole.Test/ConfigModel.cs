@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Konsole.Test;
 
-namespace WichtelGenerator.Core.Configuration
+namespace Konsole.Test
 {
     public class ConfigModel
     {

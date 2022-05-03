@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Medica.Corona.CostUnitManager.UI.Commands;
 using Sharpnado.Tasks;
 
 namespace WichtelGenerator.WPF.Commands

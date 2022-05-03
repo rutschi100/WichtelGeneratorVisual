@@ -6,7 +6,7 @@ using System.Windows;
 using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.Core.Enums;
 using WichtelGenerator.Core.Models;
-using WichtelGenerator.Core.SantaManaager;
+using WichtelGenerator.Core.SantaManager;
 using WichtelGenerator.Core.Services;
 using WichtelGenerator.WPF.Commands;
 

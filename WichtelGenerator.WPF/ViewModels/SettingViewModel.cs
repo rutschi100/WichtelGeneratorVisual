@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using WichtelGenerator.Core.Configuration;
-using WichtelGenerator.Core.SantaManaager;
+using WichtelGenerator.Core.SantaManager;
 using WichtelGenerator.WPF.Commands;
 using WichtelGenerator.WPF.Pages;
 

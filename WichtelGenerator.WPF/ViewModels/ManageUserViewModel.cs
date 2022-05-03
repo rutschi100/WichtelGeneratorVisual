@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using WichtelGenerator.Core.Models;
-using WichtelGenerator.Core.SantaManaager;
+using WichtelGenerator.Core.SantaManager;
 using WichtelGenerator.WPF.Commands;
 
 // ReSharper disable MemberCanBePrivate.Global

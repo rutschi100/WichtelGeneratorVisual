@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WichtelGeneratorVisual
+namespace WichtelGeneratorVisual.Models
 {
     public class WichtelModel
     {

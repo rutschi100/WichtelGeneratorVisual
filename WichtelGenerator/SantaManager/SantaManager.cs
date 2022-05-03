@@ -6,7 +6,7 @@ using WichtelGenerator.Core.Enums;
 using WichtelGenerator.Core.Models;
 using WichtelGenerator.Core.Services;
 
-namespace WichtelGenerator.Core.SantaManaager
+namespace WichtelGenerator.Core.SantaManager
 {
     public class SantaManager : ISantaManager
     {

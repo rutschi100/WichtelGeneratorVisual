@@ -1,4 +1,4 @@
-﻿using RutschiSwiss.Helpers.WPF.Services;
+﻿using WichtelGenerator.WPF.Services;
 
 namespace WichtelGenerator.WPF
 {

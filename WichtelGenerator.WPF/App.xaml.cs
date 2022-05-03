@@ -7,7 +7,7 @@ using TimMailLib;
 using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.Core.Lottery;
 using WichtelGenerator.Core.Notification;
-using WichtelGenerator.Core.SantaManaager;
+using WichtelGenerator.Core.SantaManager;
 using WichtelGenerator.WPF.Pages;
 using WichtelGenerator.WPF.Services;
 using WichtelGenerator.WPF.ViewModels;

@@ -1,4 +1,4 @@
-﻿namespace RutschiSwiss.Helpers.WPF.Services
+﻿namespace WichtelGenerator.WPF.Services
 {
     /// <summary>
     ///     Bindable View.

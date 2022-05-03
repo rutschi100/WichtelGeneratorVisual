@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Medica.Corona.CostUnitManager.UI.Commands
+namespace WichtelGenerator.WPF.Commands
 {
     public abstract class AsyncCommandBase
     {

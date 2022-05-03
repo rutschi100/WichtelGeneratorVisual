@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WichtelGenerator.Core.Configuration;
 
 namespace Konsole.Test
 {

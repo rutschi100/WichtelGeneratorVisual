@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using WichtelGenerator.Core.Enums;
 using WichtelGenerator.Core.Models;
 
-namespace WichtelGenerator.Core.SantaManaager
+namespace WichtelGenerator.Core.SantaManager
 {
     public interface ISantaManager
     {

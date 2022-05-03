@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
-using RutschiSwiss.Helpers.WPF.Services;
+using WichtelGenerator.WPF.Services;
 
 namespace WichtelGenerator.WPF.ViewModels
 {

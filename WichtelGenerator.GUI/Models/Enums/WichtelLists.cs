@@ -1,4 +1,4 @@
-﻿namespace WichtelGenerator.Core.Models
+﻿namespace WichtelGeneratorVisual.Models.Enums
 {
     public enum WichtelLists
     {
