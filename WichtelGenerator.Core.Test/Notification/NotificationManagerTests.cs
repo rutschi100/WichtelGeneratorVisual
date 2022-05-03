@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Autofac.Extras.Moq;
-using Moq;
 using NUnit.Framework;
 using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.Core.Models;
@@ -11,8 +10,6 @@ namespace WichtelGenerator.Core.Test.Notification
 {
     public class NotificationManagerTests
     {
-        internal Mock<INotificationMail> NotificationMailMock { get; set; } = new Mock<INotificationMail>();
-
         private IEnumerable<SecretSantaModel> PreparadeSantas()
         {
             var santaList = new List<SecretSantaModel>();
@@ -30,64 +27,63 @@ namespace WichtelGenerator.Core.Test.Notification
             return santaList;
         }
 
-        // [Test]
-        // public void ShouldSendAll()
-        // {
-        //     using var mock = AutoMock.GetLoose();
-        //     mock.Mock<INotificationMail>().Setup(p => p.Enabled).Returns(true);
-        //     mock.Mock<INotificationMail>().Setup(p => p.SendRuffleResult()).Returns(true);
-        //     mock.Mock<IConfigManager>().Setup(p => p.ReadSettings()).Returns(
-        //         new ConfigModel
-        //         {
-        //             NotificationsEnabled = true
-        //         }
-        //     );
-        //
-        //
-        //     mock.Mock<IConfigManager>().SetupGet(p => p.ConfigModel).Returns(
-        //         new ConfigModel { MailNotificationEnabled = true }
-        //     );
-        //
-        //     var test = mock.Create<IConfigManager>();
-        //
-        //     mock.Mock<INotification>().Setup(p => p.SendRuffleResult()).Returns(true);
-        //
-        //     var santaList = PreparadeSantas();
-        //
-        //     try
-        //     {
-        //         var manager = mock.Create<NotificationManager>();
-        //         manager.SendRaffle(santaList);
-        //     }
-        //     catch (Exception)
-        //     {
-        //         Assert.Fail();
-        //     }
-        //
-        //     Assert.True(true);
-        // }
+        [Test]
+        public void GIVEN_ABunchOfNotificationToSend_WHEN_SendingAll_THEN_ShouldSendSuccessful()
+        {
+            using var mock = AutoMock.GetLoose();
+            //Arrange
 
-        // [Test]
-        // public void ShouldThrowExeptionCouseSomethingNotSended()
-        // {
-        //     using var mock = AutoMock.GetLoose();
-        //     mock.Mock<INotificationMail>().Setup(p => p.Enabled).Returns(true);
-        //     mock.Mock<INotificationMail>().Setup(p => p.SendRuffleResult()).Returns(false);
-        //
-        //
-        //     var santaList = PreparadeSantas();
-        //
-        //     try
-        //     {
-        //         var manager = mock.Create<NotificationManager>();
-        //         manager.SendRaffle(santaList);
-        //     }
-        //     catch (Exception)
-        //     {
-        //         Assert.Pass();
-        //     }
-        //
-        //     Assert.Fail();
-        // }
+            mock.Mock<INotificationMail>().Setup(p => p.Enabled).Returns(true);
+            mock.Mock<IConfigManager>()
+                .Setup(p => p.ReadSettings())
+                .Returns(new ConfigModel { NotificationsEnabled = true });
+
+
+            mock.Mock<IConfigManager>()
+                .SetupGet(p => p.ConfigModel)
+                .Returns(new ConfigModel { MailNotificationEnabled = true });
+
+            var santaList = PreparadeSantas();
+            var manager = mock.Create<NotificationManager>();
+
+            //Act
+            var action = new TestDelegate(() => manager.SendRaffle(santaList));
+
+            //Assert
+            Assert.DoesNotThrow(action);
+        }
+
+        [Test]
+        public void GIVEN_SomeThingCanNotBeSended_WHEN_SendingAll_THEN_ThrowException()
+        {
+            using var mock = AutoMock.GetLoose();
+            //Arrange
+
+            mock.Mock<INotificationMail>().Setup(p => p.Enabled).Returns(true);
+
+            mock.Mock<INotificationMail>()
+                .Setup(mail => mail.SendRuffleResult())
+                .Throws<Exception>();
+
+            mock.Mock<IConfigManager>()
+                .Setup(configManager => configManager.ReadSettings())
+                .Returns(new ConfigModel { NotificationsEnabled = true });
+
+            var santaList = PreparadeSantas();
+
+            var manager = mock.Create<NotificationManager>();
+            //Act
+            var action = new TestDelegate(() => manager.SendRaffle(santaList));
+
+            //Assert
+            Assert.Throws<Exception>(action);
+        }
+
+
+        [Test]
+        public void ShouldThrowExeptionCouseSomethingNotSended()
+        {
+            using var mock = AutoMock.GetLoose();
+        }
     }
 }
