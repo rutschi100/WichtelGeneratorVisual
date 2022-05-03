@@ -14,16 +14,16 @@ namespace WichtelGenerator.Core.Test.SantaManager
         private const string TestSantaName_2 = "User 2";
         private const string TestSantaName_3 = "User 3";
 
-        private SantaManaager.SantaManager CreateManagerWithTestData()
-        {
-            var manager = new SantaManaager.SantaManager(new ConfigManager());
-            manager.AddNewSanta(new SecretSantaModel { Name = "User 1" });
-            manager.AddNewSanta(new SecretSantaModel { Name = "User 2" });
-            manager.AddNewSanta(new SecretSantaModel { Name = "User 3" });
-            manager.AddNewSanta(new SecretSantaModel { Name = "User 4" });
-
-            return manager;
-        }
+        // private SantaManaager.SantaManager CreateManagerWithTestData()
+        // {
+        //     var manager = new SantaManaager.SantaManager(new ConfigManager());
+        //     manager.AddNewSanta(new SecretSantaModel { Name = "User 1" });
+        //     manager.AddNewSanta(new SecretSantaModel { Name = "User 2" });
+        //     manager.AddNewSanta(new SecretSantaModel { Name = "User 3" });
+        //     manager.AddNewSanta(new SecretSantaModel { Name = "User 4" });
+        //
+        //     return manager;
+        // }
 
         //Given-When-Then
         [Test]
@@ -51,17 +51,17 @@ namespace WichtelGenerator.Core.Test.SantaManager
             Assert.True(manager.SecretSantaModels.Any(p => p == santa));
         }
 
-        [Test]
-        public void SantaIsAlreadyAdded_SantaAdded_ReturnsAlreadyExistsResult()
-        {
-            var manager = CreateManagerWithTestData();
-            var santa = new SecretSantaModel { Name = "Hans" };
-            manager.AddNewSanta(santa);
-
-            var result = manager.AddNewSanta(santa);
-
-            Assert.True(result == AddUserResult.SantaAllReadyExists);
-        }
+        // [Test]
+        // public void SantaIsAlreadyAdded_SantaAdded_ReturnsAlreadyExistsResult()
+        // {
+        //     var manager = CreateManagerWithTestData();
+        //     var santa = new SecretSantaModel { Name = "Hans" };
+        //     manager.AddNewSanta(santa);
+        //
+        //     var result = manager.AddNewSanta(santa);
+        //
+        //     Assert.True(result == AddUserResult.SantaAllReadyExists);
+        // }
 
         [Test]
         public void SantaHasNotBeenAddedYet_SantaAddedWithExitsName_ReturnsAlreadyUsedResult()
@@ -77,45 +77,45 @@ namespace WichtelGenerator.Core.Test.SantaManager
             Assert.True(result == AddUserResult.SantaAllReadyExists);
         }
 
-        [Test]
-        public void SantaHasNotBeenAddedYet_SantaAdded_SantaShouldBeOnOthersWhiteList()
-        {
-            using var mock = AutoMock.GetLoose();
-            var manager = CreateManagerWithTestData();
-            var santa = new SecretSantaModel { Name = "Hans" };
+        // [Test]
+        // public void SantaHasNotBeenAddedYet_SantaAdded_SantaShouldBeOnOthersWhiteList()
+        // {
+        //     using var mock = AutoMock.GetLoose();
+        //     var manager = CreateManagerWithTestData();
+        //     var santa = new SecretSantaModel { Name = "Hans" };
+        //
+        //     manager.AddNewSanta(santa);
+        //
+        //     var isOnEveryList = manager.SecretSantaModels.Where(oneModel => oneModel != santa)
+        //         .All(oneModel => oneModel.WhiteListModel.WhitList.Any(p => p == santa));
+        //     Assert.True(isOnEveryList);
+        // }
 
-            manager.AddNewSanta(santa);
+        // [Test]
+        // public void SantaHasNotBeenAddedYet_SantaAdded_SantaShouldBeOnHisOwnBlackList()
+        // {
+        //     using var mock = AutoMock.GetLoose();
+        //     var manager = mock.Create<SantaManaager.SantaManager>();
+        //     var santa = new SecretSantaModel { Name = "Hans" };
+        //
+        //     manager.AddNewSanta(santa);
+        //
+        //     var isOnHisOwnBlackList = santa.BlackListModel.BlackList.Any(p => p == santa);
+        //     Assert.True(isOnHisOwnBlackList);
+        // }
 
-            var isOnEveryList = manager.SecretSantaModels.Where(oneModel => oneModel != santa)
-                .All(oneModel => oneModel.WhiteListModel.WhitList.Any(p => p == santa));
-            Assert.True(isOnEveryList);
-        }
-
-        [Test]
-        public void SantaHasNotBeenAddedYet_SantaAdded_SantaShouldBeOnHisOwnBlackList()
-        {
-            using var mock = AutoMock.GetLoose();
-            var manager = mock.Create<SantaManaager.SantaManager>();
-            var santa = new SecretSantaModel { Name = "Hans" };
-
-            manager.AddNewSanta(santa);
-
-            var isOnHisOwnBlackList = santa.BlackListModel.BlackList.Any(p => p == santa);
-            Assert.True(isOnHisOwnBlackList);
-        }
-
-        [Test]
-        public void MultibleSantasAdded_SantaMovedToBlackList_SantaShouldBeRemovedFromWhiteList()
-        {
-            var manager = CreateManagerWithTestData();
-            var firstSanta = manager.SecretSantaModels.FirstOrDefault(p => p.Name == TestSantaName_1);
-            var secondSanta = manager.SecretSantaModels.FirstOrDefault(p => p.Name == TestSantaName_2);
-
-            manager.AddSantaToBlackList(firstSanta, secondSanta);
-
-            var moved = ((firstSanta?.WhiteListModel.WhitList) ?? throw new InvalidOperationException()).All(p => p != secondSanta);
-            Assert.True(moved);
-        }
+        // [Test]
+        // public void MultibleSantasAdded_SantaMovedToBlackList_SantaShouldBeRemovedFromWhiteList()
+        // {
+        //     var manager = CreateManagerWithTestData();
+        //     var firstSanta = manager.SecretSantaModels.FirstOrDefault(p => p.Name == TestSantaName_1);
+        //     var secondSanta = manager.SecretSantaModels.FirstOrDefault(p => p.Name == TestSantaName_2);
+        //
+        //     manager.AddSantaToBlackList(firstSanta, secondSanta);
+        //
+        //     var moved = ((firstSanta?.WhiteListModel.WhitList) ?? throw new InvalidOperationException()).All(p => p != secondSanta);
+        //     Assert.True(moved);
+        // }
 
         [Test]
         public void MultibleSantasAdded_SantaMovedToBlackList_SantaShouldHasNotZeroWhiteListSantas()
@@ -152,39 +152,39 @@ namespace WichtelGenerator.Core.Test.SantaManager
             Assert.True(result == SantaBlackListWishResult.CombinationAlreadyExist);
         }
 
-        [Test]
-        public void MultibleSantasAdded_SantaMovedToWhiteList_SantaShouldBeRemovedOnBlackList()
-        {
-            var manager = CreateManagerWithTestData();
-            var firstSanta = manager.SecretSantaModels.FirstOrDefault(p => p.Name == TestSantaName_1);
-            var secondSanta = manager.SecretSantaModels.FirstOrDefault(p => p.Name == TestSantaName_2);
-            manager.AddSantaToBlackList(firstSanta, secondSanta);
+        // [Test]
+        // public void MultibleSantasAdded_SantaMovedToWhiteList_SantaShouldBeRemovedOnBlackList()
+        // {
+        //     var manager = CreateManagerWithTestData();
+        //     var firstSanta = manager.SecretSantaModels.FirstOrDefault(p => p.Name == TestSantaName_1);
+        //     var secondSanta = manager.SecretSantaModels.FirstOrDefault(p => p.Name == TestSantaName_2);
+        //     manager.AddSantaToBlackList(firstSanta, secondSanta);
+        //
+        //     manager.AddSantaToWhiteList(firstSanta, secondSanta);
+        //
+        //     var moved = firstSanta?.WhiteListModel.WhitList.Any(p => p == secondSanta);
+        //     Assert.True(moved);
+        // }
 
-            manager.AddSantaToWhiteList(firstSanta, secondSanta);
-
-            var moved = firstSanta?.WhiteListModel.WhitList.Any(p => p == secondSanta);
-            Assert.True(moved);
-        }
-
-        [Test]
-        public void MultibleSantasAdded_SantaRemovedFromMember_SantaShouldBeRomovedOnEveryList()
-        {
-            var manager = CreateManagerWithTestData();
-            var firstSanta = manager.SecretSantaModels.FirstOrDefault(p => p.Name == TestSantaName_1);
-
-            manager.RemoveSanta(firstSanta);
-
-            var moved = false;
-            foreach (var everyOnWhite in from oneModel in manager.SecretSantaModels
-                let everyOnWhite = oneModel.WhiteListModel.WhitList.Any(p => p.Name == TestSantaName_1)
-                let everyOnBlack = oneModel.BlackListModel.BlackList.Any(p => p.Name == TestSantaName_1)
-                where !everyOnBlack && !everyOnWhite
-                select everyOnWhite)
-            {
-                moved = true;
-            }
-
-            Assert.True(moved);
-        }
+        // [Test]
+        // public void MultibleSantasAdded_SantaRemovedFromMember_SantaShouldBeRomovedOnEveryList()
+        // {
+        //     var manager = CreateManagerWithTestData();
+        //     var firstSanta = manager.SecretSantaModels.FirstOrDefault(p => p.Name == TestSantaName_1);
+        //
+        //     manager.RemoveSanta(firstSanta);
+        //
+        //     var moved = false;
+        //     foreach (var everyOnWhite in from oneModel in manager.SecretSantaModels
+        //         let everyOnWhite = oneModel.WhiteListModel.WhitList.Any(p => p.Name == TestSantaName_1)
+        //         let everyOnBlack = oneModel.BlackListModel.BlackList.Any(p => p.Name == TestSantaName_1)
+        //         where !everyOnBlack && !everyOnWhite
+        //         select everyOnWhite)
+        //     {
+        //         moved = true;
+        //     }
+        //
+        //     Assert.True(moved);
+        // }
     }
 }
