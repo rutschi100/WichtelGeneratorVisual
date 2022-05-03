@@ -13,6 +13,6 @@ namespace WichtelGenerator.Core.Notification
         /// <summary>
         /// </summary>
         /// <returns>Sucsess</returns>
-        public bool SendRuffleResult();
+        public void SendRuffleResult();
     }
 }

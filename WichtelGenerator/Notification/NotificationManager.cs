@@ -32,11 +32,7 @@ namespace WichtelGenerator.Core.Notification
             foreach (var oneNotificationService in NotificationServices.Where(oneNotificationService =>
                 oneNotificationService.Enabled))
             {
-                if (oneNotificationService.SendRuffleResult()) continue;
-                if (oneNotificationService.Enabled)
-                {
-                    throw new NotificationNotSendedException();
-                }
+                oneNotificationService.SendRuffleResult();
             }
         }
     }

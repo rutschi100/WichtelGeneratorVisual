@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
 using WichtelGenerator.Core.Configuration;
+using WichtelGenerator.Core.Exeptions;
 using WichtelGenerator.Core.Lottery;
 using WichtelGenerator.Core.Models;
 using WichtelGenerator.Core.SantaManaager;
@@ -67,7 +68,9 @@ namespace WichtelGenerator.WPF.ViewModels
             {
                 if (!IsSettingValid())
                 {
-                    throw new Exception("Ausgewählte Resultatanzeige ist gemäss Einstellungen, nicht verfügbar");
+                    throw new Exception(
+                        "Ausgewählte Resultatanzeige ist gemäss Einstellungen, nicht verfügbar"
+                    );
                 }
 
                 var result = LotteryService.Raffle(SantaManager.SecretSantaModels);
@@ -83,6 +86,10 @@ namespace WichtelGenerator.WPF.ViewModels
 #if DEBUG
                 ResultVisibility = Visibility.Visible;
 #endif
+            }
+            catch (NotificationNotSendedException e)
+            {
+                MessageBox.Show($"Nachricht konnte nicht versendet werden. Bitte Melde das dem Entwickler auf GitHub: \n {e.Message} \n {e.StackTrace}");
             }
             catch (Exception e)
             {

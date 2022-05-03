@@ -30,64 +30,64 @@ namespace WichtelGenerator.Core.Test.Notification
             return santaList;
         }
 
-        [Test]
-        public void ShouldSendAll()
-        {
-            using var mock = AutoMock.GetLoose();
-            mock.Mock<INotificationMail>().Setup(p => p.Enabled).Returns(true);
-            mock.Mock<INotificationMail>().Setup(p => p.SendRuffleResult()).Returns(true);
-            mock.Mock<IConfigManager>().Setup(p => p.ReadSettings()).Returns(
-                new ConfigModel
-                {
-                    NotificationsEnabled = true
-                }
-            );
+        // [Test]
+        // public void ShouldSendAll()
+        // {
+        //     using var mock = AutoMock.GetLoose();
+        //     mock.Mock<INotificationMail>().Setup(p => p.Enabled).Returns(true);
+        //     mock.Mock<INotificationMail>().Setup(p => p.SendRuffleResult()).Returns(true);
+        //     mock.Mock<IConfigManager>().Setup(p => p.ReadSettings()).Returns(
+        //         new ConfigModel
+        //         {
+        //             NotificationsEnabled = true
+        //         }
+        //     );
+        //
+        //
+        //     mock.Mock<IConfigManager>().SetupGet(p => p.ConfigModel).Returns(
+        //         new ConfigModel { MailNotificationEnabled = true }
+        //     );
+        //
+        //     var test = mock.Create<IConfigManager>();
+        //
+        //     mock.Mock<INotification>().Setup(p => p.SendRuffleResult()).Returns(true);
+        //
+        //     var santaList = PreparadeSantas();
+        //
+        //     try
+        //     {
+        //         var manager = mock.Create<NotificationManager>();
+        //         manager.SendRaffle(santaList);
+        //     }
+        //     catch (Exception)
+        //     {
+        //         Assert.Fail();
+        //     }
+        //
+        //     Assert.True(true);
+        // }
 
-
-            mock.Mock<IConfigManager>().SetupGet(p => p.ConfigModel).Returns(
-                new ConfigModel { MailNotificationEnabled = true }
-            );
-
-            var test = mock.Create<IConfigManager>();
-
-            mock.Mock<INotification>().Setup(p => p.SendRuffleResult()).Returns(true);
-
-            var santaList = PreparadeSantas();
-
-            try
-            {
-                var manager = mock.Create<NotificationManager>();
-                manager.SendRaffle(santaList);
-            }
-            catch (Exception)
-            {
-                Assert.Fail();
-            }
-
-            Assert.True(true);
-        }
-
-        [Test]
-        public void ShouldThrowExeptionCouseSomethingNotSended()
-        {
-            using var mock = AutoMock.GetLoose();
-            mock.Mock<INotificationMail>().Setup(p => p.Enabled).Returns(true);
-            mock.Mock<INotificationMail>().Setup(p => p.SendRuffleResult()).Returns(false);
-
-
-            var santaList = PreparadeSantas();
-
-            try
-            {
-                var manager = mock.Create<NotificationManager>();
-                manager.SendRaffle(santaList);
-            }
-            catch (Exception)
-            {
-                Assert.Pass();
-            }
-
-            Assert.Fail();
-        }
+        // [Test]
+        // public void ShouldThrowExeptionCouseSomethingNotSended()
+        // {
+        //     using var mock = AutoMock.GetLoose();
+        //     mock.Mock<INotificationMail>().Setup(p => p.Enabled).Returns(true);
+        //     mock.Mock<INotificationMail>().Setup(p => p.SendRuffleResult()).Returns(false);
+        //
+        //
+        //     var santaList = PreparadeSantas();
+        //
+        //     try
+        //     {
+        //         var manager = mock.Create<NotificationManager>();
+        //         manager.SendRaffle(santaList);
+        //     }
+        //     catch (Exception)
+        //     {
+        //         Assert.Pass();
+        //     }
+        //
+        //     Assert.Fail();
+        // }
     }
 }

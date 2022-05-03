@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TimMailLib;
 using WichtelGenerator.Core.Configuration;
+using WichtelGenerator.Core.Exeptions;
 
 [assembly: InternalsVisibleTo("WichtelGenerator.Core.Test")]
 
@@ -21,35 +22,32 @@ namespace WichtelGenerator.Core.Notification
         private IMailSender MailSender { get; }
         public bool Enabled { get; set; }
 
-        public bool SendRuffleResult()
+        public void SendRuffleResult()
         {
             SetSettings();
             if (!Enabled)
             {
-                return false;
+                return;
             }
 
-            foreach (var oneSanta in ConfigManager.ReadSettings().SecretSantaModels)
+            var config = ConfigManager.ReadSettings();
+            
+            foreach (var oneSanta in config.SecretSantaModels)
             {
                 var message =
-                    $"Hallo {oneSanta.Name},\nDein Wichtel in der aktuellen Verlosung ist: {oneSanta.Choise}\nDies ist eine geheime Information" +
-                    " niemand sonst weiss davon. Also versuche dies auch weiterhin geheim zu halten.";
+                    $"Hallo {oneSanta.Name},\nDein Wichtel in der aktuellen Verlosung ist: {oneSanta.Choise}\nDies ist eine geheime Information"
+                    + " niemand sonst weiss davon. Also versuche dies auch weiterhin geheim zu halten.";
 
-                MailSender.MailSettings.EmpfaengerListe = new List<string>
-                {
-                    oneSanta.MailAdress
-                };
+                MailSender.MailSettings.EmpfaengerListe = new List<string> { oneSanta.MailAdress };
                 try
                 {
                     MailSender.SendMessage("Wichtel Generator - Verlosungsresultat", message);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    return false;
+                    throw new NotificationNotSendedException("Mail konnte nicht versendet werden", e);
                 }
             }
-
-            return true;
         }
 
         public IConfigManager ConfigManager { get; set; }
@@ -58,15 +56,18 @@ namespace WichtelGenerator.Core.Notification
         {
             Enabled = ConfigManager.ReadSettings().MailNotificationEnabled;
             if (!Enabled) return;
+
+            var config = ConfigManager.ReadSettings();
+            
             MailSender.MailSettings = new MailSettings
             {
-                Absender = ConfigManager.ReadSettings().Absender, //--- First time read it, to fill up the Model
+                Absender = config.Absender, //--- First time read it, to fill up the Model
                 //EmpfaengerListe = _container.GetInstance<IConfigManager>().Read().EmpfaengerListe, --> is not needed, because different mails are sent to different recipients.
-                Passwort = ConfigManager.ConfigModel.Passwort,
-                Port = ConfigManager.ConfigModel.Port,
-                ServerName = ConfigManager.ConfigModel.ServerName,
-                SslOn = ConfigManager.ConfigModel.SslOn,
-                Username = ConfigManager.ConfigModel.Username
+                Passwort = config.Passwort,
+                Port = config.Port,
+                ServerName = config.ServerName,
+                SslOn = config.SslOn,
+                Username = config.Username
             };
         }
     }
