@@ -16,7 +16,8 @@ namespace WichtelGenerator.Core.Configuration
 
         #region Generel
 
-        public List<SecretSantaModel> SecretSantaModels { get; set; }
+        public List<SecretSantaModel> SecretSantaModels { get; set; } =
+            new List<SecretSantaModel>();
         public bool NotificationsEnabled { get; set; }
         public bool MailNotificationEnabled { get; set; }
 

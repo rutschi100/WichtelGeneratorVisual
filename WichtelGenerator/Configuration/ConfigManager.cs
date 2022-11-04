@@ -16,7 +16,7 @@ namespace WichtelGenerator.Core.Configuration
         public ConfigManager()
         {
             ConfigModel = new ConfigModel();
-            InitEF();
+            ReadFromDb();
         }
 
         public ConfigModel ConfigModel { get; set; }
@@ -37,47 +37,13 @@ namespace WichtelGenerator.Core.Configuration
             OnSaveEventHandler?.Invoke(this, EventArgs.Empty);
         }
 
-        private void InitEF()
-        {
-            var DbExists = File.Exists(DataBaseFile);
-            CreateDatabase();
-            MigrateEF();
-            if (!DbExists)
-            {
-                WriteInDb();
-            }
-
-            ReadFromDb();
-        }
-
-        private void CreateDatabase()
-        {
-            if (!File.Exists(DataBaseFile))
-            {
-                SQLiteConnection.CreateFile(DataBaseFile);
-            }
-
-            if (!File.Exists(DataBaseFile))
-            {
-                throw new Exception(
-                    $"Datenbank konnte nicht erstellt oder gefunden werden! {DataBaseFile}"
-                );
-            }
-        }
-
-        private void MigrateEF()
-        {
-            using var database = new ConfigContext();
-            database.Database.Migrate();
-            database.Dispose();
-        }
-
         private void ReadFromDb()
         {
             using var context = new ConfigContext();
 
             var results = context.ConfigModels
-                .Include(p => p.SecretSantaModels);
+                .Include(p => p.SecretSantaModels)
+                .ThenInclude(model => model.Choise);
 
             if (results.Count() > 1)
             {
@@ -86,21 +52,11 @@ namespace WichtelGenerator.Core.Configuration
                 );
             }
 
-            if (!results.Any())
-            {
-                throw new Exception("Es ist kein ConfigModel in der DB gefunden worden.");
-            }
-
-            ConfigModel = results.FirstOrDefault();
-            LoadDependencies(context);
-            
+            ConfigModel = results.FirstOrDefault() ?? new ConfigModel();
             context.Dispose();
         }
 
-        private void LoadDependencies(DbContext context)
-        {
-            context.Entry(ConfigModel).Collection(p => p.SecretSantaModels).Load();
-        }
+        
 
         private void WriteInDb()
         {

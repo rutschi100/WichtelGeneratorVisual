@@ -2,12 +2,14 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Xps;
+using Microsoft.EntityFrameworkCore;
 using SimpleInjector;
 using TimMailLib;
 using WichtelGenerator.Core.Configuration;
 using WichtelGenerator.Core.Lottery;
 using WichtelGenerator.Core.Notification;
 using WichtelGenerator.Core.SantaManager;
+using WichtelGenerator.Core.Services;
 using WichtelGenerator.WPF.Pages;
 using WichtelGenerator.WPF.Services;
 using WichtelGenerator.WPF.ViewModels;
@@ -24,6 +26,11 @@ namespace WichtelGenerator.WPF
             //todo: Logger einfügen!
             try
             {
+                await using var context = new ConfigContext();
+                await context.Database.EnsureCreatedAsync();
+                await context.DisposeAsync();
+                
+                DependencyContainer.Instance.Register<IListMappingService, ListMappingService>(Lifestyle.Singleton);
                 await RegisterPages();
                 await RegisterModels();
                 await RegisterCore();

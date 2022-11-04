@@ -17,11 +17,13 @@ namespace WichtelGenerator.WPF.ViewModels
         private ObservableCollection<string> _activeUsers;
         private string _mailAdres;
         private string _santaName;
+        private readonly IConfigManager _configManager;
 
-        public AddUserViewModel(ConfigModel configModel, ISantaManager santaManager)
+        public AddUserViewModel(ConfigModel configModel, ISantaManager santaManager, IConfigManager configManager)
         {
             ConfigModel = configModel;
             SantaManager = santaManager;
+            _configManager = configManager;
             Initalize();
             InitCommands();
         }
@@ -84,6 +86,9 @@ namespace WichtelGenerator.WPF.ViewModels
             {
                 case AddUserResult.Done:
                     ActiveUsers = GetAllActiveUserNames();
+                    
+                    // _configManager.SaveSettings(ConfigModel);
+                    
                     break;
                 case AddUserResult.SantaAllReadyExists:
                     MessageBox.Show("Der User Existierts bereits. Bitte Wähle einen neuen eindeutigen Namen");
