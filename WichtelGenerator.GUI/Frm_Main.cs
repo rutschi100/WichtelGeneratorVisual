@@ -399,7 +399,7 @@ namespace WichtelGeneratorVisual
             var tWhiteListUser = GetWichtelByName(lb_WhiteList.Items[lb_WhiteList.SelectedIndex].ToString());
 
             ValidateBlackListMove(tSelectedUserObject, tWhiteListUser);
-            ChangeUserInInternLists(tSelectedUserObject, tWhiteListUser, WichtelLists.WhiteList);
+            ChangeUserInInternLists(tSelectedUserObject, tWhiteListUser, WichtelLists.BlackList);
             
             RefreshUserListsInFrame(tSelectedUserObject);
         }
@@ -425,7 +425,7 @@ namespace WichtelGeneratorVisual
                 return;
             }
 
-            ChangeUserInInternLists(tSelectedUserObject, tBlackListUser, WichtelLists.BlackList);
+            ChangeUserInInternLists(tSelectedUserObject, tBlackListUser, WichtelLists.WhiteList);
             RefreshUserListsInFrame(tSelectedUserObject);
         }
 
